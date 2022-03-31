@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardDao">
+
+	<insert id="insertBoard" parameterType="boardVo">
+
+		insert into BOARD (BOARD_SEQ, BOARD_TITLE, BOARD_CONTENT,BOARD_REG_DAY,
+		MEMBER_SEQ, QUESTION_SEQ)values
+		(B_SEQ.nextval, #{bTitle}, #{bContent}, SYSDATE,
+		(select MEMBER_SEQ from MEMBER where MEMBER_SEQ = #{mSeq}), (select
+		QUESTION_SEQ from QUESTION where QUESTION_SEQ= #{qSeq}))
+
+	</insert>
+
+	<update id="updateBoard" parameterType="HashMap">
+		update BOARD set BOARD_TITLE = #{bTitle}, BOARD_CONTENT = #{bContent} where BOARD_SEQ = #{bSeq} 
+	</update>
+	
+	<delete id="deleteBoardOne" parameterType="Integer">
+		delete from BOARD where BOARD_SEQ = #{bSeq}
+	</delete>
+
+</mapper>
