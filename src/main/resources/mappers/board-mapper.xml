@@ -5,9 +5,10 @@
 <mapper namespace="boardDao">
 
 	<insert id="insertBoard" parameterType="boardVo">
-
-		insert into BOARD (BOARD_SEQ, BOARD_TITLE, BOARD_CONTENT,BOARD_REG_DAY,
-		MEMBER_SEQ, QUESTION_SEQ)values
+		insert into BOARD
+		(BOARD_SEQ, BOARD_TITLE, BOARD_CONTENT,BOARD_REG_DAY,
+		MEMBER_SEQ,
+		QUESTION_SEQ)values
 		(B_SEQ.nextval, #{bTitle}, #{bContent}, SYSDATE,
 		(select MEMBER_SEQ from MEMBER where MEMBER_SEQ = #{mSeq}), (select
 		QUESTION_SEQ from QUESTION where QUESTION_SEQ= #{qSeq}))
@@ -15,11 +16,21 @@
 	</insert>
 
 	<update id="updateBoard" parameterType="HashMap">
-		update BOARD set BOARD_TITLE = #{bTitle}, BOARD_CONTENT = #{bContent} where BOARD_SEQ = #{bSeq} 
+		update BOARD set
+		BOARD_TITLE = #{bTitle}, BOARD_CONTENT = #{bContent} where BOARD_SEQ =
+		#{bSeq}
 	</update>
-	
+
 	<delete id="deleteBoardOne" parameterType="Integer">
-		delete from BOARD where BOARD_SEQ = #{bSeq}
+		delete from BOARD
+		where BOARD_SEQ = #{bSeq}
 	</delete>
 
+	<select id="boardlistAday" parameterType="String" resultType="listAdayCommand">
+	
+	select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
+from MEMBER M join BOARD B on B.BOARD_REG_DAY>=TO_DATE(#{bRegday}, 'YYYY-MM-DD')
+	
+	
+	</select>
 </mapper>

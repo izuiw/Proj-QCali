@@ -12,7 +12,8 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>	
 	</settings>
 	<typeAliases>
-		<typeAlias type="com.group.exam.board.vo.BoardVo" alias="BoardVo"/>
+		<typeAlias type="com.group.exam.board.vo.BoardVo" alias="boardVo"/>
+		<typeAlias type="com.group.exam.board.command.ListAdayCommand" alias="listAdayCommand"/>
 
 	</typeAliases>
 </configuration>

@@ -1,21 +1,22 @@
 package com.group.exam.board.dao;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import com.group.exam.board.command.ListAdayCommand;
 import com.group.exam.board.vo.BoardVo;
-
+@Repository
 public class BoardDaoImpl implements BoardDao{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	public BoardDaoImpl() {}
-	
+
 	public BoardDaoImpl (SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
@@ -39,19 +40,19 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public void deleteBoardOne(int bSeq) {
 		// TODO Auto-generated method stub
-		// 해당 회원? 아
+	
 		sqlSessionTemplate.delete("deleteBoardOne", bSeq);
 		
 	}
 
 	@Override
-	public List<BoardVo> boardListAday(Date bRegday) {
+	public List<ListAdayCommand> boardListAday(String bRegday) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSessionTemplate.selectList("boardlistAday", bRegday);
 	}
 
 	@Override
-	public List<BoardVo> boardListMy(int mSeq) {
+	public List<BoardVo> boardListMy(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -29,7 +29,7 @@
    		<property name="configLocation" value="classpath:mybatis-config.xml"/>
    		<property name="mapperLocations">
    			<list>
-   				<value>classpath:sqlmap/*</value>
+   				<value>classpath:mappers/board-mapper.xml</value>
    			</list>
    			
    		</property>
@@ -41,5 +41,9 @@
    			<constructor-arg ref="sqlSessionFactory"/>
    	</bean>
 		
+	<!-- board -->
 	<bean id="boardDao" class="com.group.exam.board.dao.BoardDaoImpl"/>
+
+	<bean id="boardController" class="com.group.exam.board.controller.BoardController"/>
+	<bean id="boardService" class="com.group.exam.board.service.BoardServiceImpl"/>
 </beans>
