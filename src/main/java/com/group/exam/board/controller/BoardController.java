@@ -28,10 +28,10 @@ public class BoardController {
 	
 	public BoardController() {}
 	
-//	@Autowired
-//	public BoardController(BoardService boardService) {
-//		this.boardService = boardService;
-//	}
+
+	public BoardController(BoardService boardService) {
+		this.boardService = boardService;
+	}
 	
 	
 	@GetMapping(value="/write")
@@ -60,12 +60,17 @@ public class BoardController {
 	
 	
 	//list
-	@GetMapping(value = "/list")
+	@GetMapping(value = "/listAday")
 	public String boardListAday( Model model) {
-		String bRegday = "2022-04-01";  
-		List<ListAdayCommand> list=boardService.boardListAday(bRegday);
+		String bRegday = "2022-03-31";  
+		List<ListAdayCommand> list = boardService.boardListAday(bRegday);
+		System.out.println("리스트 : " + list);
+		int listCount = list.size();
+		
+		System.out.println("카운트" + listCount);
+		model.addAttribute("listCount", listCount);
 		model.addAttribute("list", list);
-		return "list";
+		return "board/list";
 	}
 	
 	

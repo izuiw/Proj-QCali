@@ -22,13 +22,13 @@
 			
 	
 		</tr>
-		<c:if test="${ empty list}">
+		<c:if test="${ listCount == 0}">
 			<tr>
 				<td colspan="7">게시판에 저장된 글이 없습니다.</td>
 			</tr>
 		</c:if>
 
-		<c:if test="${!empty list}">
+		<c:if test="${ listCount > 0}">
 			<c:forEach var="list" items="${list}">
 				<tr>
 					<td>${list.bSeq}</td>

@@ -14,8 +14,6 @@ public class BoardDaoImpl implements BoardDao{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
-	
-	public BoardDaoImpl() {}
 
 	public BoardDaoImpl (SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;

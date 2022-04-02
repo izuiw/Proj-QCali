@@ -1,6 +1,5 @@
 package com.group.exam.board.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,10 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardDao boardDao;
 	
-	public BoardServiceImpl () {}
-	
-
-	public BoardServiceImpl(BoardDao boardDao) {
+	public BoardServiceImpl () {
 		
-		this.boardDao = boardDao;
 	}
+	
 
 	@Override
 	public void insertBoard(BoardVo boardVo) {
