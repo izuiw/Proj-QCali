@@ -3,7 +3,7 @@ package com.group.exam.board.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import com.group.exam.board.command.ListAdayCommand;
+import com.group.exam.board.command.ListCommand;
 import com.group.exam.board.vo.BoardVo;
 
 public interface BoardDao {
@@ -12,13 +12,15 @@ public interface BoardDao {
 	
 	public void updateBoard (HashMap<String, String> map); 
 	
-	public void deleteBoardOne (int bSeq);
+	public void deleteBoardOne (HashMap<String, Integer> map);
 	
-	public List<ListAdayCommand> boardListAday (String bRegday);
+	public List<ListCommand> boardList();
 	
-	public List<BoardVo> boardListMy (HashMap<String, String> map);
+	public List<ListCommand> boardListAday (String bRegday);
 	
-	public BoardVo boardListDetail (int bSeq);
+	public List<ListCommand> boardListMy (int mSeq);
+	
+	public List<ListCommand> boardListDetail (int bSeq);
 	
 	public void updateCount (int bSeq);
 	

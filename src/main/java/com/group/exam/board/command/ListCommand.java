@@ -2,7 +2,7 @@ package com.group.exam.board.command;
 
 import java.util.Date;
 
-public class ListAdayCommand {
+public class ListCommand {
 	
 	private int bSeq;
 	private String bTitle;
@@ -10,6 +10,9 @@ public class ListAdayCommand {
 	private int bLike;
 	private int bCount;
 	private String mNickname;
+	private String bContent;
+	
+	
 	public int getbSeq() {
 		return bSeq;
 	}
@@ -46,11 +49,28 @@ public class ListAdayCommand {
 	public void setmNickname(String mNickname) {
 		this.mNickname = mNickname;
 	}
+	
+	
+	public String getbContent() {
+		return bContent;
+	}
+	public void setbContent(String bContent) {
+		this.bContent = bContent;
+	}
 	@Override
 	public String toString() {
 		return "ListAdayCommand [bSeq=" + bSeq + ", bTitle=" + bTitle + ", bRegday=" + bRegday + ", bLike=" + bLike
 				+ ", bCount=" + bCount + ", mNickname=" + mNickname + "]";
 	}
+
+	
+	
+	
+
+
+	
+	
+	
 	
 	
 	

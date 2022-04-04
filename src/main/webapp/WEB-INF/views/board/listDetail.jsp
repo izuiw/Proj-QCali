@@ -15,6 +15,7 @@
 		<tr>
 			<th>보드seq</th>
 			<th>보드제목</th>
+			<th>보드내용</th>
 			<th>닉네임</th>
 			<th>보드 쓴 날짜</th>
 			<th>보드 좋아요</th>
@@ -33,7 +34,8 @@
 				<tr>
 					<td>${list.bSeq}</td>
 		
-					<td><a href="<c:url value='/board/detail/${list.bSeq }'/>">${list.bTitle}</a></td>
+					<td>${list.bTitle}</td>
+					<td>${list.bContent}</td>
 		
 					<td>${list.mNickname}</td>
 					<td>${list.bRegday}</td>

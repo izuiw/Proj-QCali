@@ -4,6 +4,19 @@
 
 <mapper namespace="BoardDao">
 
+
+	<resultMap type="com.group.exam.board.command.ListCommand"
+		id="listCommand">
+		<id property="bSeq" column="board_seq" />
+		<id property="bTitle" column="board_title" />
+		<id property="bRegday" column="board_reg_day" />
+		<id property="bLike" column="board_like" />
+		<id property="bCount" column="board_count" />
+		<id property="mNickname" column="member_nickname" />
+		<id property="bContent" column="board_content" />
+	</resultMap>
+
+
 	<insert id="insertBoard" parameterType="boardVo">
 		insert into BOARD
 		(BOARD_SEQ, BOARD_TITLE, BOARD_CONTENT,BOARD_REG_DAY,
@@ -21,16 +34,44 @@
 		#{bSeq}
 	</update>
 
-	<delete id="deleteBoardOne" parameterType="Integer">
+	<delete id="deleteBoardOne" parameterType="HashMap">
 		delete from BOARD
-		where BOARD_SEQ = #{bSeq}
+		where BOARD_SEQ = #{bSeq} and MEMBER_SEQ = #{mSeq}
 	</delete>
 
-	<select id="boardlistAday" parameterType="String" resultType="listAdayCommand">
+	<!-- 전체 게시글 -->
+	<select id="boardlist" resultMap="listCommand">
 	
-	select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
-from MEMBER M join BOARD B on B.BOARD_REG_DAY>=TO_DATE(#{bRegday}, 'YYYY-MM-DD')
-	
-	
+<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_REG_DAY <= sysdate order by B.BOARD_SEQ]]>
 	</select>
+
+	<!-- 특정 날짜 게시글 보기 -->
+	<select id="boardlistAday" parameterType="String"
+		resultMap="listCommand">
+
+		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where TO_CHAR(B.BOARD_REG_DAY, 'YYYY-MM-DD') = #{bRegday} order by B.BOARD_SEQ]]>
+
+	</select>
+	<!-- 내 게시글 모아보기 -->
+	<select id="boardlistMy" parameterType="Integer"
+		resultMap="listCommand">
+
+		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.MEMBER_SEQ = #{mSeq} order by B.BOARD_SEQ]]>
+
+	</select>
+
+	<!-- 게시글 디테일   / 댓글 테이블 추가 해야함 / 질문 테이블 추가해야함-->
+	<select id="boardlistDetail" parameterType="Integer"
+		resultMap="listCommand">
+
+		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, B.BOARD_CONTENT
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{bSeq}]]>
+
+	</select>
+
+
+
 </mapper>

@@ -7,11 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.group.exam.board.command.ListAdayCommand;
+import com.group.exam.board.command.ListCommand;
 import com.group.exam.board.vo.BoardVo;
 @Repository
 public class BoardDaoImpl implements BoardDao{
-	
+
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
@@ -36,29 +36,29 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public void deleteBoardOne(int bSeq) {
+	public void deleteBoardOne(HashMap<String, Integer> map) {
 		// TODO Auto-generated method stub
 	
-		sqlSessionTemplate.delete("deleteBoardOne", bSeq);
+		sqlSessionTemplate.delete("deleteBoardOne", map);
 		
 	}
 
 	@Override
-	public List<ListAdayCommand> boardListAday(String bRegday) {
+	public List<ListCommand> boardListAday(String bRegday) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("boardlistAday", bRegday);
 	}
 
 	@Override
-	public List<BoardVo> boardListMy(HashMap<String, String> map) {
+	public List<ListCommand> boardListMy(int mSeq) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSessionTemplate.selectList("boardlistMy", mSeq);
 	}
 
 	@Override
-	public BoardVo boardListDetail(int bSeq) {
+	public List<ListCommand> boardListDetail(int bSeq) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSessionTemplate.selectList("boardlistDetail", bSeq);
 	}
 
 	@Override
@@ -71,6 +71,13 @@ public class BoardDaoImpl implements BoardDao{
 	public String pwdCheck(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public List<ListCommand> boardList() {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList("boardlist");
 	}
 
 }
