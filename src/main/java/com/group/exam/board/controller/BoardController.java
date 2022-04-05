@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.group.exam.board.command.ListCommand;
-import com.group.exam.board.dao.BoardDao;
+import com.group.exam.board.command.BoardPageCommand;
+import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.service.BoardService;
+import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardVo;
 
 @Controller
@@ -29,6 +30,7 @@ public class BoardController {
 	private BoardService boardService;
 
 	public BoardController() {
+
 	}
 
 	public BoardController(BoardService boardService) {
@@ -42,30 +44,41 @@ public class BoardController {
 	}
 
 	@PostMapping(value = "/write")
-	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult, Model model) {
+	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
+			Model model, Criteria cri) {
 
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
-		System.out.println(boardVo);
 
 		boardService.insertBoard(boardVo);
 
-		List<ListCommand> list = boardService.boardList();
+		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
-	
+
 		return "board/list";
 	}
 
 	// 리스트 전체
-	@GetMapping(value = "/listAday")
-	public String boardListAll(Model model) {
+	@GetMapping(value = "/list/{num}")
+	public String boardListAll(@PathVariable("num") int num, Criteria cri, Model model) {
 
-		List<ListCommand> list = boardService.boardList();
+		int total = 47;
+		/*
+		 * 1 1,10 2 11, 20
+		 */
+	
+		cri.setPageNum(num);
+		System.out.println("?" + cri);
+		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
 
+		model.addAttribute("num", num);
+		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
+		model.addAttribute("pageMaker", pageCommand);
+		System.out.println("??" +  pageCommand);
 		return "board/list";
 	}
 
@@ -73,55 +86,57 @@ public class BoardController {
 	@GetMapping(value = "/listAday/{bRegday}")
 	public String boardListAday(@PathVariable String bRegday, Model model) {
 
-		List<ListCommand> list = boardService.boardListAday(bRegday);
+		List<BoardlistCommand> list = boardService.boardListAday(bRegday);
 
 		model.addAttribute("list", list);
 		return "board/list";
 	}
-	
+
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/listMy/{mSeq}")
-	public String boardListMy(@PathVariable int mSeq, Model model) {
-		
-		List<ListCommand> list = boardService.boardListMy(mSeq);
+	public String boardListMy(@PathVariable("mSeq") int mSeq, Model model) {
+
+		List<BoardlistCommand> list = boardService.boardListMy(mSeq);
 		model.addAttribute("list", list);
 		return "board/list";
 	}
-	
-	//게시글 디테일
+
+	// 게시글 디테일
 	@GetMapping(value = "/detail/{bSeq}")
 	public String boardListDetail(@PathVariable int bSeq, Model model) {
-		
-		
-		List<ListCommand> list = boardService.boardListDetail(bSeq);
+		int mSeq = 1; // d임의값
+		boardService.boardCountup(bSeq, mSeq);
+
+		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
 		model.addAttribute("list", list);
-			
+
 		return "board/listDetail";
 	}
-	
+
 	// 게시글 수정
 	@GetMapping(value = "/edit")
 	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo) {
-		
+
 		return "board/editForm";
 	}
+
 	// 게시글 수정
 	@PostMapping(value = "/edit")
-	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardVo boardVo, BindingResult bindingResult, Model model) {
-		
+	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardVo boardVo, BindingResult bindingResult,
+			Model model) {
+
 		return "board/list";
 	}
-	
-	// 게시글 삭제 
+
+	// 게시글 삭제
 	@GetMapping(value = "/delete")
-	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session) {
-		int mSeq = 5; //임의 값
+	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session, Criteria cri) {
+		int mSeq = 5; // 임의 값
 		boardService.deleteBoardOne(bSeq, mSeq);
-		
-		List<ListCommand> list = boardService.boardList();
+
+		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
 		return "board/list";
 	}
-	
 
 }

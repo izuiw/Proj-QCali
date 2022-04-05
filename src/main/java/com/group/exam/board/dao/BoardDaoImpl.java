@@ -7,7 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.group.exam.board.command.ListCommand;
+import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardVo;
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -44,19 +45,19 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public List<ListCommand> boardListAday(String bRegday) {
+	public List<BoardlistCommand> boardListAday(String bRegday) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("boardlistAday", bRegday);
 	}
 
 	@Override
-	public List<ListCommand> boardListMy(int mSeq) {
+	public List<BoardlistCommand> boardListMy(int mSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("boardlistMy", mSeq);
 	}
 
 	@Override
-	public List<ListCommand> boardListDetail(int bSeq) {
+	public List<BoardlistCommand> boardListDetail(int bSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("boardlistDetail", bSeq);
 	}
@@ -75,9 +76,18 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public List<ListCommand> boardList() {
+	public List<BoardlistCommand> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList("boardlist");
+		return sqlSessionTemplate.selectList("boardlist", cri);
+	}
+
+
+	@Override
+	public void boardCountup(HashMap<String, Integer> map) {
+		// TODO Auto-generated method stub
+		
+		sqlSessionTemplate.update("boardCountup", map);
+		
 	}
 
 }

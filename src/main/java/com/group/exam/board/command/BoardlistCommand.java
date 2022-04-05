@@ -2,7 +2,7 @@ package com.group.exam.board.command;
 
 import java.util.Date;
 
-public class ListCommand {
+public class BoardlistCommand {
 	
 	private int bSeq;
 	private String bTitle;

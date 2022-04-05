@@ -44,9 +44,7 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	<!-- board -->
-	<bean id="boardController"
-		class="com.group.exam.board.controller.BoardController" />
+
 
 		
 </beans>

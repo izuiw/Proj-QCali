@@ -14,7 +14,7 @@
 	<typeAliases>
 
 		<typeAlias type="com.group.exam.board.vo.BoardVo" alias="boardVo"/>
-
+			<typeAlias type="com.group.exam.board.utils.Criteria" alias="criteria"/>
 
 	</typeAliases>
 </configuration>

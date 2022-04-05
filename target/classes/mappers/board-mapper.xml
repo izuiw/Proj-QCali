@@ -5,8 +5,8 @@
 <mapper namespace="BoardDao">
 
 
-	<resultMap type="com.group.exam.board.command.ListCommand"
-		id="listCommand">
+	<resultMap
+		type="com.group.exam.board.command.BoardlistCommand" id="listCommand">
 		<id property="bSeq" column="board_seq" />
 		<id property="bTitle" column="board_title" />
 		<id property="bRegday" column="board_reg_day" />
@@ -39,11 +39,15 @@
 		where BOARD_SEQ = #{bSeq} and MEMBER_SEQ = #{mSeq}
 	</delete>
 
+
+
 	<!-- 전체 게시글 -->
-	<select id="boardlist" resultMap="listCommand">
+	<select id="boardlist" parameterType="criteria"
+		resultMap="listCommand">
 	
-<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME
-from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_REG_DAY <= sysdate order by B.BOARD_SEQ]]>
+<![CDATA[select *
+from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME 
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where 1=1 and rownum <+ #{pageNum} * #{amount}) where rn>  (#{pageNum}-1)*#{amount}]]>
 	</select>
 
 	<!-- 특정 날짜 게시글 보기 -->
@@ -63,7 +67,7 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.MEMBER_SEQ = #
 
 	</select>
 
-	<!-- 게시글 디테일   / 댓글 테이블 추가 해야함 / 질문 테이블 추가해야함-->
+	<!-- 게시글 디테일 / 댓글 테이블 추가 해야함 / 질문 테이블 추가해야함 -->
 	<select id="boardlistDetail" parameterType="Integer"
 		resultMap="listCommand">
 
@@ -72,6 +76,15 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 
 	</select>
 
+
+
+
+	<update id="boardCountup" parameterType="HashMap">
+		update BOARD set
+		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{bSeq} and
+		MEMBER_SEQ =
+		#{mSeq}
+	</update>
 
 
 </mapper>
