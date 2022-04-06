@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.group.exam.board.command.BoardPageCommand;
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.BoardupdateCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardVo;
@@ -46,21 +47,20 @@ public class BoardController {
 
 	@PostMapping(value = "/write")
 	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
-			Model model, Criteria cri, HttpSession session) {
+			 Criteria cri, HttpSession session) {
 
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
-		
-		//세션 값 loginMember에 저장
+
+		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
-		
-		
-		//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+
+		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 		boardVo.setmSeq(loginMember.getmSeq());
-	
+
 		boardService.insertBoard(boardVo);
 
 //		List<BoardlistCommand> list = boardService.boardList(cri);
@@ -69,50 +69,43 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	
-	
 	// 리스트 전체
-	
-	@GetMapping(value = "/list")
-	public String boardListAll(Criteria cri, Model model) {
-		 int num = 0;
-		if(num == 0) {
-			num = 1; 
+
+	@GetMapping(value = "/list ")
+	public String boardListAll(@RequestParam int currentPage, Criteria cri, Model model, HttpSession session) {
+		
+		if (currentPage == 0) {
+			currentPage = 1;
 		}
-		
-		
+
 		int total = boardService.listCount();
 		/*
 		 * 1 1,10 2 11, 20
 		 */
-	
-		cri.setPageNum(num);
+
+		cri.setPageNum(currentPage);
 
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
 
-		model.addAttribute("num", num);
+		model.addAttribute("num", currentPage);
 		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
 		model.addAttribute("pageMaker", pageCommand);
 		return "board/list";
 	}
-	
-	@GetMapping(value = "/list/{num}")
-	public String boardListAll(@PathVariable int num, Criteria cri, Model model) {
 
-		if(num == 0) {
-			num = 1; 
-		}
-		
-		
-		int total = boardService.listCount();
-		System.out.println("토탈  "+total);
-		cri.setPageNum(num);
+	@GetMapping(value = "/list")
+	public String boardListAll(Criteria cri, Model model, HttpSession session) {
+		int currentPage = 1;
 	
+		int total = boardService.listCount();
+
+		cri.setPageNum(currentPage);
+
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
 
-		model.addAttribute("num", num);
+		model.addAttribute("currentPage", currentPage);
 		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
 		model.addAttribute("pageMaker", pageCommand);
 
@@ -139,43 +132,67 @@ public class BoardController {
 	}
 
 	// 게시글 디테일
-	@GetMapping(value = "/detail/{bSeq}")
-	public String boardListDetail(@PathVariable int bSeq, Model model, HttpSession session) {
-		
-		
+	@GetMapping(value = "/detail")
+	public String boardListDetail(@RequestParam int bSeq, Model model, HttpSession session) {
+
 		boardService.boardCountup(bSeq);
 
 		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
-		
-		//세션 값 loginMember에 저장
+
+		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
-		
+
 		if (loginMember != null) {
-			//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 			int mSeq = loginMember.getmSeq();
-			//세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
+			// 세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
 			if (mSeq == list.get(0).getmSeq()) {
 				boolean my = true;
 				model.addAttribute("my", my);
 			}
 		}
-		
+
 		model.addAttribute("list", list);
-		
+
 
 		return "board/listDetail";
 	}
 
 	// 게시글 수정
 	@GetMapping(value = "/edit")
-	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo, HttpSession session) {
+	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo,   HttpSession session, Model model) {
+		
 		return "board/editForm";
 	}
 
 	// 게시글 수정
 	@PostMapping(value = "/edit")
-	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardVo boardVo, BindingResult bindingResult,
+	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardupdateCommand updateCommand, BindingResult bindingResult,
 			Model model, HttpSession session) {
+
+		if (bindingResult.hasErrors()) {
+
+			return "board/editForm";
+		}
+	
+		
+		// 세션 값 loginMember에 저장
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+
+		if (loginMember != null) {
+			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
+			int mSeq = loginMember.getmSeq();
+			int bSeq = updateCommand.getbSeq();
+			
+			List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
+			
+			model.addAttribute("list", list);
+			boardService.updateBoard(updateCommand.getbTitle(), updateCommand.getbContent(), bSeq);
+			System.out.println(" 수정 성공");
+		} else {
+			System.out.println("수정 실패");
+			// return errors - 삭제 실패
+		}
 
 		return "redirect:/board/list";
 	}
@@ -183,20 +200,19 @@ public class BoardController {
 	// 게시글 삭제
 	@GetMapping(value = "/delete")
 	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session, Criteria cri) {
-		
-		
-		//세션 값 loginMember에 저장
+
+		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
-		
+
 		if (loginMember != null) {
-			//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 			int mSeq = loginMember.getmSeq();
 			boardService.deleteBoardOne(bSeq, mSeq);
 			System.out.println("삭제 성공");
+		} else {
+			System.out.println("삭제 실패");
+			// return errors - 삭제 실패
 		}
-		
-		System.out.println("삭제 실패");
-		
 
 		return "redirect:/board/list";
 	}

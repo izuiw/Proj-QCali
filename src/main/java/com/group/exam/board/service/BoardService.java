@@ -24,6 +24,8 @@ public interface BoardService {
 	public void deleteBoardOne(int bSeq, int mSeq); // 해당 게시글 삭제
 	
 	public int listCount(); // board 테이블 전체 글 수
+	
+	public void updateBoard(String bTitle, String bContent, int bSeq);
 
 
 }

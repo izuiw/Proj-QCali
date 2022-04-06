@@ -34,7 +34,7 @@
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
 		<a href="<c:url value='/board/write'/>"><button>글쓰기</button></a>
-		
+
 
 	</c:if>
 
@@ -69,15 +69,17 @@
 					<td>${list.bLike}</td>
 					<td>${list.bCount}</td>
 				</tr>
+		<c:if test="${!empty my}">
 
-			</c:forEach>
-			
-					<c:if test="${!empty my}">
+			<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글 수정</button></a>
 
-			<a href="<c:url value='/board/edit'/>"><button>글 수정</button></a>
-			<a href="<c:url value='/board/delete'/>"><button>글 삭제</button></a>
+			<input type="button" value="글 삭제"
+				onclick="window:location='<c:url value='/board/delete?bSeq=${list.bSeq}'/>'" />
 
 		</c:if>
+			</c:forEach>
+
+
 
 		</c:if>
 

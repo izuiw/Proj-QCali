@@ -90,6 +90,19 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 
+	@Override
+	public void updateBoard(String bTitle, String bContent, int bSeq) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("bTitle", bTitle);
+		map.put("bContent", bContent);
+		map.put("bSeq", bSeq);
+		
+		boardDao.updateBoard(map);
+		
+	}
+
+
 	
 	
 	

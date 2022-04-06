@@ -52,6 +52,10 @@ li {
 		
 
 	</c:if>
+	
+	<c:if test="${empty member}">
+		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
+	</c:if>
 
 
 	<table border="1">
@@ -78,7 +82,10 @@ li {
 				<tr>
 					<td>${list.bSeq}</td>
 
-					<td><a href="<c:url value='/board/detail/${list.bSeq }'/>">${list.bTitle}</a></td>
+					<td><a href="<c:url value='/board/detail?bSeq=${list.bSeq}'/>">${list.bTitle}</a>
+					
+					</td>
+					
 
 					<td>${list.mNickname}</td>
 					<td>${list.bRegday}</td>
@@ -93,19 +100,19 @@ li {
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list/${pageMaker.startPage - 1 }'/>">Previous</a>
+						href="<c:url value='/board/list ?currentPage=${pageMaker.startPage - 1 }'/>">Previous</a>
 					</li>
 				</c:if>
 
-				<c:forEach var="num" begin="${pageMaker.startPage }"
+				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list/${num }'/>">${num }</a></li>
+						href="<c:url value='/board/list ?currentPage=${currentPage }'/>">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list/${pageMaker.endPage + 1 }'/>">Next</a>
+						href="<c:url value='/board/list ?currentPage=${pageMaker.endPage + 1 }'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

@@ -11,7 +11,7 @@ public interface BoardDao {
 	
 	public void insertBoard (BoardVo boardVo); //새 게시글 쓰기
 	
-	public void updateBoard (HashMap<String, String> map); //게시글 수정
+	public void updateBoard (HashMap<String, Object> map); //게시글 수정
 	
 	public void deleteBoardOne (HashMap<String, Integer> map); //게시글 삭제
 	

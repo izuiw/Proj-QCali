@@ -29,7 +29,7 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public void updateBoard(HashMap<String, String> map) {
+	public void updateBoard(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		// 게시글 제목과 내용 수정 
 		sqlSessionTemplate.update("updateBoard", map);
