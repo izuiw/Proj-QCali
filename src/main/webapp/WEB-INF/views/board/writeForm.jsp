@@ -28,7 +28,7 @@
 
 			</tr>
 		</table>
-		<input type="hidden" name="mSeq" value="2" />
+		<input type="hidden" name="mSeq" value="5" />
 		<input type="hidden" name="qSeq" value="1" />
 		<input type="submit" value="글쓰기" />
 	</form:form>

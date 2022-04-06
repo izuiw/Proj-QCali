@@ -63,9 +63,9 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public void updateCount(int bSeq) {
+	public int listCount() {
 		// TODO Auto-generated method stub
-		
+		return sqlSessionTemplate.selectOne("boardlistCount");
 	}
 
 	@Override

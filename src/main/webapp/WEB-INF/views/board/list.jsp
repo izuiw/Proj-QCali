@@ -5,18 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-		$(document).ready(function() {
-			var listForm = $("#listForm");
-			
-			$(".pagination_button a").on("click", function(e) {
-				e.preventDefault();
-				
-				listForm.find("input[name='pageNum']").val($(this).attr("href"));
-				listForm.submit();
-			});
-		});
-	</script>
+
 <meta charset="UTF-8">
 
 	<style>
@@ -48,6 +37,8 @@
 
 
 		</tr>
+		
+	
 		<c:if test="${ empty list}">
 			<tr>
 				<td colspan="7">게시판에 저장된 글이 없습니다.</td>
@@ -74,7 +65,7 @@
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button">
-						<a href="${pageMaker.startPage - 1 }">Previous</a>
+						<a href="<c:url value='/board/list/${pageMaker.startPage - 1 }'/>">Previous</a>
 					</li>
 				</c:if>
 				
@@ -86,7 +77,7 @@
 				
 				<c:if test="${pageMaker.next }">
 					<li class="pagination_button">
-						<a href="${pageMaker.endPage + 1 }">Next</a>
+						<a href="<c:url value='/board/list/${pageMaker.endPage + 1 }'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

@@ -86,6 +86,13 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 
+	@Override
+	public int listCount() {
+		// TODO Auto-generated method stub
+		return boardDao.listCount();
+	}
+
+
 	
 	
 	

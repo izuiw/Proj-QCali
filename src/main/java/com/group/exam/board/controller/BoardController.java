@@ -55,30 +55,59 @@ public class BoardController {
 
 		boardService.insertBoard(boardVo);
 
-		List<BoardlistCommand> list = boardService.boardList(cri);
-		model.addAttribute("list", list);
+//		List<BoardlistCommand> list = boardService.boardList(cri);
+//		model.addAttribute("list", list);
 
-		return "board/list";
+		return "redirect:/board/list";
 	}
 
+	
+	
 	// 리스트 전체
-	@GetMapping(value = "/list/{num}")
-	public String boardListAll(@PathVariable("num") int num, Criteria cri, Model model) {
-
-		int total = 47;
+	
+	@GetMapping(value = "/list")
+	public String boardListAll(Criteria cri, Model model) {
+		 int num = 0;
+		if(num == 0) {
+			num = 1; 
+		}
+		
+		
+		int total = boardService.listCount();
 		/*
 		 * 1 1,10 2 11, 20
 		 */
 	
 		cri.setPageNum(num);
-		System.out.println("?" + cri);
+
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
 
 		model.addAttribute("num", num);
 		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
 		model.addAttribute("pageMaker", pageCommand);
-		System.out.println("??" +  pageCommand);
+		return "board/list";
+	}
+	
+	@GetMapping(value = "/list/{num}")
+	public String boardListAll(@PathVariable int num, Criteria cri, Model model) {
+
+		if(num == 0) {
+			num = 1; 
+		}
+		
+		
+		int total = boardService.listCount();
+		System.out.println("토탈  "+total);
+		cri.setPageNum(num);
+	
+		List<BoardlistCommand> list = boardService.boardList(cri);
+		model.addAttribute("list", list);
+
+		model.addAttribute("num", num);
+		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
+		model.addAttribute("pageMaker", pageCommand);
+
 		return "board/list";
 	}
 
@@ -125,7 +154,7 @@ public class BoardController {
 	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardVo boardVo, BindingResult bindingResult,
 			Model model) {
 
-		return "board/list";
+		return "redirect:/board/list";
 	}
 
 	// 게시글 삭제
@@ -136,7 +165,7 @@ public class BoardController {
 
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
-		return "board/list";
+		return "redirect:/board/list";
 	}
 
 }
