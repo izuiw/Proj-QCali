@@ -13,6 +13,7 @@
 		<id property="bLike" column="board_like" />
 		<id property="bCount" column="board_count" />
 		<id property="mNickname" column="member_nickname" />
+		<id property="mSeq" column="member_seq" />
 		<id property="bContent" column="board_content" />
 	</resultMap>
 
@@ -41,7 +42,7 @@
 
 
 
-	<!-- 전체 게시글   // 출력 기준 이상함-->
+	<!-- 전체 게시글 // 출력 기준 이상함 -->
 	<select id="boardlist" parameterType="criteria"
 		resultMap="listCommand">
 	
@@ -71,24 +72,22 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.MEMBER_SEQ = #
 	<select id="boardlistDetail" parameterType="Integer"
 		resultMap="listCommand">
 
-		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, B.BOARD_CONTENT
+		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ, B.BOARD_CONTENT
 from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{bSeq}]]>
 
 	</select>
-	
+
 	<!-- 게시판 전체 글 수 -->
 	<select id="boardlistCount" resultType="Integer">
-	select count(*) from BOARD
-	
+		select count(*) from BOARD
+
 	</select>
 
 
 
-	<update id="boardCountup" parameterType="HashMap">
+	<update id="boardCountup" parameterType="Integer">
 		update BOARD set
-		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{bSeq} and
-		MEMBER_SEQ =
-		#{mSeq}
+		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{bSeq}
 	</update>
 
 

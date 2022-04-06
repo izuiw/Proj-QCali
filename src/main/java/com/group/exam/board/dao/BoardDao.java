@@ -27,5 +27,5 @@ public interface BoardDao {
 	
 	public String pwdCheck (HashMap<String, String> map);  // 패스워드 체크? 아직 안씀
 	
-	public void boardCountup (HashMap<String, Integer> map); // 해당 게시글 카운트 업
+	public void boardCountup (int bSeq); // 해당 게시글 카운트 업
 }

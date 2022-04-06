@@ -11,8 +11,17 @@ public class BoardlistCommand {
 	private int bCount;
 	private String mNickname;
 	private String bContent;
+	private int mSeq;
 	
 	
+	
+	
+	public int getmSeq() {
+		return mSeq;
+	}
+	public void setmSeq(int mSeq) {
+		this.mSeq = mSeq;
+	}
 	public int getbSeq() {
 		return bSeq;
 	}

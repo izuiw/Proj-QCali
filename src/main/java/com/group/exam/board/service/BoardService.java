@@ -19,7 +19,7 @@ public interface BoardService {
 	
 	public List<BoardlistCommand> boardListDetail(int bSeq); // 해당 게시글 디테일
 	
-	public void boardCountup(int bSeq, int mSeq); // 해당 게시글 카운트 업
+	public void boardCountup(int bSeq); // 해당 게시글 카운트 업
 	
 	public void deleteBoardOne(int bSeq, int mSeq); // 해당 게시글 삭제
 	

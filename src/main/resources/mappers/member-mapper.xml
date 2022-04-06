@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberDao">
+
+	<resultMap type="com.group.exam.member.command.LoginCommand" id="memberLoginCommand">
+		<result property="mSeq" column="MEMBER_SEQ"/>
+		<result property="mId" column="MEMBER_ID"/>
+		<result property="mPassword" column="MEMBER_PASSWORD"/>	
+		<result property="mNickname" column="MEMBER_NICKNAME"/>	
+		<result property="mBirthday" column="MEMBER_BIRTH_DAY"/>
+		<result property="mRegday" column="MEMBER_REG_DAY"/>
+		<result property="mAuth" column="MEMBER_AUTH"/>
+		<result property="mLevel" column="MEMBER_LEVEL"/>
+	
+	</resultMap>
+	
+
+	<!-- 로그인 관련 -->
+	<select id="login" parameterType="String" resultMap="memberLoginCommand">
+		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH, MEMBER_LEVEL from MEMBER where MEMBER_ID = #{mId}
+	</select>
+
+</mapper>

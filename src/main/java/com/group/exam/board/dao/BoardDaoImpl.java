@@ -83,10 +83,10 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public void boardCountup(HashMap<String, Integer> map) {
+	public void boardCountup(int bSeq) {
 		// TODO Auto-generated method stub
 		
-		sqlSessionTemplate.update("boardCountup", map);
+		sqlSessionTemplate.update("boardCountup", bSeq);
 		
 	}
 

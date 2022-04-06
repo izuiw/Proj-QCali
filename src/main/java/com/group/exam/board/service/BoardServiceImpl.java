@@ -75,13 +75,10 @@ public class BoardServiceImpl implements BoardService{
 
 	//게시물 조횟수 up
 	@Override
-	public void boardCountup(int bSeq, int mSeq) {
+	public void boardCountup(int bSeq) {
 		// TODO Auto-generated method stub
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		
-		map.put("bSeq", bSeq);
-		map.put("mSeq", mSeq);
-		boardDao.boardCountup(map);
+
+		boardDao.boardCountup(bSeq);
 		
 	}
 

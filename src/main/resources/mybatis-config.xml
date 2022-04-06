@@ -5,16 +5,19 @@
 <configuration>
 
 	<!-- 마이바티스 작동 규칙 정의 -->
-	
+
 	<settings>
-		<setting name="cacheEnabled" value="false"/>
-		<setting name="useGeneratedKeys" value="false"/>
-		<setting name="mapUnderscoreToCamelCase" value="true"/>	
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	<typeAliases>
 
-		<typeAlias type="com.group.exam.board.vo.BoardVo" alias="boardVo"/>
-			<typeAlias type="com.group.exam.board.utils.Criteria" alias="criteria"/>
+		<typeAlias type="com.group.exam.board.vo.BoardVo"
+			alias="boardVo" />
+		<typeAlias type="com.group.exam.board.utils.Criteria"
+			alias="criteria" />
+
 
 	</typeAliases>
 </configuration>

@@ -21,6 +21,7 @@ import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardVo;
+import com.group.exam.member.command.LoginCommand;
 
 @Controller
 @RequestMapping("/board")
@@ -38,21 +39,28 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/write")
-	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo) {
+	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, HttpSession session) {
 
 		return "board/writeForm";
 	}
 
 	@PostMapping(value = "/write")
 	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
-			Model model, Criteria cri) {
+			Model model, Criteria cri, HttpSession session) {
 
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
-
+		
+		//세션 값 loginMember에 저장
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		
+		
+		//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+		boardVo.setmSeq(loginMember.getmSeq());
+	
 		boardService.insertBoard(boardVo);
 
 //		List<BoardlistCommand> list = boardService.boardList(cri);
@@ -132,27 +140,42 @@ public class BoardController {
 
 	// 게시글 디테일
 	@GetMapping(value = "/detail/{bSeq}")
-	public String boardListDetail(@PathVariable int bSeq, Model model) {
-		int mSeq = 1; // d임의값
-		boardService.boardCountup(bSeq, mSeq);
+	public String boardListDetail(@PathVariable int bSeq, Model model, HttpSession session) {
+		
+		
+		boardService.boardCountup(bSeq);
 
 		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
+		
+		//세션 값 loginMember에 저장
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		
+		if (loginMember != null) {
+			//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+			int mSeq = loginMember.getmSeq();
+			//세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
+			if (mSeq == list.get(0).getmSeq()) {
+				boolean my = true;
+				model.addAttribute("my", my);
+			}
+		}
+		
 		model.addAttribute("list", list);
+		
 
 		return "board/listDetail";
 	}
 
 	// 게시글 수정
 	@GetMapping(value = "/edit")
-	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo) {
-
+	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo, HttpSession session) {
 		return "board/editForm";
 	}
 
 	// 게시글 수정
 	@PostMapping(value = "/edit")
 	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardVo boardVo, BindingResult bindingResult,
-			Model model) {
+			Model model, HttpSession session) {
 
 		return "redirect:/board/list";
 	}
@@ -160,11 +183,21 @@ public class BoardController {
 	// 게시글 삭제
 	@GetMapping(value = "/delete")
 	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session, Criteria cri) {
-		int mSeq = 5; // 임의 값
-		boardService.deleteBoardOne(bSeq, mSeq);
+		
+		
+		//세션 값 loginMember에 저장
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		
+		if (loginMember != null) {
+			//세션에서 멤버의 mSeq 를 boardVo에 셋팅 
+			int mSeq = loginMember.getmSeq();
+			boardService.deleteBoardOne(bSeq, mSeq);
+			System.out.println("삭제 성공");
+		}
+		
+		System.out.println("삭제 실패");
+		
 
-		List<BoardlistCommand> list = boardService.boardList(cri);
-		model.addAttribute("list", list);
 		return "redirect:/board/list";
 	}
 
