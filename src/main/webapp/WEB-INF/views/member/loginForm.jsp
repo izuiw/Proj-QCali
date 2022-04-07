@@ -22,6 +22,7 @@ table {
 <body>
 	<h2>로그인</h2>
 	<form:form commandName="loginMemberData">
+	
 		<table border="1">
 			<tr>
 				<td>아이디 : </td>

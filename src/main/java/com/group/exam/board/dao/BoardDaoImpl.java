@@ -51,9 +51,9 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public List<BoardlistCommand> boardListMy(int mSeq) {
+	public List<BoardlistCommand> boardMyList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList("boardlistMy", mSeq);
+		return sqlSessionTemplate.selectList("boardMylist", map);
 	}
 
 	@Override

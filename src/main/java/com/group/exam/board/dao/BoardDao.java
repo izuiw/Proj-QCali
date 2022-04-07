@@ -19,7 +19,7 @@ public interface BoardDao {
 	
 	public List<BoardlistCommand> boardListAday (String bRegday); //특정 날짜에 올린 게시글 리스트
 	
-	public List<BoardlistCommand> boardListMy (int mSeq); // 내가 쓴 글 모아보기
+	public List<BoardlistCommand> boardMyList (HashMap<String, Object> mapq); // 내가 쓴 글 모아보기
 	
 	public List<BoardlistCommand> boardListDetail (int bSeq); // 특정 게시글 디테일
 	

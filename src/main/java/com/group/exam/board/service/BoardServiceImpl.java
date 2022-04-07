@@ -45,9 +45,13 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public List<BoardlistCommand> boardListMy(int mSeq) {
+	public List<BoardlistCommand> boardMyList(Criteria cri, int mSeq) {
 		// TODO Auto-generated method stub
-		return boardDao.boardListMy(mSeq);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		cri.setStartNum((cri.getPageNum() - 1) * cri.getAmount());
+		map.put("cri", cri);
+		map.put("mSeq", mSeq);
+		return boardDao.boardMyList(map);
 	}
 	
 

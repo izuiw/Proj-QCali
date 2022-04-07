@@ -24,6 +24,7 @@ li {
 <title>Insert title here</title>
 </head>
 <body>
+
 	<c:if test="${!empty member}">
 		<h2>로그인 성공</h2>
 		<table border="1">
@@ -49,12 +50,15 @@ li {
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
 		<a href="<c:url value='/board/write'/>"><button>글쓰기</button></a>
+		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글 모아보기</button></a>
+		<a href="<c:url value='/board/mylist?mSeq=${member.mSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
 		
 
 	</c:if>
 	
 	<c:if test="${empty member}">
 		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
+		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글 모아보기</button></a>
 	</c:if>
 
 
@@ -100,19 +104,19 @@ li {
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list ?currentPage=${pageMaker.startPage - 1 }'/>">Previous</a>
+						href="<c:url value='/board/list?currentPage=${pageMaker.startPage - 1 }'/>">Previous</a>
 					</li>
 				</c:if>
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list ?currentPage=${currentPage }'/>">${currentPage }</a></li>
+						href="<c:url value='/board/list?currentPage=${currentPage }'/>">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list ?currentPage=${pageMaker.endPage + 1 }'/>">Next</a>
+						href="<c:url value='/board/list?currentPage=${pageMaker.endPage + 1 }'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

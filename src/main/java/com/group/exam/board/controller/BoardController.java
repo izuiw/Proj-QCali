@@ -23,6 +23,7 @@ import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
+import com.sun.istack.Nullable;
 
 @Controller
 @RequestMapping("/board")
@@ -47,7 +48,7 @@ public class BoardController {
 
 	@PostMapping(value = "/write")
 	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
-			 Criteria cri, HttpSession session) {
+			 Criteria cri, HttpSession session, Model model) {
 
 		// not null 체크
 		if (bindingResult.hasErrors()) {
@@ -63,17 +64,24 @@ public class BoardController {
 
 		boardService.insertBoard(boardVo);
 
-//		List<BoardlistCommand> list = boardService.boardList(cri);
-//		model.addAttribute("list", list);
 
 		return "redirect:/board/list";
 	}
 
 	// 리스트 전체
-
-	@GetMapping(value = "/list ")
-	public String boardListAll(@RequestParam int currentPage, Criteria cri, Model model, HttpSession session) {
+	@GetMapping(value = "/list")
+	public String boardListAll(@RequestParam (defaultValue="0") int currentPage, Criteria cri, Model model, HttpSession session) {
 		
+		/*
+		 * @RequestParam null 허용 방법
+		 *  - (required = false) == true 가 기본 설정임
+		 *  - @Nullable 어노테이션 추가
+		 *  
+		 *  - int 형의 경우 (defaultValue="0")
+		 * 
+		 */
+
+
 		if (currentPage == 0) {
 			currentPage = 1;
 		}
@@ -94,23 +102,6 @@ public class BoardController {
 		return "board/list";
 	}
 
-	@GetMapping(value = "/list")
-	public String boardListAll(Criteria cri, Model model, HttpSession session) {
-		int currentPage = 1;
-	
-		int total = boardService.listCount();
-
-		cri.setPageNum(currentPage);
-
-		List<BoardlistCommand> list = boardService.boardList(cri);
-		model.addAttribute("list", list);
-
-		model.addAttribute("currentPage", currentPage);
-		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
-		model.addAttribute("pageMaker", pageCommand);
-
-		return "board/list";
-	}
 
 	// 해당날짜 list
 	@GetMapping(value = "/listAday/{bRegday}")
@@ -123,10 +114,10 @@ public class BoardController {
 	}
 
 	// 해당list 내 글 모아보기
-	@GetMapping(value = "/listMy/{mSeq}")
-	public String boardListMy(@PathVariable("mSeq") int mSeq, Model model) {
+	@GetMapping(value = "/mylist")
+	public String boardListMy(@RequestParam int mSeq, Model model,Criteria cri,HttpSession session) {
 
-		List<BoardlistCommand> list = boardService.boardListMy(mSeq);
+		List<BoardlistCommand> list = boardService.boardMyList(cri,mSeq);
 		model.addAttribute("list", list);
 		return "board/list";
 	}

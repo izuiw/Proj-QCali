@@ -15,7 +15,7 @@ public interface BoardService {
 	
 	public List<BoardlistCommand> boardListAday(String bRegday); // 특정 날짜 게시글 불러오기
 	
-	public List<BoardlistCommand> boardListMy(int mSeq); // 내가 쓴 글 불러오기
+	public List<BoardlistCommand> boardMyList(Criteria cri,int mSeq); // 내가 쓴 글 불러오기
 	
 	public List<BoardlistCommand> boardListDetail(int bSeq); // 해당 게시글 디테일
 	
