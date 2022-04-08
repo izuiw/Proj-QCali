@@ -14,46 +14,6 @@
 </head>
 <body>
 
-	<script>
-    $(document).ready(function () {
-
-        var heartval = ${heart};
-
-        if(heartval>0) {
-            console.log(heartval);
-            $("#heart").prop("src", "/resources/images/like2.png");
-            $(".heart").prop('name',heartval)
-        }
-        else {
-            console.log(heartval);
-            $("#heart").prop("src", "/resources/images/like1.png");
-            $(".heart").prop('name',heartval)
-        }
-
-        $(".heart").on("click", function () {
-
-            var that = $(".heart");
-
-            var sendData = {'bSeq' : '${list.bSeq}','heart' : that.prop('name')};
-            $.ajax({
-                url :'/board/heart',
-                type :'POST',
-                data : sendData,
-                success : function(data){
-                    that.prop('name',data);
-                    if(data==1) {
-                        $('#heart').prop("src","/resources/images/like2.png");
-                    }
-                    else{
-                        $('#heart').prop("src","/resources/images/like1.png");
-                    }
-
-
-                }
-            });
-        });
-    });
-</script>
 
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
@@ -118,9 +78,13 @@
 				</tr>
 
 				<div style="text-align: right;">
-					<a class="btn btn-outline-dark heart"> <img id="heart" src="">
+					<a class="text-dark heart" style="text-decoration-line: none;">
+					
+					<button id="heart" >좋아요</button>
+					<img id="heart" src="">
 					</a>
 				</div>
+
 
 
 
@@ -141,5 +105,47 @@
 
 
 	</table>
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script>
+    $(document).ready(function () {
+
+        var heartval = ${heart};
+
+        if(heartval>0) {
+            console.log(heartval);
+           // $("#heart").prop("src", "static/images/like2.png");
+            $(".heart").prop('name',heartval)
+        }
+        else {
+            console.log(heartval);
+            //$("#heart").prop("src", "static/images/like1.png");
+            $(".heart").prop('name',heartval)
+        }
+
+        $(".heart").on("click", function () {
+
+            var that = $(".heart");
+
+            var sendData = {'bSeq' : '${bSeq}','heart' : that.prop('name')};
+            $.ajax({
+                url :'/board/heart',
+                type :'POST',
+                data : sendData,
+                success : function(data){
+                    that.prop('name',data);
+                    if(data==1) {
+                      //  $('#heart').prop("src","/images/like2.png");
+                    }
+                    else{
+                       // $('#heart').prop("src","/images/like1.png");
+                    }
+
+
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

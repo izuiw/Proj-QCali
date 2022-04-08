@@ -180,11 +180,12 @@ public class BoardController {
 		return "board/listDetail";
 	}
 	
-	@ResponseBody
+
 	@PostMapping(value = "/heart", produces = "application/json")
-	public int boardLike ( @RequestParam("bSeq") int bSeq, @RequestParam(value="boardlike",defaultValue="0") int heart ,HttpSession session) {
+	@ResponseBody
+	public int boardLike ( @RequestParam("bSeq") int bSeq, @RequestParam(value="heart",defaultValue="0") int heart ,HttpSession session) {
 		
-		
+		System.out.println("????????????????");
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 		
 		BoardLikeVo likeVo = new BoardLikeVo();

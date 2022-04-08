@@ -186,8 +186,8 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>2.3.0.1</version>
 		</dependency>
-		
-		
+
+
 		<!-- spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -206,7 +206,20 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>5.4.2</version>
 		</dependency>
-		
+
+		<!-- json - JACKSON -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<!-- Java Object를 JSON으로 변환하거나 JSON을 Java Object로 변환하는데 사용하는 라이브러리 -->
+		<!-- jackson-databind 라이브러리는 jackson-core 및 jackson-annotation 라이브러리의 의존성을 
+			포함 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+
+
+
 
 
 	</dependencies>
