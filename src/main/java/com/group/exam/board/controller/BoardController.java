@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.group.exam.board.command.BoardPageCommand;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.BoardupdateCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
 import com.sun.istack.Nullable;
@@ -57,7 +59,7 @@ public class BoardController {
 		}
 
 		// 세션 값 loginMember에 저장
-		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 		boardVo.setmSeq(loginMember.getmSeq());
@@ -70,7 +72,7 @@ public class BoardController {
 
 	// 리스트 전체
 	@GetMapping(value = "/list")
-	public String boardListAll(@RequestParam (defaultValue="0") int currentPage, Criteria cri, Model model, HttpSession session) {
+	public String boardListAll(@RequestParam (value="currentPage",defaultValue="0") int currentPage, Criteria cri, Model model, HttpSession session) {
 		
 		/*
 		 * @RequestParam null 허용 방법
@@ -92,11 +94,13 @@ public class BoardController {
 		 */
 
 		cri.setPageNum(currentPage);
+	
 
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		model.addAttribute("list", list);
+		
 
-		model.addAttribute("num", currentPage);
+		model.addAttribute("currentPage", currentPage);
 		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
 		model.addAttribute("pageMaker", pageCommand);
 		return "board/list";
@@ -115,11 +119,29 @@ public class BoardController {
 
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/mylist")
-	public String boardListMy(@RequestParam int mSeq, Model model,Criteria cri,HttpSession session) {
+	public String boardListMy(@RequestParam("mSeq") int mSeq, @RequestParam (value="currentPage",defaultValue="0") int currentPage,
+			Model model,Criteria cri,HttpSession session) {
 
+		
+		if (currentPage == 0) {
+			currentPage = 1;
+		}
+
+		int total = boardService.mylistCount(mSeq);
+	
+
+		cri.setPageNum(currentPage);
+		
+		
 		List<BoardlistCommand> list = boardService.boardMyList(cri,mSeq);
 		model.addAttribute("list", list);
-		return "board/list";
+
+		
+		model.addAttribute("currentPage", currentPage);
+		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
+		model.addAttribute("pageMaker", pageCommand);
+		
+		return "board/mylist";
 	}
 
 	// 게시글 디테일
@@ -131,7 +153,7 @@ public class BoardController {
 		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
 
 		// 세션 값 loginMember에 저장
-		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
@@ -145,10 +167,49 @@ public class BoardController {
 
 		model.addAttribute("list", list);
 
+		BoardLikeVo likeVo = new BoardLikeVo();
+		
+		likeVo.setbSeq(bSeq);
+		likeVo.setmSeq(loginMember.getmSeq());
+		
+		int boardlike = boardService.getBoardLike(likeVo);
+		System.out.println("heart : " + boardlike);
 
+		model.addAttribute("heart", boardlike);
+		
 		return "board/listDetail";
 	}
-
+	
+	@ResponseBody
+	@PostMapping(value = "/heart", produces = "application/json")
+	public int boardLike ( @RequestParam("bSeq") int bSeq, @RequestParam(value="boardlike",defaultValue="0") int heart ,HttpSession session) {
+		
+		
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
+		
+		BoardLikeVo likeVo = new BoardLikeVo();
+		
+		likeVo.setbSeq(bSeq);
+		likeVo.setmSeq(loginMember.getmSeq());
+		
+		System.out.println("/heart : " + heart);
+		
+		if ( heart >= 1) {
+			boardService.deleteBoardLike(likeVo);
+			heart = 0;
+		} else {
+			
+			boardService.insertBoardLike(likeVo);
+			heart = 1;
+			
+		}
+		
+		
+		return heart;
+		
+	}
+	
+	
 	// 게시글 수정
 	@GetMapping(value = "/edit")
 	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo,   HttpSession session, Model model) {
@@ -168,7 +229,7 @@ public class BoardController {
 	
 		
 		// 세션 값 loginMember에 저장
-		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
@@ -193,7 +254,7 @@ public class BoardController {
 	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session, Criteria cri) {
 
 		// 세션 값 loginMember에 저장
-		LoginCommand loginMember = (LoginCommand) session.getAttribute("member");
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅

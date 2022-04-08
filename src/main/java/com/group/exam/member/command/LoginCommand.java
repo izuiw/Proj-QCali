@@ -3,11 +3,13 @@ package com.group.exam.member.command;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Alias("LoginCommand")
 public class LoginCommand {
 	private int mSeq;
+	@Email(message="이메일 형식이 아닙니다.")
 	@NotEmpty(message = "아이디를 입력해주세요.")
 	private String mId;
 	@NotEmpty(message = "비밀번호를 입력해주세요.")

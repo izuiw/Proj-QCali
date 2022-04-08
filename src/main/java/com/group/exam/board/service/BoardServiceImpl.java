@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.dao.BoardDao;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -49,8 +50,10 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		cri.setStartNum((cri.getPageNum() - 1) * cri.getAmount());
-		map.put("cri", cri);
+		map.put("pageNum", cri.getPageNum());
+		map.put("amount", cri.getAmount());
 		map.put("mSeq", mSeq);
+		
 		return boardDao.boardMyList(map);
 	}
 	
@@ -104,6 +107,38 @@ public class BoardServiceImpl implements BoardService{
 		
 		boardDao.updateBoard(map);
 		
+	}
+
+
+	@Override
+	public int mylistCount(int mSeq) {
+		// TODO Auto-generated method stub
+		return boardDao.boardMylistCount(mSeq);
+	}
+
+
+	@Override
+	public void insertBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		boardDao.insertBoardLike(vo);
+		boardDao.updateBoardLike(vo.getbSeq());
+		
+	}
+
+
+	@Override
+	public void deleteBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		boardDao.deleteBoardLike(vo);
+		boardDao.updateBoardLike(vo.getbSeq());
+		
+	}
+
+
+	@Override
+	public int getBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		return boardDao.getBoardLike(vo);
 	}
 
 

@@ -5,11 +5,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+
+
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<c:if test="${!empty member}">
+
+	<script>
+    $(document).ready(function () {
+
+        var heartval = ${heart};
+
+        if(heartval>0) {
+            console.log(heartval);
+            $("#heart").prop("src", "/resources/images/like2.png");
+            $(".heart").prop('name',heartval)
+        }
+        else {
+            console.log(heartval);
+            $("#heart").prop("src", "/resources/images/like1.png");
+            $(".heart").prop('name',heartval)
+        }
+
+        $(".heart").on("click", function () {
+
+            var that = $(".heart");
+
+            var sendData = {'bSeq' : '${list.bSeq}','heart' : that.prop('name')};
+            $.ajax({
+                url :'/board/heart',
+                type :'POST',
+                data : sendData,
+                success : function(data){
+                    that.prop('name',data);
+                    if(data==1) {
+                        $('#heart').prop("src","/resources/images/like2.png");
+                    }
+                    else{
+                        $('#heart').prop("src","/resources/images/like1.png");
+                    }
+
+
+                }
+            });
+        });
+    });
+</script>
+
+	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		<table border="1">
 			<tr>
@@ -22,13 +68,14 @@
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${member.mSeq}</td>
-				<td>${member.mId}</td>
-				<td>${member.mNickname}</td>
-				<td>${member.mBirthday}</td>
-				<td>${member.mRegday}</td>
-				<td>${member.mAuth}</td>
-				<td>${member.mLevel}</td>
+				<td>${memberLogin.mSeq}</td>
+				<td>${memberLogin.mId}</td>
+				<td>${memberLogin.mNickname}</td>
+				<td>${memberLogin.mBirthday}</td>
+				<td>${memberLogin.mRegday}</td>
+				<td>${memberLogin.mAuth}</td>
+				<td>${memberLogin.mLevel}</td>
+
 
 			</tr>
 		</table>
@@ -69,14 +116,23 @@
 					<td>${list.bLike}</td>
 					<td>${list.bCount}</td>
 				</tr>
-		<c:if test="${!empty my}">
 
-			<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글 수정</button></a>
+				<div style="text-align: right;">
+					<a class="btn btn-outline-dark heart"> <img id="heart" src="">
+					</a>
+				</div>
 
-			<input type="button" value="글 삭제"
-				onclick="window:location='<c:url value='/board/delete?bSeq=${list.bSeq}'/>'" />
 
-		</c:if>
+
+				<c:if test="${!empty my}">
+
+					<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글
+							수정</button></a>
+
+					<input type="button" value="글 삭제"
+						onclick="window:location='<c:url value='/board/delete?bSeq=${list.bSeq}'/>'" />
+
+				</c:if>
 			</c:forEach>
 
 

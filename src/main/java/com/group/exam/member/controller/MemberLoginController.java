@@ -66,7 +66,7 @@ public class MemberLoginController {
 
 			System.out.println("로그인 성공 : " + login);
 
-			session.setAttribute("member", login);	
+			session.setAttribute("memberLogin", login);	
 			return "redirect:/board/list";
 		} else {
 			System.out.println("로그인 정보 없음 or 비밀번호 불일치 : " + member);

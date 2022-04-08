@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -53,6 +54,7 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public List<BoardlistCommand> boardMyList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
+
 		return sqlSessionTemplate.selectList("boardMylist", map);
 	}
 
@@ -68,16 +70,12 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSessionTemplate.selectOne("boardlistCount");
 	}
 
-	@Override
-	public String pwdCheck(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	@Override
 	public List<BoardlistCommand> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
+
 		return sqlSessionTemplate.selectList("boardlist", cri);
 	}
 
@@ -87,6 +85,43 @@ public class BoardDaoImpl implements BoardDao{
 		// TODO Auto-generated method stub
 		
 		sqlSessionTemplate.update("boardCountup", bSeq);
+		
+	}
+
+
+	@Override
+	public int boardMylistCount(int mSeq) {
+		// TODO Auto-generated method stub
+
+		return sqlSessionTemplate.selectOne("boardMylistCount", mSeq);
+	}
+	
+	
+	//좋아요 기능 관련
+	@Override
+	public int getBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("getLike", vo);
+	}
+
+	@Override
+	public void insertBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		sqlSessionTemplate.insert("createLike", vo);
+		
+	}
+
+	@Override
+	public void deleteBoardLike(BoardLikeVo vo) {
+		// TODO Auto-generated method stub
+		sqlSessionTemplate.delete("deleteLike", vo);
+		
+	}
+
+	@Override
+	public void updateBoardLike(int bSeq) {
+		// TODO Auto-generated method stub
+		sqlSessionTemplate.update("updateLike", bSeq);
 		
 	}
 

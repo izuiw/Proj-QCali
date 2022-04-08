@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 
 public interface BoardDao {
@@ -25,7 +26,17 @@ public interface BoardDao {
 	
 	public int listCount (); // board 테이블 전체 글 수
 	
-	public String pwdCheck (HashMap<String, String> map);  // 패스워드 체크? 아직 안씀
+	public int boardMylistCount (int mSeq); // 내가 쓴 글 수 
+	
 	
 	public void boardCountup (int bSeq); // 해당 게시글 카운트 업
+	
+	//좋아요 기능 관련
+    public int getBoardLike(BoardLikeVo vo);
+
+    public void insertBoardLike(BoardLikeVo vo);
+
+    public void deleteBoardLike(BoardLikeVo vo);
+
+    public void updateBoardLike(int bSeq);
 }

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-	<c:if test="${!empty member}">
+	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		<table border="1">
 			<tr>
@@ -24,13 +24,14 @@
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${member.mSeq}</td>
-				<td>${member.mId}</td>
-				<td>${member.mNickname}</td>
-				<td>${member.mBirthday}</td>
-				<td>${member.mRegday}</td>
-				<td>${member.mAuth}</td>
-				<td>${member.mLevel}</td>
+				<td>${memberLogin.mSeq}</td>
+				<td>${memberLogin.mId}</td>
+				<td>${memberLogin.mNickname}</td>
+				<td>${memberLogin.mBirthday}</td>
+				<td>${memberLogin.mRegday}</td>
+				<td>${memberLogin.mAuth}</td>
+				<td>${memberLogin.mLevel}</td>
+
 
 			</tr>
 		</table>

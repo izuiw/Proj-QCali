@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 
 
@@ -25,7 +26,18 @@ public interface BoardService {
 	
 	public int listCount(); // board 테이블 전체 글 수
 	
-	public void updateBoard(String bTitle, String bContent, int bSeq);
+	public int mylistCount(int mSeq); // 게시글 쓴 글 수
+	
+	public void updateBoard(String bTitle, String bContent, int bSeq); //게시글 수정
+	
+	
+	//좋아요 기능 관련
+	public void insertBoardLike(BoardLikeVo vo);
+	
+	public void deleteBoardLike(BoardLikeVo vo);
+	
+	public int getBoardLike(BoardLikeVo vo);
+	
 
 
 }

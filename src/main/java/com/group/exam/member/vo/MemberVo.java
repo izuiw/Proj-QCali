@@ -2,9 +2,11 @@ package com.group.exam.member.vo;
 
 import java.util.Date;
 
+
 public class MemberVo {
 	
 	private int mSeq;
+
 	private String mId;
 	private String mBpw;
 	private String mPassword;
