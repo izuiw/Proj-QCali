@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,12 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.group.exam.board.command.BoardPageCommand;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.BoardupdateCommand;
+import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
-import com.sun.istack.Nullable;
 
 @Controller
 @RequestMapping("/board")
@@ -45,21 +46,28 @@ public class BoardController {
 	@GetMapping(value = "/write")
 	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, HttpSession session) {
 
+
+
 		return "board/writeForm";
 	}
 
 	@PostMapping(value = "/write")
 	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
 			 Criteria cri, HttpSession session, Model model) {
-
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
-
-		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
+		
+
+		
+		boolean memberAuth = boardService.memberAuth(loginMember.getmSeq()).equals("F");
+		if(memberAuth == true) {
+			return "redirect: /exam/"; //이메일 인증 x -> 예외 페이지
+			
+		}
 
 		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 		boardVo.setmSeq(loginMember.getmSeq());
@@ -107,20 +115,12 @@ public class BoardController {
 	}
 
 
-	// 해당날짜 list
-	@GetMapping(value = "/listAday/{bRegday}")
-	public String boardListAday(@PathVariable String bRegday, Model model) {
-
-		List<BoardlistCommand> list = boardService.boardListAday(bRegday);
-
-		model.addAttribute("list", list);
-		return "board/list";
-	}
 
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/mylist")
 	public String boardListMy(@RequestParam("mSeq") int mSeq, @RequestParam (value="currentPage",defaultValue="0") int currentPage,
 			Model model,Criteria cri,HttpSession session) {
+		
 
 		
 		if (currentPage == 0) {
@@ -147,12 +147,14 @@ public class BoardController {
 	// 게시글 디테일
 	@GetMapping(value = "/detail")
 	public String boardListDetail(@RequestParam int bSeq, Model model, HttpSession session) {
+		
 
 		boardService.boardCountup(bSeq);
 
 		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
 
 		// 세션 값 loginMember에 저장
+
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
@@ -166,6 +168,7 @@ public class BoardController {
 		}
 
 		model.addAttribute("list", list);
+		model.addAttribute("bSeq", bSeq);
 
 		BoardLikeVo likeVo = new BoardLikeVo();
 		
@@ -173,7 +176,7 @@ public class BoardController {
 		likeVo.setmSeq(loginMember.getmSeq());
 		
 		int boardlike = boardService.getBoardLike(likeVo);
-		System.out.println("heart : " + boardlike);
+
 
 		model.addAttribute("heart", boardlike);
 		
@@ -183,30 +186,29 @@ public class BoardController {
 
 	@PostMapping(value = "/heart", produces = "application/json")
 	@ResponseBody
-	public int boardLike ( @RequestParam("bSeq") int bSeq, @RequestParam(value="heart",defaultValue="0") int heart ,HttpSession session) {
+	public int boardLike ( @RequestBody BoardLikeCommand command ,HttpSession session) {
 		
-		System.out.println("????????????????");
+		
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 		
 		BoardLikeVo likeVo = new BoardLikeVo();
 		
-		likeVo.setbSeq(bSeq);
+		likeVo.setbSeq(command.getbSeq());
 		likeVo.setmSeq(loginMember.getmSeq());
 		
-		System.out.println("/heart : " + heart);
 		
-		if ( heart >= 1) {
+		if ( command.getHeart() >= 1) {
 			boardService.deleteBoardLike(likeVo);
-			heart = 0;
+			command.setHeart(0);
 		} else {
 			
 			boardService.insertBoardLike(likeVo);
-			heart = 1;
-			
+			command.setHeart(1);
 		}
 		
+		//String result = Integer.toString(heart);
 		
-		return heart;
+		return command.getHeart() ;
 		
 	}
 	

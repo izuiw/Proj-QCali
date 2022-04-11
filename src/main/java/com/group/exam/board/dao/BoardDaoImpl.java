@@ -45,11 +45,6 @@ public class BoardDaoImpl implements BoardDao{
 		
 	}
 
-	@Override
-	public List<BoardlistCommand> boardListAday(String bRegday) {
-		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList("boardlistAday", bRegday);
-	}
 
 	@Override
 	public List<BoardlistCommand> boardMyList(HashMap<String, Object> map) {
@@ -123,6 +118,13 @@ public class BoardDaoImpl implements BoardDao{
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.update("updateLike", bSeq);
 		
+	}
+
+
+	@Override
+	public String memberAuth(int mSeq) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("memberAuth", mSeq);
 	}
 
 }

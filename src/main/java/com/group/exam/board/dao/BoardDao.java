@@ -18,8 +18,6 @@ public interface BoardDao {
 	
 	public List<BoardlistCommand> boardList(Criteria cri); // 게시글 전체 리스트
 	
-	public List<BoardlistCommand> boardListAday (String bRegday); //특정 날짜에 올린 게시글 리스트
-	
 	public List<BoardlistCommand> boardMyList (HashMap<String, Object> mapq); // 내가 쓴 글 모아보기
 	
 	public List<BoardlistCommand> boardListDetail (int bSeq); // 특정 게시글 디테일
@@ -28,8 +26,9 @@ public interface BoardDao {
 	
 	public int boardMylistCount (int mSeq); // 내가 쓴 글 수 
 	
-	
 	public void boardCountup (int bSeq); // 해당 게시글 카운트 업
+	
+	public String memberAuth (int mSeq); //멤버 Auth 상태 체크
 	
 	//좋아요 기능 관련
     public int getBoardLike(BoardLikeVo vo);

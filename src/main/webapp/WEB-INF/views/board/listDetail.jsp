@@ -79,9 +79,8 @@
 
 				<div style="text-align: right;">
 					<a class="text-dark heart" style="text-decoration-line: none;">
-					
-					<button id="heart" >좋아요</button>
-					<img id="heart" src="">
+
+						<img id="heart" src="" height="30px">
 					</a>
 				</div>
 
@@ -93,8 +92,10 @@
 					<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글
 							수정</button></a>
 
-					<input type="button" value="글 삭제"
-						onclick="window:location='<c:url value='/board/delete?bSeq=${list.bSeq}'/>'" />
+
+					<a href="<c:url value='/board/delete?bSeq=${list.bSeq}'/>"><button>글
+							삭제</button></a>
+
 
 				</c:if>
 			</c:forEach>
@@ -105,47 +106,43 @@
 
 
 	</table>
-	
+
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script>
-    $(document).ready(function () {
-
-        var heartval = ${heart};
-
-        if(heartval>0) {
-            console.log(heartval);
-           // $("#heart").prop("src", "static/images/like2.png");
-            $(".heart").prop('name',heartval)
-        }
-        else {
-            console.log(heartval);
-            //$("#heart").prop("src", "static/images/like1.png");
-            $(".heart").prop('name',heartval)
-        }
-
-        $(".heart").on("click", function () {
-
-            var that = $(".heart");
-
-            var sendData = {'bSeq' : '${bSeq}','heart' : that.prop('name')};
-            $.ajax({
-                url :'/board/heart',
-                type :'POST',
-                data : sendData,
-                success : function(data){
-                    that.prop('name',data);
-                    if(data==1) {
-                      //  $('#heart').prop("src","/images/like2.png");
-                    }
-                    else{
-                       // $('#heart').prop("src","/images/like1.png");
-                    }
-
-
-                }
-            });
-        });
-    });
-</script>
+		$(document).ready(function() {
+			var heartval = ${heart};
+			if (heartval > 0) {
+				console.log(heartval);
+			    $("#heart").prop("src", '<c:url value="/resources"/>'+"/static/images/like2.png");
+				$(".heart").prop('name', heartval)
+			} else {
+				console.log(heartval);
+				$("#heart").prop("src", '<c:url value="/resources"/>'+"/static/images/like1.png");
+				$(".heart").prop('name', heartval)
+			}
+			$(".heart").on("click", function() {
+				var that = $(".heart");
+				console.log(that.prop('name'));
+				var sendData = {
+					'bSeq' : '${bSeq}',
+					'heart' : that.prop('name'),
+				};
+				$.ajax({
+					url : '<c:url value="/board/heart"/>',
+					type : 'POST',
+					data : JSON.stringify(sendData),
+					contentType: 'application/json',
+					success : function(data) {
+						that.prop('name', data);
+						console.log("success:" + that.prop('name', data));
+						if (data == 1) {
+							 $('#heart').prop("src",'<c:url value="/resources"/>'+"/static/images/like2.png");
+						} else {
+							 $('#heart').prop("src",'<c:url value="/resources"/>'+"/static/images/like1.png");
+						}
+					}
+				});
+			});
+		});
+	</script>
 </body>
-</html>

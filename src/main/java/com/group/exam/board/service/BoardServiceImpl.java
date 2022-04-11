@@ -31,13 +31,6 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardlistCommand> boardListAday(String bRegday) {
-		// TODO Auto-generated method stub
-		return boardDao.boardListAday(bRegday);
-	}
-
-
-	@Override
 	public List<BoardlistCommand> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
 		cri.setStartNum((cri.getPageNum() - 1) * cri.getAmount());
@@ -139,6 +132,13 @@ public class BoardServiceImpl implements BoardService{
 	public int getBoardLike(BoardLikeVo vo) {
 		// TODO Auto-generated method stub
 		return boardDao.getBoardLike(vo);
+	}
+
+
+	@Override
+	public String memberAuth(int mSeq) {
+		// TODO Auto-generated method stub
+		return boardDao.memberAuth(mSeq);
 	}
 
 
