@@ -54,16 +54,15 @@ li {
 		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글
 				모아보기</button></a>
 		<a
-			href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}&currentPage=${1}'/>"><button>내가
+			href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가
 				쓴 글 모아보기</button></a>
 
 
 	</c:if>
 
-	<c:if test="${empty member}">
+	<c:if test="${empty memberLogin}">
 		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
-		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글
-				모아보기</button></a>
+
 	</c:if>
 
 

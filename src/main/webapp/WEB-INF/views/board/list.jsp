@@ -49,21 +49,30 @@ li {
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
-		<a href="<c:url value='/board/write'/>"><button>글쓰기</button></a>
-		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글 모아보기</button></a>
-		<a href="<c:url value='/board/mylist?mSeq=${member.mSeq}&currentPage=${1}'/>"><button>내가 쓴 글 모아보기</button></a>
+		<a href="<c:url value='/board/write/${question.qSeq }'/>"><button>글쓰기</button></a>
+		<a href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
 		
 
 	</c:if>
 	
+
+	
+	<table border="1">
+		<tr >
+			<td>${question.qContent}</td>
+			<td>${question.qSeq}</td>
+		</tr>
+	</table>
+	
+	
+	
 	<c:if test="${empty memberLogin}">
 		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
-		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글 모아보기</button></a>
 	</c:if>
 
 
 	<table border="1">
-		<tr>
+		<tr>s
 			<th>보드seq</th>
 			<th>보드제목</th>
 			<th>닉네임</th>

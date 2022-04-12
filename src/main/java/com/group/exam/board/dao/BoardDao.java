@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
@@ -18,9 +19,9 @@ public interface BoardDao {
 	
 	public List<BoardlistCommand> boardList(Criteria cri); // 게시글 전체 리스트
 	
-	public List<BoardlistCommand> boardMyList (HashMap<String, Object> mapq); // 내가 쓴 글 모아보기
+	public List<BoardlistCommand> boardMyList (HashMap<String, Object> map); // 내가 쓴 글 모아보기
 	
-	public List<BoardlistCommand> boardListDetail (int bSeq); // 특정 게시글 디테일
+	public BoardlistCommand boardListDetail (int bSeq); // 특정 게시글 디테일
 	
 	public int listCount (); // board 테이블 전체 글 수
 	
@@ -29,6 +30,10 @@ public interface BoardDao {
 	public void boardCountup (int bSeq); // 해당 게시글 카운트 업
 	
 	public String memberAuth (int mSeq); //멤버 Auth 상태 체크
+	
+	public QuestionAdayCommand questionAday (int rnnext);
+	
+	public int memberLevelup (HashMap<String, Object> map);
 	
 	//좋아요 기능 관련
     public int getBoardLike(BoardLikeVo vo);

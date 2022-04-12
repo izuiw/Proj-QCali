@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
@@ -54,9 +55,9 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public List<BoardlistCommand> boardListDetail(int bSeq) {
+	public BoardlistCommand boardListDetail(int bSeq) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList("boardlistDetail", bSeq);
+		return sqlSessionTemplate.selectOne("boardlistDetail", bSeq);
 	}
 
 	@Override
@@ -125,6 +126,22 @@ public class BoardDaoImpl implements BoardDao{
 	public String memberAuth(int mSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("memberAuth", mSeq);
+	}
+
+
+	@Override
+	public QuestionAdayCommand questionAday(int rnnext) {
+		// TODO Auto-generated method stub
+		// 질문 출력
+		return sqlSessionTemplate.selectOne("selectQuestion", rnnext);
+	}
+
+
+	@Override
+	public int memberLevelup(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("memberLevelup", map);
+		
 	}
 
 }

@@ -29,7 +29,7 @@
 			</tr>
 		</table>
 
-		<input type="hidden" name="qSeq" value="1" />
+		<input type="hidden" name="qSeq" value="${qSeq}" />
 		<input type="submit" value="글쓰기" />
 	</form:form>
 

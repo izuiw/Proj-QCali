@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.dao.BoardDao;
 import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
@@ -52,7 +53,7 @@ public class BoardServiceImpl implements BoardService{
 	
 
 	@Override
-	public List<BoardlistCommand> boardListDetail(int bSeq) {
+	public BoardlistCommand boardListDetail(int bSeq) {
 		// TODO Auto-generated method stub
 		return boardDao.boardListDetail(bSeq);
 	}
@@ -139,6 +140,24 @@ public class BoardServiceImpl implements BoardService{
 	public String memberAuth(int mSeq) {
 		// TODO Auto-generated method stub
 		return boardDao.memberAuth(mSeq);
+	}
+
+
+	@Override
+	public QuestionAdayCommand questionAday(int rnnext) {
+		// TODO Auto-generated method stub
+		return boardDao.questionAday(rnnext);
+	}
+
+
+	@Override
+	public int memberLevelup(int mSeq, int mytotal) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mSeq", mSeq);
+		map.put("mytotal", mytotal);
+		return boardDao.memberLevelup(map);
+		
 	}
 
 

@@ -64,41 +64,41 @@
 		</c:if>
 
 		<c:if test="${ !empty list}">
-			<c:forEach var="list" items="${list}">
-				<tr>
-					<td>${list.bSeq}</td>
 
-					<td>${list.bTitle}</td>
-					<td>${list.bContent}</td>
+			<tr>
+				<td>${list.bSeq}</td>
 
-					<td>${list.mNickname}</td>
-					<td>${list.bRegday}</td>
-					<td>${list.bLike}</td>
-					<td>${list.bCount}</td>
-				</tr>
+				<td>${list.bTitle}</td>
+				<td>${list.bContent}</td>
 
-				<div style="text-align: right;">
-					<a class="text-dark heart" style="text-decoration-line: none;">
+				<td>${list.mNickname}</td>
+				<td>${list.bRegday}</td>
+				<td>${list.bLike}</td>
+				<td>${list.bCount}</td>
+			</tr>
 
-						<img id="heart" src="" height="30px">
-					</a>
-				</div>
+			<div style="text-align: right;">
+				<a class="text-dark heart" style="text-decoration-line: none;">
 
-
+					<img id="heart" src="" height="30px">
+				</a>
+			</div>
 
 
-				<c:if test="${!empty my}">
-
-					<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글
-							수정</button></a>
 
 
-					<a href="<c:url value='/board/delete?bSeq=${list.bSeq}'/>"><button>글
-							삭제</button></a>
+			<c:if test="${!empty my}">
+
+				<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글
+						수정</button></a>
 
 
-				</c:if>
-			</c:forEach>
+				<a href="<c:url value='/board/delete?bSeq=${list.bSeq}'/>"><button
+						onclick="button_event();">글 삭제</button></a>
+
+
+			</c:if>
+
 
 
 
@@ -106,7 +106,6 @@
 
 
 	</table>
-
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -145,4 +144,21 @@
 			});
 		});
 	</script>
+
+	<script type="text/javascript">
+		function button_event() {
+
+			if (confirm("정말 삭제하시겠습니까??") == true) { //확인
+
+				document.form.submit();
+
+			} else { //취소
+
+				return;
+
+			}
+
+		}
+	</script>
+
 </body>

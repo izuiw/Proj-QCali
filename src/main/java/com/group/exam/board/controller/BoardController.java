@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.command.BoardPageCommand;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.BoardupdateCommand;
-import com.group.exam.board.command.BoardLikeCommand;
+import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.utils.Criteria;
+import com.group.exam.board.utils.SchedulerQuestion;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
@@ -32,27 +34,26 @@ import com.group.exam.member.command.LoginCommand;
 @RequestMapping("/board")
 public class BoardController {
 
+	private BoardService boardService;	
+	private SchedulerQuestion schedulerQuestion;
+	
 	@Autowired
-	private BoardService boardService;
-
-	public BoardController() {
-
-	}
-
-	public BoardController(BoardService boardService) {
+	public BoardController (BoardService boardService, SchedulerQuestion schedulerQuestion) {
 		this.boardService = boardService;
+		this.schedulerQuestion = schedulerQuestion;
 	}
+	
 
-	@GetMapping(value = "/write")
-	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, HttpSession session) {
+	@GetMapping(value = "/write/{qSeq}")
+	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, @PathVariable int qSeq,HttpSession session) {
 
 
 
 		return "board/writeForm";
 	}
 
-	@PostMapping(value = "/write")
-	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
+	@PostMapping(value = "/write/{qSeq}")
+	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, @PathVariable int qSeq, BindingResult bindingResult,
 			 Criteria cri, HttpSession session, Model model) {
 		// not null 체크
 		if (bindingResult.hasErrors()) {
@@ -62,7 +63,6 @@ public class BoardController {
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 		
 
-		
 		boolean memberAuth = boardService.memberAuth(loginMember.getmSeq()).equals("F");
 		if(memberAuth == true) {
 			return "redirect: /exam/"; //이메일 인증 x -> 예외 페이지
@@ -72,11 +72,25 @@ public class BoardController {
 		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 		boardVo.setmSeq(loginMember.getmSeq());
 
+		// insert
 		boardService.insertBoard(boardVo);
-
+		
+		//update
+		
+		int mytotal = boardService.mylistCount(loginMember.getmSeq());
+		int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal);
+		System.out.println("?? = " + memberLevel);
+		if (memberLevel == 1) {
+			model.addAttribute("level", loginMember.getmLevel());
+			model.addAttribute("id", loginMember.getmId());
+			return "/board/leverup";
+					
+		}
 
 		return "redirect:/board/list";
 	}
+	
+	
 
 	// 리스트 전체
 	@GetMapping(value = "/list")
@@ -104,13 +118,21 @@ public class BoardController {
 		cri.setPageNum(currentPage);
 	
 
+		QuestionAdayCommand qCommand = schedulerQuestion.autoQuestion();
+		
+		model.addAttribute("question", qCommand);
+		
+		
 		List<BoardlistCommand> list = boardService.boardList(cri);
+		System.out.println("list " + list);
 		model.addAttribute("list", list);
 		
 
 		model.addAttribute("currentPage", currentPage);
 		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
 		model.addAttribute("pageMaker", pageCommand);
+		
+		
 		return "board/list";
 	}
 
@@ -126,6 +148,10 @@ public class BoardController {
 		if (currentPage == 0) {
 			currentPage = 1;
 		}
+	
+		
+
+		
 
 		int total = boardService.mylistCount(mSeq);
 	
@@ -151,7 +177,7 @@ public class BoardController {
 
 		boardService.boardCountup(bSeq);
 
-		List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
+		BoardlistCommand list = boardService.boardListDetail(bSeq);
 
 		// 세션 값 loginMember에 저장
 
@@ -161,7 +187,7 @@ public class BoardController {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 			int mSeq = loginMember.getmSeq();
 			// 세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
-			if (mSeq == list.get(0).getmSeq()) {
+			if (mSeq == list.getmSeq()) {
 				boolean my = true;
 				model.addAttribute("my", my);
 			}
@@ -239,7 +265,7 @@ public class BoardController {
 			int mSeq = loginMember.getmSeq();
 			int bSeq = updateCommand.getbSeq();
 			
-			List<BoardlistCommand> list = boardService.boardListDetail(bSeq);
+			BoardlistCommand list = boardService.boardListDetail(bSeq);
 			
 			model.addAttribute("list", list);
 			boardService.updateBoard(updateCommand.getbTitle(), updateCommand.getbContent(), bSeq);

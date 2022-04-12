@@ -16,7 +16,12 @@
 		<id property="mSeq" column="member_seq" />
 		<id property="bContent" column="board_content" />
 	</resultMap>
-
+	
+	<resultMap
+		type="com.group.exam.board.command.QuestionAdayCommand" id="questionCommand">
+		<id property="qSeq" column="question_seq" />
+		<id property="qContent" column="question_content" />
+	</resultMap>
 
 	<insert id="insertBoard" parameterType="boardVo">
 		insert into BOARD
@@ -100,5 +105,21 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 	
 	</select>
 	
+	<select id="selectQuestion" parameterType="Integer" resultMap="questionCommand">
+	    <![CDATA[select question_content, question_seq from (select rownum as rn, question_content, question_seq 
+    from question where question_status = 'T') where rn = #{rnnext}]]>
+	</select>
+	
+	<!--  <select id="updateMemberLevel" parameterType="HashMap" resultType="Integer">
+
+       <![CDATA[ update member M SET m.member_level = 
+     (select m.member_seq, m.member_level from member where m.member_seq = #{mSeq} and #{mytotal} > 10)
+     where M.member_level = M.member_level+1]]>
+		
+	</select>-->
+	
+	<update id="MemberLevelup" parameterType="HashMap">
+		 <![CDATA[ update member set member_level = member_level+1 where member_seq = #{mSeq} and #{mytotal}> 10]]>
+	</update>
 
 </mapper>
