@@ -53,8 +53,30 @@
 		resultMap="listCommand">
 	
 <![CDATA[select *
-from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ  
-from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where ROWNUM < #{pageNum} * #{amount} order by B.BOARD_REG_DAY desc) where rn> (#{pageNum}-1) * #{amount} ]]>
+from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY,
+B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ  
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ )
+where rn between #{rowStart} and #{rowEnd} ]]>
+	</select>
+
+	<!-- -->
+	<select id="questionselect" parameterType="Integer"
+		resultMap="questionCommand">
+		select question_content, question_seq from
+		(select rownum AS ROWNUMBER, question_content, question_seq
+		from question
+		where question_status = 'T')q
+		where q.ROWNUMBER = #{num}
+	</select>
+
+	<select id="getSequence" resultType="Integer">
+		select num_seq.nextval from
+		dual
+	</select>
+
+	<select id="currentSequence" resultType="Integer">
+		select LAST_NUMBER-1
+		FROM USER_SEQUENCES WHERE SEQUENCE_NAME = 'NUM_SEQ'
 	</select>
 
 
@@ -63,14 +85,18 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where ROWNUM < #{pageN
 	<select id="boardMylist" parameterType="HashMap"
 		resultMap="listCommand">
 
-		<![CDATA[select *
-from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ 
-from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where rownum <+ #{pageNum} * #{amount} AND M.MEMBER_SEQ = #{mSeq} order by B.BOARD_REG_DAY desc)
- where rn > (#{pageNum}-1)* #{amount}]]>
+		<![CDATA[
+select *
+from (select ROWNUM rn, B.BOARD_SEQ, 
+B.BOARD_TITLE, B.BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
+M.MEMBER_NICKNAME, M.MEMBER_SEQ 
+from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
+where M.member_seq = #{mSeq}) where rn between #{rowStart} and #{rowEnd}
+		]]>
 
 	</select>
 
-	<!-- 게시글 디테일 / 댓글 테이블 추가 해야함 / 질문 테이블 추가해야함 -->
+	<!-- 게시글 디테일 / 댓글 테이블 추가 해야함 -->
 	<select id="boardlistDetail" parameterType="Integer"
 		resultMap="listCommand">
 
@@ -94,7 +120,7 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 
 	</select>
 
-
+	<!-- board 조회수 up -->
 	<update id="boardCountup" parameterType="Integer">
 		update BOARD set
 		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{bSeq}
@@ -108,28 +134,27 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 
 	</select>
 
-	<select id="selectQuestion" parameterType="Integer"
-		resultMap="questionCommand">
-	    <![CDATA[select question_content, question_seq from (select rownum as rn, question_content, question_seq 
-    from question where question_status = 'T') where rn = #{rnnext}]]>
-	</select>
 
 
-	
 	<!-- 게시글 수에 따른 멤버 레벨 변경 -->
 	<update id="memberLevelup" parameterType="HashMap">
+
+
 		<if test="mytotal >10">
-			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where
+			MEMBER_SEQ = #{mSeq}
 			and #{mLevel} = 0
 		</if>
 
 		<if test="mytotal >30">
-			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where
+			MEMBER_SEQ = #{mSeq}
 			and #{mLevel} = 1
 		</if>
 
 		<if test="mytotal >50">
-			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where
+			MEMBER_SEQ = #{mSeq}
 			and #{mLevel} = 2
 		</if>
 	</update>

@@ -116,19 +116,19 @@ li {
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list?currentPage=${pageMaker.startPage - 1 }'/>">Previous</a>
+						href="<c:url value='/board/list${pageMaker.makeQuery(pageMaker.startPage - 1) }'/>">Previous</a>
 					</li>
 				</c:if>
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list?currentPage=${currentPage }'/>">${currentPage }</a></li>
+						href="<c:url value='/board/list${pageMaker.makeQuery(currentPage) }'/>">${currentPage }</a></li>
 				</c:forEach>
 
-				<c:if test="${pageMaker.next }">
+				<c:if test="${pageMaker.next && pageMaker.endPage}">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/list?currentPage=${pageMaker.endPage + 1 }'/>">Next</a>
+						href="<c:url value='/board/list${pageMaker.makeQuery(pageMaker.endPage + 1) }'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

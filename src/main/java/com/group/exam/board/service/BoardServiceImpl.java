@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.dao.BoardDao;
-import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 @Service
@@ -34,7 +34,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardlistCommand> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
-		cri.setStartNum((cri.getPageNum() - 1) * cri.getAmount());
+		
 		return boardDao.boardList(cri);
 	}
 
@@ -43,11 +43,10 @@ public class BoardServiceImpl implements BoardService{
 	public List<BoardlistCommand> boardMyList(Criteria cri, int mSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		cri.setStartNum((cri.getPageNum() - 1) * cri.getAmount());
-		map.put("pageNum", cri.getPageNum());
-		map.put("amount", cri.getAmount());
+	
 		map.put("mSeq", mSeq);
-		
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
 		return boardDao.boardMyList(map);
 	}
 	
@@ -144,13 +143,6 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public QuestionAdayCommand questionAday(int rnnext) {
-		// TODO Auto-generated method stub
-		return boardDao.questionAday(rnnext);
-	}
-
-
-	@Override
 	public int memberLevelup(int mSeq, int mytotal, int mLevel) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -163,6 +155,28 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 
+
+	@Override
+	public QuestionAdayCommand questionselect(int num) {
+		// TODO Auto-generated method stub
+		return boardDao.questionselect(num);
+	}
+
+
+	@Override
+	public int getSequence() {
+		// TODO Auto-generated method stub
+		return boardDao.getSequence();
+	}
+
+
+	@Override
+	public int currentSequence() {
+		// TODO Auto-generated method stub
+		return boardDao.currentSequence();
+	}
+
+	
 
 	
 	

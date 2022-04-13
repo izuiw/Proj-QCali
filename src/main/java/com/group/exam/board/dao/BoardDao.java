@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
-import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 
@@ -31,9 +31,14 @@ public interface BoardDao {
 	
 	public String memberAuth (int mSeq); //멤버 Auth 상태 체크
 	
-	public QuestionAdayCommand questionAday (int rnnext);
+	public int memberLevelup (HashMap<String, Object> map); //멤버 level up 기능
 	
-	public int memberLevelup (HashMap<String, Object> map);
+	//질문 하루마다 출력 기능 관련
+	public QuestionAdayCommand questionselect(int num);
+	
+	public int getSequence();
+	
+	public int currentSequence();
 	
 	//좋아요 기능 관련
     public int getBoardLike(BoardLikeVo vo);

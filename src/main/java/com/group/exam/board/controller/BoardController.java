@@ -1,17 +1,20 @@
 package com.group.exam.board.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +25,9 @@ import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.command.BoardPageCommand;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.BoardupdateCommand;
+import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.service.BoardService;
-import com.group.exam.board.utils.Criteria;
-import com.group.exam.board.utils.SchedulerQuestion;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
@@ -35,43 +37,42 @@ import com.group.exam.member.service.MemberService;
 @RequestMapping("/board")
 public class BoardController {
 
-	private BoardService boardService;	
-	private SchedulerQuestion schedulerQuestion;
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	public static int num;
+
+	private BoardService boardService;
+
 	private MemberService memberService;
-	
+
 	@Autowired
-	public BoardController (BoardService boardService, SchedulerQuestion schedulerQuestion, MemberService memberService) {
+	public BoardController(BoardService boardService, MemberService memberService) {
 		this.boardService = boardService;
-		this.schedulerQuestion = schedulerQuestion;
+
 		this.memberService = memberService;
-		
+
 	}
-	
 
 	@GetMapping(value = "/write")
-	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo,HttpSession session) {
-
-
+	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, HttpSession session) {
 
 		return "board/writeForm";
 	}
 
 	@PostMapping(value = "/write")
 	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
-			 Criteria cri, HttpSession session, Model model) {
+			Criteria cri, HttpSession session, Model model) {
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
-		
+
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
-		
 
 		boolean memberAuth = boardService.memberAuth(loginMember.getmSeq()).equals("F");
-		if(memberAuth == true) {
-			return "redirect: /exam/"; //이메일 인증 x -> 예외 페이지
-			
+		if (memberAuth == true) {
+			return "redirect: /exam/"; // 이메일 인증 x -> 예외 페이지
+
 		}
 
 		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
@@ -79,117 +80,113 @@ public class BoardController {
 
 		// insert
 		boardService.insertBoard(boardVo);
-		
-		//update
-		
+
+		// update
+
 		int mytotal = boardService.mylistCount(loginMember.getmSeq());
 
-		int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal, loginMember.getmLevel());
-		
-	
-		if (memberLevel == 1) {
-		
-			
-			List<LoginCommand> member = memberService.login(loginMember.getmId());
-			
-			LoginCommand login = member.get(0);
-			
-			session.setAttribute("memberLogin", login);	
-			
-			model.addAttribute("level", login.getmLevel());
-			model.addAttribute("id", login.getmId());
-			
-			return "/board/leverup";
-					
+		if (mytotal >= 10) {
+			int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal, loginMember.getmLevel());
+
+			if (memberLevel == 1) {
+
+				List<LoginCommand> member = memberService.login(loginMember.getmId());
+
+				LoginCommand login = member.get(0);
+
+				session.setAttribute("memberLogin", login);
+
+				model.addAttribute("level", login.getmLevel());
+				model.addAttribute("id", login.getmId());
+
+				return "/board/leverup";
+
+			}
 		}
 
 		return "redirect:/board/list";
 	}
-	
-	
 
 	// 리스트 전체
 	@GetMapping(value = "/list")
-	public String boardListAll(@RequestParam (value="currentPage",defaultValue="0") int currentPage, Criteria cri, Model model, HttpSession session) {
-		
+	public String boardListAll( Criteria cri, Model model, HttpSession session) {
+
 		/*
-		 * @RequestParam null 허용 방법
-		 *  - (required = false) == true 가 기본 설정임
-		 *  - @Nullable 어노테이션 추가
-		 *  
-		 *  - int 형의 경우 (defaultValue="0")
+		 * @RequestParam null 허용 방법 - (required = false) == true 가 기본 설정임 - @Nullable
+		 * 어노테이션 추가
+		 * 
+		 * - int 형의 경우 (defaultValue="0")
 		 * 
 		 */
 
-
-		if (currentPage == 0) {
-			currentPage = 1;
-		}
+//		if (currentPage == 0) {
+//			currentPage = 1;
+//		}
 
 		int total = boardService.listCount();
+
+		if (total == 0) {
+			total = 1;
+		}
 		/*
 		 * 1 1,10 2 11, 20
 		 */
 
-		cri.setPageNum(currentPage);
-	
 
-		QuestionAdayCommand qCommand = schedulerQuestion.autoQuestion();
-		
-		model.addAttribute("question", qCommand);
-		
-		
 		List<BoardlistCommand> list = boardService.boardList(cri);
 		System.out.println("list " + list);
 		model.addAttribute("list", list);
-		
 
-		model.addAttribute("currentPage", currentPage);
-		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
+		//model.addAttribute("currentPage", currentPage);
+		BoardPageCommand pageCommand = new BoardPageCommand();
+		pageCommand.setCri(cri);
+		pageCommand.setTotal(total);
 		model.addAttribute("pageMaker", pageCommand);
-		
-		
+
+		// 질문 출력 관련
+		if (num == 0) {
+			num = boardService.currentSequence();
+		}
+		logger.info("" + num);
+		QuestionAdayCommand question = boardService.questionselect(num);
+
+
+		model.addAttribute("question", question);
+
 		return "board/list";
 	}
 
-
+	@Scheduled(cron = "0 * * * * *") // 하루마다 출력으로 표현식 바꿔야함
+	public void getSequence() {
+		logger.info(new Date() + "스케쥴러 실행");
+		num = boardService.getSequence();
+	}
 
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/mylist")
-	public String boardListMy(@RequestParam("mSeq") int mSeq, @RequestParam (value="currentPage",defaultValue="0") int currentPage,
-			Model model,Criteria cri,HttpSession session) {
-		
+	public String boardListMy(@RequestParam("mSeq") int mSeq, Model model, Criteria cri,
+			HttpSession session) {
 
-		
-		if (currentPage == 0) {
-			currentPage = 1;
-		}
-	
-		
-
-		
 
 		int total = boardService.mylistCount(mSeq);
-	
 
-		cri.setPageNum(currentPage);
 		
-		
-		List<BoardlistCommand> list = boardService.boardMyList(cri,mSeq);
+
+		List<BoardlistCommand> list = boardService.boardMyList(cri, mSeq);
 		model.addAttribute("list", list);
 
-		
-		model.addAttribute("currentPage", currentPage);
-		BoardPageCommand pageCommand = new BoardPageCommand(cri, total);
+	
+		BoardPageCommand pageCommand = new BoardPageCommand();
+		pageCommand.setCri(cri);
+		pageCommand.setTotal(total);
 		model.addAttribute("pageMaker", pageCommand);
-		
+
 		return "board/mylist";
 	}
 
 	// 게시글 디테일
 	@GetMapping(value = "/detail")
 	public String boardListDetail(@RequestParam int bSeq, Model model, HttpSession session) {
-		
 
 		boardService.boardCountup(bSeq);
 
@@ -213,66 +210,60 @@ public class BoardController {
 		model.addAttribute("bSeq", bSeq);
 
 		BoardLikeVo likeVo = new BoardLikeVo();
-		
+
 		likeVo.setbSeq(bSeq);
 		likeVo.setmSeq(loginMember.getmSeq());
-		
+
 		int boardlike = boardService.getBoardLike(likeVo);
 
-
 		model.addAttribute("heart", boardlike);
-		
+
 		return "board/listDetail";
 	}
-	
 
 	@PostMapping(value = "/heart", produces = "application/json")
 	@ResponseBody
-	public int boardLike ( @RequestBody BoardLikeCommand command ,HttpSession session) {
-		
-		
+	public int boardLike(@RequestBody BoardLikeCommand command, HttpSession session) {
+
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
-		
+
 		BoardLikeVo likeVo = new BoardLikeVo();
-		
+
 		likeVo.setbSeq(command.getbSeq());
 		likeVo.setmSeq(loginMember.getmSeq());
-		
-		
-		if ( command.getHeart() >= 1) {
+
+		if (command.getHeart() >= 1) {
 			boardService.deleteBoardLike(likeVo);
 			command.setHeart(0);
 		} else {
-			
+
 			boardService.insertBoardLike(likeVo);
 			command.setHeart(1);
 		}
-		
-		//String result = Integer.toString(heart);
-		
-		return command.getHeart() ;
-		
+
+		// String result = Integer.toString(heart);
+
+		return command.getHeart();
+
 	}
-	
-	
+
 	// 게시글 수정
 	@GetMapping(value = "/edit")
-	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo,   HttpSession session, Model model) {
-		
+	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo, HttpSession session, Model model) {
+
 		return "board/editForm";
 	}
 
 	// 게시글 수정
 	@PostMapping(value = "/edit")
-	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardupdateCommand updateCommand, BindingResult bindingResult,
-			Model model, HttpSession session) {
+	public String boardEdit(@Valid @ModelAttribute("boardEditData") BoardupdateCommand updateCommand,
+			BindingResult bindingResult, Model model, HttpSession session) {
 
 		if (bindingResult.hasErrors()) {
 
 			return "board/editForm";
 		}
-	
-		
+
 		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
@@ -280,9 +271,9 @@ public class BoardController {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 			int mSeq = loginMember.getmSeq();
 			int bSeq = updateCommand.getbSeq();
-			
+
 			BoardlistCommand list = boardService.boardListDetail(bSeq);
-			
+
 			model.addAttribute("list", list);
 			boardService.updateBoard(updateCommand.getbTitle(), updateCommand.getbContent(), bSeq);
 			System.out.println(" 수정 성공");

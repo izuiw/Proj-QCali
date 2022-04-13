@@ -109,19 +109,19 @@ li {
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}&currentPage=${pageMaker.startPage - 1 }'/>">Previous</a>
+						href="<c:url value='/board/mylist${pageMaker.makeQuery(pageMaker.startPage - 1) }&mSeq=${memberLogin.mSeq}'/>">Previous</a>
 					</li>
 				</c:if>
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}&currentPage=${currentPage }'/>">${currentPage }</a></li>
+						href="<c:url value='/board/mylist${pageMaker.makeQuery(currentPage) }&mSeq=${memberLogin.mSeq}'/>">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/listmy?mSeq=${memberLogin.mSeq}&currentPage=${pageMaker.endPage + 1 }'/>">Next</a>
+						href="<c:url value='/board/listmy${pageMaker.makeQuery(pageMaker.endPage + 1) }&mSeq=${memberLogin.mSeq}'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

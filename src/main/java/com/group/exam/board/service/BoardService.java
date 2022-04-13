@@ -3,8 +3,8 @@ package com.group.exam.board.service;
 import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
-import com.group.exam.board.utils.Criteria;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 
@@ -31,9 +31,16 @@ public interface BoardService {
 	
 	public String memberAuth (int mSeq); //멤버 Auth 상태 확인 
 	
-	public QuestionAdayCommand questionAday (int rnnext);
-	
 	public int memberLevelup (int mSeq, int mytotal, int mLevel);
+	
+	//하루마다 질문 출력
+	
+	public QuestionAdayCommand questionselect(int num);
+	
+	public int getSequence();
+	
+	public int currentSequence();
+	
 	
 	//좋아요 기능 관련
 	public void insertBoardLike(BoardLikeVo vo);
