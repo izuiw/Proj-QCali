@@ -49,7 +49,7 @@ li {
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
-		<a href="<c:url value='/board/write/${question.qSeq }'/>"><button>글쓰기</button></a>
+		<a href="<c:url value='/board/write?qSeq=${question.qSeq }'/>"><button>글쓰기</button></a>
 		<a href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
 		
 

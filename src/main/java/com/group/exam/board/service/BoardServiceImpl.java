@@ -151,11 +151,14 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public int memberLevelup(int mSeq, int mytotal) {
+	public int memberLevelup(int mSeq, int mytotal, int mLevel) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		
 		map.put("mSeq", mSeq);
 		map.put("mytotal", mytotal);
+		map.put("mLevel", mLevel);
+		
 		return boardDao.memberLevelup(map);
 		
 	}

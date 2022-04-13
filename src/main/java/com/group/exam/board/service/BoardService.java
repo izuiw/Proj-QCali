@@ -33,7 +33,7 @@ public interface BoardService {
 	
 	public QuestionAdayCommand questionAday (int rnnext);
 	
-	public int memberLevelup (int mSeq, int mytotal);
+	public int memberLevelup (int mSeq, int mytotal, int mLevel);
 	
 	//좋아요 기능 관련
 	public void insertBoardLike(BoardLikeVo vo);

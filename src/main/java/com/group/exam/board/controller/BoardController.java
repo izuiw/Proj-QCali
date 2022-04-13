@@ -29,6 +29,7 @@ import com.group.exam.board.utils.SchedulerQuestion;
 import com.group.exam.board.vo.BoardLikeVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
+import com.group.exam.member.service.MemberService;
 
 @Controller
 @RequestMapping("/board")
@@ -36,30 +37,34 @@ public class BoardController {
 
 	private BoardService boardService;	
 	private SchedulerQuestion schedulerQuestion;
+	private MemberService memberService;
 	
 	@Autowired
-	public BoardController (BoardService boardService, SchedulerQuestion schedulerQuestion) {
+	public BoardController (BoardService boardService, SchedulerQuestion schedulerQuestion, MemberService memberService) {
 		this.boardService = boardService;
 		this.schedulerQuestion = schedulerQuestion;
+		this.memberService = memberService;
+		
 	}
 	
 
-	@GetMapping(value = "/write/{qSeq}")
-	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo, @PathVariable int qSeq,HttpSession session) {
+	@GetMapping(value = "/write")
+	public String insertBoard(@ModelAttribute("boardData") BoardVo boardVo,HttpSession session) {
 
 
 
 		return "board/writeForm";
 	}
 
-	@PostMapping(value = "/write/{qSeq}")
-	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, @PathVariable int qSeq, BindingResult bindingResult,
+	@PostMapping(value = "/write")
+	public String insertBoard(@Valid @ModelAttribute("boardData") BoardVo boardVo, BindingResult bindingResult,
 			 Criteria cri, HttpSession session, Model model) {
 		// not null 체크
 		if (bindingResult.hasErrors()) {
 
 			return "board/writeForm";
 		}
+		
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 		
 
@@ -78,11 +83,22 @@ public class BoardController {
 		//update
 		
 		int mytotal = boardService.mylistCount(loginMember.getmSeq());
-		int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal);
-		System.out.println("?? = " + memberLevel);
+
+		int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal, loginMember.getmLevel());
+		
+	
 		if (memberLevel == 1) {
-			model.addAttribute("level", loginMember.getmLevel());
-			model.addAttribute("id", loginMember.getmId());
+		
+			
+			List<LoginCommand> member = memberService.login(loginMember.getmId());
+			
+			LoginCommand login = member.get(0);
+			
+			session.setAttribute("memberLogin", login);	
+			
+			model.addAttribute("level", login.getmLevel());
+			model.addAttribute("id", login.getmId());
+			
 			return "/board/leverup";
 					
 		}

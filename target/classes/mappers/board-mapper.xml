@@ -16,9 +16,10 @@
 		<id property="mSeq" column="member_seq" />
 		<id property="bContent" column="board_content" />
 	</resultMap>
-	
+
 	<resultMap
-		type="com.group.exam.board.command.QuestionAdayCommand" id="questionCommand">
+		type="com.group.exam.board.command.QuestionAdayCommand"
+		id="questionCommand">
 		<id property="qSeq" column="question_seq" />
 		<id property="qContent" column="question_content" />
 	</resultMap>
@@ -57,7 +58,7 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where ROWNUM < #{pageN
 	</select>
 
 
-	
+
 	<!-- 내 게시글 모아보기 -->
 	<select id="boardMylist" parameterType="HashMap"
 		resultMap="listCommand">
@@ -86,7 +87,8 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 	</select>
 
 	<!-- 내가 쓴 글 수 -->
-	<select id="boardMylistCount" parameterType="Integer" resultType="Integer">
+	<select id="boardMylistCount" parameterType="Integer"
+		resultType="Integer">
 		select count(*) from
 		BOARD where MEMBER_SEQ = #{mSeq}
 
@@ -100,26 +102,36 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 
 
 	<!-- 멤버 AUTH 상태 확인 -->
-	<select id="memberAuth" parameterType="Integer" resultType="String">
+	<select id="memberAuth" parameterType="Integer"
+		resultType="String">
 		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{mSeq}
-	
+
 	</select>
-	
-	<select id="selectQuestion" parameterType="Integer" resultMap="questionCommand">
+
+	<select id="selectQuestion" parameterType="Integer"
+		resultMap="questionCommand">
 	    <![CDATA[select question_content, question_seq from (select rownum as rn, question_content, question_seq 
     from question where question_status = 'T') where rn = #{rnnext}]]>
 	</select>
-	
-	<!--  <select id="updateMemberLevel" parameterType="HashMap" resultType="Integer">
 
-       <![CDATA[ update member M SET m.member_level = 
-     (select m.member_seq, m.member_level from member where m.member_seq = #{mSeq} and #{mytotal} > 10)
-     where M.member_level = M.member_level+1]]>
-		
-	</select>-->
+
 	
-	<update id="MemberLevelup" parameterType="HashMap">
-		 <![CDATA[ update member set member_level = member_level+1 where member_seq = #{mSeq} and #{mytotal}> 10]]>
+	<!-- 게시글 수에 따른 멤버 레벨 변경 -->
+	<update id="memberLevelup" parameterType="HashMap">
+		<if test="mytotal >10">
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			and #{mLevel} = 0
+		</if>
+
+		<if test="mytotal >30">
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			and #{mLevel} = 1
+		</if>
+
+		<if test="mytotal >50">
+			update MEMBER set MEMBER_LEVEL = MEMBER_LEVEL+1 where MEMBER_SEQ = #{mSeq}
+			and #{mLevel} = 2
+		</if>
 	</update>
 
 </mapper>
