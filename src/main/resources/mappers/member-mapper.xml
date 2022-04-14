@@ -22,4 +22,15 @@
 		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH, MEMBER_LEVEL from MEMBER where MEMBER_ID = #{mId}
 	</select>
 
+	<!-- 비밀번호 찾기 관련 -->
+	
+	<select id="findPwd" parameterType="String" resultMap="memberLoginCommand">
+		select * from MEMBER where MEMBER_ID = #{mId} 
+	</select>
+	
+	<update id="updateTmpPwd" parameterType="HashMap">
+		update MEMBER set MEMBER_PASSWORD = #{tmpPwd} where MEMBER_ID = #{mId}
+	</update>
+
+
 </mapper>

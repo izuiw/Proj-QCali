@@ -17,36 +17,23 @@ table {
 }
 </style>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>비밀번호 찾기</title>
 </head>
 <body>
-	<h2>로그인</h2>
-	<form:form commandName="loginMemberData">
-	
+	<h2>비밀번호 찾기</h2>
+	<form:form commandName="findPwdData">
 		<table border="1">
 			<tr>
 				<td>아이디 : </td>
 				<td><form:input path="mId" placeholder="필수입력"/>
 				<form:errors path="mId"/></td>
 			</tr>
-
-			<tr>
-				<td>비밀번호 : </td>
-				<td><form:input path="mPassword" type="password" placeholder="필수입력"/>
-				<form:errors path="mPassword"/></td>
-			</tr>
 		
 		</table>
 		<br>
 		${msg}<br><br>
-		<input type="submit" value="로그인" />
-
-		
-
+		<input type="submit" value="비밀번호 찾기" />
 	</form:form>
-	
-			<a href="<c:url value='/member/findPwd'/>"><button>비밀번호 찾기</button></a>
-
 
 		
 

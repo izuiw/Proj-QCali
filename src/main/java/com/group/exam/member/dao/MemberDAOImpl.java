@@ -1,5 +1,6 @@
 package com.group.exam.member.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -25,6 +26,18 @@ public class MemberDAOImpl implements MemberDAO{
 		// TODO Auto-generated method stub
 		return  sqlSessionTemplate.selectList("login", mId);
 		
+	}
+
+	@Override
+	public LoginCommand findPwd(String mId) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("findPwd", mId);
+	}
+
+	@Override
+	public int updateTmpPwd(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("updateTmpPwd", map);
 	}
 
 }

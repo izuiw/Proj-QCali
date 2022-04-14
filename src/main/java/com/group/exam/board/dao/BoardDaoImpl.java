@@ -121,7 +121,7 @@ public class BoardDaoImpl implements BoardDao{
 		
 	}
 
-
+	
 	@Override
 	public String memberAuth(int mSeq) {
 		// TODO Auto-generated method stub
@@ -129,7 +129,7 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 
-
+	//멤버 레벨 관련
 	@Override
 	public int memberLevelup(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub

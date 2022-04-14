@@ -72,7 +72,7 @@ li {
 
 
 	<table border="1">
-		<tr>s
+		<tr>
 			<th>보드seq</th>
 			<th>보드제목</th>
 			<th>닉네임</th>

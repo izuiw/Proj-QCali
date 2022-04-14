@@ -143,6 +143,7 @@ public class BoardController {
 		pageCommand.setTotal(total);
 		model.addAttribute("pageMaker", pageCommand);
 
+
 		// 질문 출력 관련
 		if (num == 0) {
 			num = boardService.currentSequence();

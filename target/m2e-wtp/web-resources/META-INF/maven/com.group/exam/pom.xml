@@ -227,7 +227,18 @@
           <version>2.9.4</version>
       </dependency>
 
+		<!-- 메일 발송을 위한 의존 설정 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 
 
 	</dependencies>
