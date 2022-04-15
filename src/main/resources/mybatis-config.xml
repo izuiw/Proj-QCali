@@ -17,6 +17,8 @@
 			alias="boardVo" />
 		<typeAlias type="com.group.exam.board.command.Criteria"
 			alias="criteria" />
+		<typeAlias alias="memberVo"
+			type="com.group.exam.member.vo.MemberVo" />
 
 
 	</typeAliases>

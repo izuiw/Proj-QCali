@@ -22,9 +22,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public List<LoginCommand> login(String mId) {
+	public LoginCommand login(String mId) {
 		// TODO Auto-generated method stub
-		return  sqlSessionTemplate.selectList("login", mId);
+		return  sqlSessionTemplate.selectOne("login", mId);
 		
 	}
 
@@ -39,5 +39,60 @@ public class MemberDAOImpl implements MemberDAO{
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.update("updateTmpPwd", map);
 	}
+	
+	
+	
+	@Override
+	public void insert(MemberVo memberVo) {
+		sqlSessionTemplate.insert("insert", memberVo);
+
+	}
+
+	@Override
+	public int nicknameDup(String mNickname) {
+		int res = sqlSessionTemplate.selectOne("nicknameDup", mNickname);
+		return res;
+	}
+
+	@Override
+	public int idDup(String mId) {
+		return sqlSessionTemplate.selectOne("idDup", mId);
+
+	}
+
+	@Override
+	public void updateAuthkey(MemberVo memberVo) {
+		sqlSessionTemplate.update("updateAuthkey", memberVo);
+	}
+	
+	@Override
+	public void updateAuth(MemberVo memberVo) {
+		sqlSessionTemplate.update("updateAuth", memberVo);
+	}
+
+	@Override
+	public int updateMemberPwd(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("updateMemberPwd", map);
+	}
+
+	@Override
+	public int updateMemberNickname(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update("updateMemberNickname", map);
+	}
+
+	@Override
+	public int deleteMember(int mSeq) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.delete("deleteMember", mSeq);
+	}
+
+	@Override
+	public int memberQuestionAdd(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.insert("memberQuestionAdd", map);
+	}
+	
 
 }

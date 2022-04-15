@@ -19,17 +19,17 @@ import com.group.exam.member.service.MemberService;
 @Controller
 public class MemberPwdFindController {
 
-	private BCryptPasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	private MailSendService mss;
 
 	private MemberService memberService;
 
 	@Autowired
-	public MemberPwdFindController( MailSendService mss, BCryptPasswordEncoder passwordEncoder,
+	public MemberPwdFindController( MailSendService mss, BCryptPasswordEncoder bcryptPasswordEncoder,
 			MemberService memberService) {
 
-		this.passwordEncoder = passwordEncoder;
+		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
 		this.mss = mss;
 		this.memberService = memberService;
 	}
@@ -52,7 +52,7 @@ public class MemberPwdFindController {
 
 		if (findMember != null) {
 			String tmpPwd = mss.sendPwdMail(findcommand.getmId()); // 임시 비밀번호 메일 발송
-			String encodePwd = passwordEncoder.encode(tmpPwd); // 임시 비밀번호 암호화
+			String encodePwd = bcryptPasswordEncoder.encode(tmpPwd); // 임시 비밀번호 암호화
 
 			int result = memberService.updateTmpPwd(encodePwd, findcommand.getmId()); // db에 해당 회원 비밀번호 임시 비밀번호로 변경
 

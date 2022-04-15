@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.service.MemberService;
+import com.group.exam.member.vo.MemberVo;
 
 
 @Controller
 public class MemberLoginController {
 	
-//	@Autowired
-//	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
 	private MemberService memberService;
@@ -41,24 +42,17 @@ public class MemberLoginController {
 		}
 		
 		
-		List<LoginCommand> member = memberService.login(command.getmId());
+		LoginCommand member = memberService.login(command.getmId());
 		
 		
 	
 		String password = command.getmPassword();
 		
-		LoginCommand login = member.get(0);
-		
-		//test로그인 (암호화 x)
-		String encodePassword = login.getmPassword();
-				
-				
-				//((LoginCommand) member).getmPassword();
-		boolean pwdEncode = password.equals(encodePassword);
+		LoginCommand login = member;
 		
 		//로그인 (비밀번호 암호화 했을 때)
-		//String encodePassword = ((MemberVo) member).getmPassword();
-		//boolean pwdEncode= passwordEncoder.matches(password, encodePassword);
+		String encodePassword = member.getmPassword();
+		boolean pwdEncode= bcryptPasswordEncoder.matches(password, encodePassword);
 	
 		
 		

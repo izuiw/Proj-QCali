@@ -1,4 +1,4 @@
-package com.group.exam.board.utils;
+package com.group.exam.utils;
 
 import java.util.List;
 

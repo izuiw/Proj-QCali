@@ -4,33 +4,94 @@
 
 <mapper namespace="MemberDao">
 
-	<resultMap type="com.group.exam.member.command.LoginCommand" id="memberLoginCommand">
-		<result property="mSeq" column="MEMBER_SEQ"/>
-		<result property="mId" column="MEMBER_ID"/>
-		<result property="mPassword" column="MEMBER_PASSWORD"/>	
-		<result property="mNickname" column="MEMBER_NICKNAME"/>	
-		<result property="mBirthday" column="MEMBER_BIRTH_DAY"/>
-		<result property="mRegday" column="MEMBER_REG_DAY"/>
-		<result property="mAuth" column="MEMBER_AUTH"/>
-		<result property="mLevel" column="MEMBER_LEVEL"/>
-	
+	<resultMap type="com.group.exam.member.command.LoginCommand"
+		id="memberLoginCommand">
+		<result property="mSeq" column="MEMBER_SEQ" />
+		<result property="mId" column="MEMBER_ID" />
+		<result property="mPassword" column="MEMBER_PASSWORD" />
+		<result property="mBpw" column="MEMBER_BPW" />
+		<result property="mNickname" column="MEMBER_NICKNAME" />
+		<result property="mBirthday" column="MEMBER_BIRTH_DAY" />
+		<result property="mRegday" column="MEMBER_REG_DAY" />
+		<result property="mAuth" column="MEMBER_AUTH" />
+		<result property="mLevel" column="MEMBER_LEVEL" />
+
 	</resultMap>
-	
+
 
 	<!-- 로그인 관련 -->
-	<select id="login" parameterType="String" resultMap="memberLoginCommand">
-		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH, MEMBER_LEVEL from MEMBER where MEMBER_ID = #{mId}
+	<select id="login" parameterType="String"
+		resultMap="memberLoginCommand">
+		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_BPW
+		,MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH,
+		MEMBER_LEVEL from MEMBER where MEMBER_ID = #{mId}
 	</select>
 
 	<!-- 비밀번호 찾기 관련 -->
-	
-	<select id="findPwd" parameterType="String" resultMap="memberLoginCommand">
-		select * from MEMBER where MEMBER_ID = #{mId} 
+
+	<select id="findPwd" parameterType="String"
+		resultMap="memberLoginCommand">
+		select * from MEMBER where MEMBER_ID = #{mId}
 	</select>
-	
+
 	<update id="updateTmpPwd" parameterType="HashMap">
-		update MEMBER set MEMBER_PASSWORD = #{tmpPwd} where MEMBER_ID = #{mId}
+		update MEMBER set
+		MEMBER_PASSWORD = #{tmpPwd} where MEMBER_ID = #{mId}
 	</update>
 
+
+	<!-- 회원가입 관련 -->
+
+	<insert id="insert" parameterType="memberVo">
+		INSERT INTO member
+		(member_seq, member_id, member_password, member_bpw, member_nickname,
+		member_birth_day, member_reg_day)
+		VALUES
+		(member_seq.nextval, #{mId},
+		#{mPassword}, #{mPassword}, #{mNickname}, #{mBirthday}, SYSDATE)
+	</insert>
+
+	<select id="idDup" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) FROM member WHERE member_id = #{mId}
+	</select>
+
+	<select id="nicknameDup" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM member WHERE member_nickname = #{mNickname}
+	</select>
+
+	<update id="updateAuthkey" parameterType="memberVo">
+		UPDATE
+		member SET member_authkey = #{mAuthkey} WHERE member_id = #{mId}
+	</update>
+
+	<update id="updateAuth" parameterType="memberVo">
+		UPDATE member
+		SET member_auth = #{mAuth} WHERE member_authkey = #{mAuthkey}
+	</update>
+
+	<!-- 회원 정보 변경 관련 -->
+	<update id="updateMemberPwd" parameterType="HashMap">
+		UPDATE
+		member SET MEMBER_PASSWORD = #{mPassword}, MEMBER_BPW = #{mPassword}
+		WHERE member_seq = #{mSeq}
+	</update>
+
+	<update id="updateMemberNickname" parameterType="HashMap">
+		UPDATE member SET MEMBER_NICKNAME = #{mNickname} WHERE member_seq =
+		#{mSeq}
+	</update>
+
+	<delete id="deleteMember" parameterType="Integer">
+		DELETE MEMBER WHERE
+		MEMBER_SEQ = #{mSeq}
+	</delete>
+
+	<!-- 회원 질문 등록 -->
+	<insert id="memberQuestionAdd"
+		parameterType="HashMap">
+		INSERT INTO QUESTION(QUESTION_SEQ, QUESTION_CONTENT, MEMBER_SEQ)
+		VALUES (Q_SEQ.nextval, #{qContent}, #{mSeq})
+	</insert>
 
 </mapper>

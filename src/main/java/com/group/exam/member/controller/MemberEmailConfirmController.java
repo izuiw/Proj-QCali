@@ -1,8 +1,7 @@
 package com.group.exam.member.controller;
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +22,10 @@ public class MemberEmailConfirmController {
 		 String mAuthkey = request.getParameter("authKey");
 		 if(memberService.idDup(mId)==1) { //가입된 이메일이 있다면
 			 memberService.updateAuth(mAuthkey);	//mAuth를 'T'로 바꾸기 
+
 		 }
 
-	    return "/member/signUpSuccess";
+	    return "/member/member_tmp/signUpSuccess";
 	}
 	 
 	 

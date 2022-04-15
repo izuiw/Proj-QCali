@@ -1,13 +1,11 @@
 package com.group.exam.member.command;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 public class MemberMypageCommand {
-	@NotEmpty(message = "비밀버호를 입력해주세요.")
+
 	private String memberPassword;
 	
 	private String memberBpw;
-	@NotEmpty(message = "닉네임을 입력해주세요.")
+
 	private String MemberNickname;
 	
 	

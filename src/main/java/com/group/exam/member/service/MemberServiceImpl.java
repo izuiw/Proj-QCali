@@ -1,12 +1,11 @@
 package com.group.exam.member.service;
 
-<<<<<<< HEAD
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-=======
->>>>>>> e63b26cf916ffc35596a68f8ce98ae02733a93c7
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 	MemberDAO memberDAO;
 	
 	@Override
-	public List<LoginCommand> login(String mId) {
+	public LoginCommand login(String mId) {
 		// TODO Auto-generated method stub
 		
 		return memberDAO.login(mId);
@@ -48,7 +47,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.updateTmpPwd(map);
 	}
 
-<<<<<<< HEAD
+
+	
+	
 	
 	@Override
 	public void insert(InsertCommand insertCommand) {
@@ -96,6 +97,40 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.updateAuth(memberVo);
 	}
 
-=======
->>>>>>> e63b26cf916ffc35596a68f8ce98ae02733a93c7
+	@Override
+	public int updateMemberPwd(String mPassword, int mSeq) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("mPassword", mPassword);
+		map.put("mSeq", mSeq);
+		return memberDAO.updateMemberPwd(map);
+	}
+
+	@Override
+	public int updateMemberNickname(String mNickname, int mSeq) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mNickname", mNickname);
+		map.put("mSeq", mSeq);
+		
+		return memberDAO.updateMemberNickname(map);
+	}
+
+	@Override
+	public int deleteMember(int mSeq) {
+		// TODO Auto-generated method stub
+		return memberDAO.deleteMember(mSeq);
+	}
+
+	@Override
+	public int memberQuestionAdd(String qContent, int mSeq) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("qContent", qContent);
+		map.put("mSeq", mSeq);
+		return memberDAO.memberQuestionAdd(map);
+	}
+
+
 }

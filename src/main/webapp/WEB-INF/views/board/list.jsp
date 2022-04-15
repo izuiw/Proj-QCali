@@ -50,8 +50,9 @@ li {
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
 		<a href="<c:url value='/board/write?qSeq=${question.qSeq }'/>"><button>글쓰기</button></a>
-		<a href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
-		
+
+		<a href="<c:url value='/member/questionAdd'/>"><button>질문 등록하기</button></a>
+		<a href="<c:url value='/member/mypage/confirmPwd?mSeq=${memberLogin.mSeq}'/>"><button>마이페이지</button></a>		
 
 	</c:if>
 	

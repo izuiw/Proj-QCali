@@ -14,6 +14,8 @@ public class LoginCommand {
 	private String mId;
 	@NotEmpty(message = "비밀번호를 입력해주세요.")
 	private String mPassword;
+	
+	private String mBpw;
 
 	private String mNickname;
 	private Date mBirthday;
@@ -84,6 +86,16 @@ public class LoginCommand {
 
 	public void setmPassword(String mPassword) {
 		this.mPassword = mPassword;
+	}
+	
+	
+
+	public String getmBpw() {
+		return mBpw;
+	}
+
+	public void setmBpw(String mBpw) {
+		this.mBpw = mBpw;
 	}
 
 	@Override

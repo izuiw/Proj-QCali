@@ -90,9 +90,9 @@ public class BoardController {
 
 			if (memberLevel == 1) {
 
-				List<LoginCommand> member = memberService.login(loginMember.getmId());
+				LoginCommand member = memberService.login(loginMember.getmId());
 
-				LoginCommand login = member.get(0);
+				LoginCommand login = member;
 
 				session.setAttribute("memberLogin", login);
 
