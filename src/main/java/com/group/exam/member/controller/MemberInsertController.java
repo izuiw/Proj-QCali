@@ -81,7 +81,10 @@ public class MemberInsertController {
 	@RequestMapping(value = "/member/nicknameDup", method = RequestMethod.POST)
 	public int nicknameDup(@ModelAttribute("InsertCommand") InsertCommand insertCommand) {
 		String mNickname = insertCommand.getmNickname();
-		int res = memberService.nicknameDup(mNickname);
+		int res = 1;
+		if (mNickname.length() >= 1) {
+			res = memberService.nicknameDup(mNickname);
+		}
 		return res;
 
 	}

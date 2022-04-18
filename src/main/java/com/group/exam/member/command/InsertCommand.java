@@ -1,10 +1,9 @@
 package com.group.exam.member.command;
 
-import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-@Alias("InsertCommand")
+
 public class InsertCommand {
 	@NotBlank(message="이메일을 입력하세요.")
 	@Email(message="형식에 맞게 입력하세요.")

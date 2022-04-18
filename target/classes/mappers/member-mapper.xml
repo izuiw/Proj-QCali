@@ -93,5 +93,12 @@
 		INSERT INTO QUESTION(QUESTION_SEQ, QUESTION_CONTENT, MEMBER_SEQ)
 		VALUES (Q_SEQ.nextval, #{qContent}, #{mSeq})
 	</insert>
+	
+		<!-- 멤버 AUTH 상태 확인 -->
+	<select id="memberAuth" parameterType="Integer"
+		resultType="String">
+		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{mSeq}
+
+	</select>
 
 </mapper>

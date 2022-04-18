@@ -127,15 +127,6 @@ from MEMBER M join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SEQ = #{
 	</update>
 
 
-	<!-- 멤버 AUTH 상태 확인 -->
-	<select id="memberAuth" parameterType="Integer"
-		resultType="String">
-		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{mSeq}
-
-	</select>
-
-
-
 	<!-- 게시글 수에 따른 멤버 레벨 변경 -->
 	<update id="memberLevelup" parameterType="HashMap">
 

@@ -15,7 +15,7 @@ public class MemberVo {
 	private Date mRegday;
 	private String mAuth;
 	private String mAuthkey;
-	private int mLevel;
+	private long mLevel;
 
 	
 	public int getmSeq() {
@@ -90,11 +90,11 @@ public class MemberVo {
 		this.mAuthkey = mAuthkey;
 	}
 
-	public int getmLevel() {
+	public long getmLevel() {
 		return mLevel;
 	}
 
-	public void setmLevel(int mLevel) {
+	public void setmLevel(long mLevel) {
 		this.mLevel = mLevel;
 	}
 

@@ -11,6 +11,9 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 	<script type="text/javascript">
+var idck = 0;
+var pwck = 0;
+var nickck = 0;
 
 	function pwCheck() {
 
@@ -18,32 +21,16 @@
 	        if(document.getElementById('mPassword').value==document.getElementById('mPasswordCheck').value) {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치합니다.';
 	            document.getElementById('pwSame').style.color='blue';
+	            pwck = 1;
 	        }
 	        else {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치하지 않습니다.';
 	            document.getElementById('pwSame').style.color='red';
+	            
 	        }
 	    }
 	}
 
-	
-/* 	  function fn_idDup() {
-	        $.ajax({
-	            url : "/exam/member/idDup",
-	            type : "POST",
-	            dataType :"JSON",
-	            data : {"mId" : $("#mId").val()},
-	            success : function (data) {
-	                if(data == 1) {
-	                    alert("중복된 이메일입니다.");
-	                } else if (data == 0) {
-	                    $("#idDup").attr("value", "Y");
-	                    alert("사용 가능한 이메일입니다.")
-	                }
-	            }
-
-	        })
-	    } */
 
 		function idCheck() {
 			var str = document.getElementById('mId').value;
@@ -65,6 +52,7 @@
 				                } else if (data == 0) {		           
 						            document.getElementById('idSame').innerHTML='사용 가능한 이메일 입니다.';
 						            document.getElementById('idSame').style.color='blue';
+						            idck = 1;
 				                }
 				            }
 
@@ -90,6 +78,7 @@
 	                } else if (data == 0) {
 	                    document.getElementById('nickSame').innerHTML='사용 가능한 닉네임 입니다.';
 			            document.getElementById('nickSame').style.color='blue';
+			            nickck = 1;
 	                }
 	            }
 
@@ -105,6 +94,18 @@
 	  } else{
 		  document.getElementById('date').innerHTML='';
 	  }
+	  }
+	  
+	  
+	  function DoSignUp() {
+
+			 if (idck == 0) {alert("이메일 중복 체크를 해주세요"); $("#mId").focus(); return; }
+			 if (pwck == 0) {alert("비밀번호 확인 체크를 해주세요"); $("#mPassword").focus(); return; }
+			 if (nickck == 0) {alert("닉네임 중복 체크를 해주세요"); $("#mNickname").focus(); return; }
+		  
+		  if (confirm("회원가입을 하시겠습니까?")) {
+			  location.href = "<c:url value='/member/insert'/>";
+		  }
 	  }
 	</script>
 <body>
@@ -144,7 +145,10 @@
 		
 	</table>
 	<br>
-	<input type="submit" value="회원가입" >
+	
+	<input type="button" class="btn btn-lg btn-success btn-block" value="회원가입1" onclick="DoSignUp();" />
+	<%-- <button class="btn btn-lg btn-success btn-block">회원가입</button> --%>
+	<%-- <input type="submit" value="회원가입" >--%>
 </form:form>
 
 </body>
