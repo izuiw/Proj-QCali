@@ -151,13 +151,14 @@ public class BoardController {
 		logger.info("" + num);
 		QuestionAdayCommand question = boardService.questionselect(num);
 
-
+		System.out.println(question);
+		System.out.println("num +" + num);
 		model.addAttribute("question", question);
 
 		return "board/list";
 	}
 
-	@Scheduled(cron = "0 * * * * *") // 하루마다 출력으로 표현식 바꿔야함
+	@Scheduled(cron = "0 0 12 1/1 * ?") // 하루마다 출력으로 표현식 바꿔야함
 	public void getSequence() {
 		logger.info(new Date() + "스케쥴러 실행");
 		num = boardService.getSequence();

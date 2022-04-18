@@ -7,13 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>구글아이디로 회원가입</title>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 	<script type="text/javascript">
-var idck = 0;
-var pwck = 0;
-var nickck = 0;
 
 	function pwCheck() {
 
@@ -21,16 +18,32 @@ var nickck = 0;
 	        if(document.getElementById('mPassword').value==document.getElementById('mPasswordCheck').value) {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치합니다.';
 	            document.getElementById('pwSame').style.color='blue';
-	            pwck = 1;
 	        }
 	        else {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치하지 않습니다.';
 	            document.getElementById('pwSame').style.color='red';
-	            
 	        }
 	    }
 	}
 
+	
+/* 	  function fn_idDup() {
+	        $.ajax({
+	            url : "/exam/member/idDup",
+	            type : "POST",
+	            dataType :"JSON",
+	            data : {"mId" : $("#mId").val()},
+	            success : function (data) {
+	                if(data == 1) {
+	                    alert("중복된 이메일입니다.");
+	                } else if (data == 0) {
+	                    $("#idDup").attr("value", "Y");
+	                    alert("사용 가능한 이메일입니다.")
+	                }
+	            }
+
+	        })
+	    } */
 
 		function idCheck() {
 			var str = document.getElementById('mId').value;
@@ -52,7 +65,6 @@ var nickck = 0;
 				                } else if (data == 0) {		           
 						            document.getElementById('idSame').innerHTML='사용 가능한 이메일 입니다.';
 						            document.getElementById('idSame').style.color='blue';
-						            idck = 1;
 				                }
 				            }
 
@@ -78,7 +90,6 @@ var nickck = 0;
 	                } else if (data == 0) {
 	                    document.getElementById('nickSame').innerHTML='사용 가능한 닉네임 입니다.';
 			            document.getElementById('nickSame').style.color='blue';
-			            nickck = 1;
 	                }
 	            }
 
@@ -97,58 +108,65 @@ var nickck = 0;
 	  }
 	  
 	  
-	  function DoSignUp() {
 
-			 if (idck == 0) {alert("이메일 중복 체크를 해주세요"); $("#mId").focus(); return; }
-			 if (pwck == 0) {alert("비밀번호 확인 체크를 해주세요"); $("#mPassword").focus(); return; }
-			 if (nickck == 0) {alert("닉네임 중복 체크를 해주세요"); $("#mNickname").focus(); return; }
-		  
-		  if (confirm("회원가입을 하시겠습니까?")) {
-			  location.href = "<c:url value='/member/insert'/>";
-		  }
-	  }
-	</script>
+	      
+	  </script>
+
 <body>
 
 
+
+<fieldset>
+		<label>로그인</label> <br>
+		<div id="googleLoginBtn" style="cursor: pointer">
+			<img id="googleLoginImg" src="<c:url value='/resources'/>/static/images/button.png"/>
+		</div>
+	</fieldset>
+	<br><br>
 회원가입 양식
-<form:form commandName="InsertCommand" action="${pageContext.request.contextPath}/member/insert" id="insertForm" >
+<form:form commandName="InsertCommand" action="${pageContext.request.contextPath}/member/kakaoInsert" id="insertForm" >
 
 <table border="1">
 		<tr>
-			<th>이메일</th><td><form:input path="mId" id="mId" placeholder="이메일 입력  "/><form:errors path="mId"/>
-				<button type="button" onclick="idCheck()">아이디 중복확인</button>
+			<th>이메일</th><td><form:input path="mId" id="mId" placeholder="이메일 입력  " onchange="idCheck()"/><form:errors path="mId"/>
+				<!-- button class="idDup" type="button" id="idDup" onclick="fn_idDup();" value="N">중복확인</button> -->
 				<span id="idSame"></span>
 				</td>
 		</tr>
 		<tr>
-			<th>비밀번호</th><td><form:password path="mPassword" id="mPassword"/><form:errors path="mPassword"/></td>
+			<th>비밀번호</th><td><form:password path="mPassword" id="mPassword" onchange="pwCheck()"/><form:errors path="mPassword"/></td>
 		</tr>
 		<tr>
-			<th>비밀번호 확인</th><td><form:password path="mPasswordCheck" id="mPasswordCheck"/><form:errors path="mPasswordCheck"/>
-			<button type="button" onclick="pwCheck()"> 비밀번호 확인 </button>
+			<th>비밀번호 확인</th><td><form:password path="mPasswordCheck" id="mPasswordCheck" onchange="pwCheck()"/><form:errors path="mPasswordCheck"/>
 			<span id="pwSame"></span>
 		</td>
 		</tr>
 		<tr>
-			<th>닉네임</th><td><form:input path="mNickname" id="mNickname"/><form:errors path="mNickname"/>
-			<button type="button" onclick="nickCheck()"> 닉네임 중복확인 </button>
+			<th>닉네임</th><td><form:input path="mNickname" id="mNickname" onchange="nickCheck()"/><form:errors path="mNickname"/>
+			<!-- 	<button class="nicknameDup" type="button" id="nicknameDup" onclick="fn_nicknameDup();" value="N">중복확인</button>-->
 			<span id="nickSame"></span>
 			</td>
 		</tr>
 		<tr>
 			<th>생년월일</th><td><form:input path="mBirthday" id="mBirthday" placeholder="yyyy-mm-dd" onchange="dateCheck()"/><form:errors path="mBirthday"/>
-			
 			<span id="date"></span>
 			</td>
 		</tr>
 		
 	</table>
 	<br>
-	
-	<input type="button" class="btn btn-lg btn-success btn-block" value="회원가입" onclick="DosignUp();" />
-
+	<input type="submit" value="회원가입" >
 </form:form>
 
 </body>
+
+<script>
+
+  	//구글 인증 서버로 인증코드 발급 요청
+const onClickGoogleLogin = (e) => {
+		window.location.replace("https://accounts.google.com/o/oauth2/v2/auth?client_id=구글클라이언트 id &redirect_uri=http:localhost:8080/exam/member/google/auth&response_type=code&scope=email%20profile%20openid&access_type=offline")
+	}
+	const googleLoginBtn = document.getElementById("googleLoginBtn");
+	googleLoginBtn.addEventListener("click", onClickGoogleLogin);
+</script>
 </html>
