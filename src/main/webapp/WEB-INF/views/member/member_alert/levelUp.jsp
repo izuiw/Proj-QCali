@@ -3,6 +3,6 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
 
-	alert("id : ${id}  /  level : ${level}");
+	alert("${nickname} 님   레벨 ${level}로 변경되었습니다.");
 	document.location.href="<c:url value='/board/list'/>";
 </script>

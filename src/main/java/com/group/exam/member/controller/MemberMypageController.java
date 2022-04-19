@@ -26,13 +26,13 @@ public class MemberMypageController {
 
 	private MemberService memberService;
 
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	public MemberMypageController(MemberService memberService, BCryptPasswordEncoder bcryptPasswordEncoder) {
+	public MemberMypageController(MemberService memberService, BCryptPasswordEncoder passwordEncoder) {
 
 		this.memberService = memberService;
-		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@GetMapping(value = "/confirmPwd")
@@ -47,8 +47,8 @@ public class MemberMypageController {
 		
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
-		String encodePassword = command.getmPassword();
-		boolean pwdEncode = bcryptPasswordEncoder.matches(memberPassword, encodePassword);
+		String encodePassword = command.getMemberPassword();
+		boolean pwdEncode = passwordEncoder.matches(memberPassword, encodePassword);
 
 		if (pwdEncode) {
 			return "/member/mypage";
@@ -69,51 +69,51 @@ public class MemberMypageController {
 			 Model model) {
 
 		if (bindingResult.hasErrors()) {
-			return "/member/changepwdForm";
+			return "/member/changePwdForm";
 		}
 		
 		// 비밀번호-비밀번호 확인 check
-		boolean pwdcheck = changepwdData.getmPassword().equals(changepwdData.getmPasswordCheck());
+		boolean pwdcheck = changepwdData.getMemberPassword().equals(changepwdData.getMemberPasswordCheck());
 		if (pwdcheck != true) {
-			return "/member/changepwdForm";
+			return "/member/changePwdForm";
 		}
 
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
 		// 임시 비밀번호와 같은지 체크
-		String encodePassword = command.getmPassword();
-		boolean pwdEncode = bcryptPasswordEncoder.matches(changepwdData.getmPassword(), encodePassword);
+		String encodePassword = command.getMemberPassword();
+		boolean pwdEncode = passwordEncoder.matches(changepwdData.getMemberPassword(), encodePassword);
 
 		if (pwdEncode) {
 
-			model.addAttribute("msg", "임시 비밀번호와 동일합니다.");
-			return "/member/changepwdForm";
+			model.addAttribute("msg", "기존 비밀번호와 동일합니다.");
+			return "/member/changePwdForm";
 		}
 
 		// 기존 비밀번호와 같은지 체크
-		encodePassword = command.getmBpw();
-		pwdEncode = bcryptPasswordEncoder.matches(changepwdData.getmPassword(), encodePassword);
+		encodePassword = command.getMemberBpw();
+		pwdEncode = passwordEncoder.matches(changepwdData.getMemberPassword(), encodePassword);
 
 		if (pwdEncode) {
 			model.addAttribute("msg", "기존 비밀번호와 동일합니다.");
-			return "/member/changepwdForm";
+			return "/member/changePwdForm";
 		}
 
-		String updateEncodePassword = bcryptPasswordEncoder.encode(changepwdData.getmPassword());
+		String updateEncodePassword = passwordEncoder.encode(changepwdData.getMemberPassword());
 
-		int result = memberService.updateMemberPwd(updateEncodePassword, command.getmSeq());
+		int result = memberService.updateMemberPwd(updateEncodePassword, command.getMemberSeq());
 
 		if (result != 1) {
 			System.out.println("비밀번호 변경 실패");
-			return "redirect:/board/list";
+			return "/errors/mypageChangeError";
 		}
 
 		// 세션 로그인 정보
-		LoginCommand login = memberService.login(command.getmId());
+		LoginCommand login = memberService.login(command.getMemberId());
 
 		session.setAttribute("memberLogin", login);
 
-		return "/member/member_tmp/changenext";
+		return "/member/member_alert/changeNext";
 	}
 	
 	
@@ -121,32 +121,32 @@ public class MemberMypageController {
 	@GetMapping(value = "/changeNickname")
 	public String changeNickname(HttpSession session) {
 		
-		return "/member/changenicknameForm";
+		return "/member/changeNicknameForm";
 	}
 
 	
 	@PostMapping(value = "/changeNickname")
-	public String changeNickname(@RequestParam(required = false) String mNickname, HttpSession session,Model model) {
+	public String changeNickname(@RequestParam(required = false) String memberNickname, HttpSession session,Model model) {
 		
-		if (mNickname == null) {
+		if (memberNickname == null) {
 			model.addAttribute("msg", "변경 할 닉네임을 입력해 주세요.");
-			return "/member/changenicknameForm";
+			return "/member/changeNicknameForm";
 		}
 		
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 		
-		int result = memberService.updateMemberNickname(mNickname, command.getmSeq());
+		int result = memberService.updateMemberNickname(memberNickname, command.getMemberSeq());
 		
 		if (result != 1) {
 			System.out.println("닉네임 변경 실패");
-			return "errors/error";//에러 페이지 
+			return "errors/mypageChangeError";//에러 페이지 
 		}
 		
 		// 세션 로그인 정보
-		LoginCommand login = memberService.login(command.getmId());
+		LoginCommand login = memberService.login(command.getMemberId());
 
 		session.setAttribute("memberLogin", login);
-		return "/member/member_tmp/changenext";
+		return "/member/member_alert/changeNext";
 	}
 	
 	
@@ -164,19 +164,19 @@ public class MemberMypageController {
 
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
-		String encodePassword = command.getmPassword();
-		boolean pwdEncode = bcryptPasswordEncoder.matches(memberPassword, encodePassword);
+		String encodePassword = command.getMemberPassword();
+		boolean pwdEncode = passwordEncoder.matches(memberPassword, encodePassword);
 
 		if (pwdEncode) {
 
-			int result = memberService.deleteMember(command.getmSeq());
+			int result = memberService.deleteMember(command.getMemberSeq());
 
 			if (result != 1) {
 				System.out.println("회원 탈퇴 실패");
-				return "member/deleteForm";
+				return "errors/mypageChangeError";
 			}
 
-			return "/member/member_tmp/memberDeletenext";
+			return "/member/member_alert/memberDeleteNext";
 
 		}
 		model.addAttribute("msg", "비밀번호가 다릅니다.");

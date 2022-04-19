@@ -2,39 +2,36 @@ package com.group.exam.board.command;
 
 public class QuestionAdayCommand {
 
-	private String qContent;
-	private int qSeq;
-	private String qStatus;
-	private int mSeq;
-	public String getqContent() {
-		return qContent;
+	private String questionContent;
+	private int questionSeq;
+	private String questionStatus;
+	private int memberSeq;
+	public String getQuestionContent() {
+		return questionContent;
 	}
-	public void setqContent(String qContent) {
-		this.qContent = qContent;
+	public void setQuestionContent(String questionContent) {
+		this.questionContent = questionContent;
 	}
-	public int getqSeq() {
-		return qSeq;
+	public int getQuestionSeq() {
+		return questionSeq;
 	}
-	public void setqSeq(int qSeq) {
-		this.qSeq = qSeq;
+	public void setQuestionSeq(int questionSeq) {
+		this.questionSeq = questionSeq;
 	}
-	public String getqStatus() {
-		return qStatus;
+	public String getQuestionStatus() {
+		return questionStatus;
 	}
-	public void setqStatus(String qStatus) {
-		this.qStatus = qStatus;
+	public void setQuestionStatus(String questionStatus) {
+		this.questionStatus = questionStatus;
 	}
-	public int getmSeq() {
-		return mSeq;
+	public int getMemberSeq() {
+		return memberSeq;
 	}
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
 	}
-	@Override
-	public String toString() {
-		return "QuestionAdayCommand [qContent=" + qContent + ", qSeq=" + qSeq + ", qStatus=" + qStatus + ", mSeq="
-				+ mSeq + "]";
-	}
+
+	
 	
 
 	

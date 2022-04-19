@@ -38,23 +38,22 @@ li {
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${memberLogin.mSeq}</td>
-				<td>${memberLogin.mId}</td>
-				<td>${memberLogin.mNickname}</td>
-				<td>${memberLogin.mBirthday}</td>
-				<td>${memberLogin.mRegday}</td>
-				<td>${memberLogin.mAuth}</td>
-				<td>${memberLogin.mLevel}</td>
+				<td>${memberLogin.memberSeq}</td>
+				<td>${memberLogin.memberId}</td>
+				<td>${memberLogin.memberNickname}</td>
+				<td>${memberLogin.memberBirthDay}</td>
+				<td>${memberLogin.memberRegDay}</td>
+				<td>${memberLogin.memberAuth}</td>
+				<td>${memberLogin.memberLevel}</td>
 
 
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
 		<a href="<c:url value='/board/write'/>"><button>글쓰기</button></a>
-		<a href="<c:url value='/board/write'/>"><button>특정 날짜 글
-				모아보기</button></a>
+	
 		<a
-			href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가
+			href="<c:url value='/board/mylist?memberSeq=${memberLogin.memberSeq}'/>"><button>내가
 				쓴 글 모아보기</button></a>
 
 
@@ -88,18 +87,18 @@ li {
 		<c:if test="${ !empty list}">
 			<c:forEach var="list" items="${list}">
 				<tr>
-					<td>${list.bSeq}</td>
+					<td>${list.boardSeq}</td>
 
-					<td><a href="<c:url value='/board/detail?bSeq=${list.bSeq}'/>">${list.bTitle}</a>
+					<td><a href="<c:url value='/board/detail?boardSeq=${list.boardSeq}'/>">${list.boardTitle}</a>
 
 					</td>
 
 
-					<td>${list.mNickname}</td>
-					<td>${list.bRegday}</td>
-					<td>${list.bLike}</td>
-					<td>${list.bCount}</td>
-					<td>${list.mSeq}</td>
+					<td>${list.memberNickname}</td>
+					<td>${list.boardRegday}</td>
+					<td>${list.boardLike}</td>
+					<td>${list.boardCount}</td>
+					<td>${list.memberSeq}</td>
 				</tr>
 
 			</c:forEach>
@@ -109,19 +108,19 @@ li {
 			<ul class="pagination">
 				<c:if test="${pageMaker.prev }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/mylist${pageMaker.makeQuery(pageMaker.startPage - 1) }&mSeq=${memberLogin.mSeq}'/>">Previous</a>
+						href="<c:url value='/board/mylist${pageMaker.makeQuery(pageMaker.startPage - 1) }&memberSeq=${memberLogin.memberSeq}'/>">Previous</a>
 					</li>
 				</c:if>
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/mylist${pageMaker.makeQuery(currentPage) }&mSeq=${memberLogin.mSeq}'/>">${currentPage }</a></li>
+						href="<c:url value='/board/mylist${pageMaker.makeQuery(currentPage) }&memberSeq=${memberLogin.memberSeq}'/>">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next }">
 					<li class="pagination_button"><a
-						href="<c:url value='/board/listmy${pageMaker.makeQuery(pageMaker.endPage + 1) }&mSeq=${memberLogin.mSeq}'/>">Next</a>
+						href="<c:url value='/board/listmy${pageMaker.makeQuery(pageMaker.endPage + 1) }&memberSeq=${memberLogin.memberSeq}'/>">Next</a>
 					</li>
 				</c:if>
 			</ul>

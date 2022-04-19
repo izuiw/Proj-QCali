@@ -24,22 +24,22 @@ public class MemberQuestionController {
 	}
 	
 	@RequestMapping(value = "/member/questionAdd", method = RequestMethod.POST)
-	public String questionAdd (@RequestParam(required = false) String qContent, HttpSession session, Model model) {
+	public String questionAdd (@RequestParam(required = false) String questionContent, HttpSession session, Model model) {
 		
-		if (qContent == null) {
+		if (questionContent == null) {
 			model.addAttribute("msg", "내용을 입력해 주세요.");
 			return "/member/questionAddForm";
 		}
 		
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 		
-		int result = memberService.memberQuestionAdd(qContent, command.getmSeq());
+		int result = memberService.memberQuestionAdd(questionContent, command.getMemberSeq());
 		
 		if(result != 1) {
-			return "errors/ "; //업데이트 에러페이지
+			return "errors/questionError"; //업데이트 에러페이지
 		}
 		
-		return "/member/member_tmp/questionAddnext";
+		return "/member/member_alert/questionAddNext";
 	}
 	
 	

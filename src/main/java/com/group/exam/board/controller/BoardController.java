@@ -28,7 +28,7 @@ import com.group.exam.board.command.BoardupdateCommand;
 import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.service.BoardService;
-import com.group.exam.board.vo.BoardLikeVo;
+import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.service.MemberService;
@@ -69,37 +69,37 @@ public class BoardController {
 
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
-		boolean memberAuth = boardService.memberAuth(loginMember.getmSeq()).equals("F");
+		boolean memberAuth = boardService.memberAuth(loginMember.getMemberSeq()).equals("F");
 		if (memberAuth == true) {
-			return "redirect: /exam/"; // 이메일 인증 x -> 예외 페이지
+			return "errors/memberAuthError"; // 이메일 인증 x -> 예외 페이지
 
 		}
 
 		// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-		boardVo.setmSeq(loginMember.getmSeq());
+		boardVo.setMemberSeq(loginMember.getMemberSeq());
 
 		// insert
 		boardService.insertBoard(boardVo);
 
 		// update
 
-		int mytotal = boardService.mylistCount(loginMember.getmSeq());
+		int mytotal = boardService.mylistCount(loginMember.getMemberSeq());
 
 		if (mytotal >= 10) {
-			int memberLevel = boardService.memberLevelup(loginMember.getmSeq(), mytotal, loginMember.getmLevel());
+			int memberLevel = boardService.memberLevelup(loginMember.getMemberSeq(), mytotal, loginMember.getMemberLevel());
 
 			if (memberLevel == 1) {
 
-				LoginCommand member = memberService.login(loginMember.getmId());
+				LoginCommand member = memberService.login(loginMember.getMemberId());
 
 				LoginCommand login = member;
 
 				session.setAttribute("memberLogin", login);
 
-				model.addAttribute("level", login.getmLevel());
-				model.addAttribute("id", login.getmId());
+				model.addAttribute("level", login.getMemberLevel());
+				model.addAttribute("nickname", login.getMemberNickname());
 
-				return "/board/leverup";
+				return "/member/member_alert/levelUp";
 
 			}
 		}
@@ -134,7 +134,7 @@ public class BoardController {
 
 
 		List<BoardlistCommand> list = boardService.boardList(cri);
-		System.out.println("list " + list);
+	
 		model.addAttribute("list", list);
 
 		//model.addAttribute("currentPage", currentPage);
@@ -151,8 +151,8 @@ public class BoardController {
 		logger.info("" + num);
 		QuestionAdayCommand question = boardService.questionselect(num);
 
-		System.out.println(question);
-		System.out.println("num +" + num);
+
+
 		model.addAttribute("question", question);
 
 		return "board/list";
@@ -166,15 +166,15 @@ public class BoardController {
 
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/mylist")
-	public String boardListMy(@RequestParam("mSeq") int mSeq, Model model, Criteria cri,
+	public String boardListMy(@RequestParam("memberSeq") int memberSeq, Model model, Criteria cri,
 			HttpSession session) {
 
 
-		int total = boardService.mylistCount(mSeq);
+		int total = boardService.mylistCount(memberSeq);
 
 		
 
-		List<BoardlistCommand> list = boardService.boardMyList(cri, mSeq);
+		List<BoardlistCommand> list = boardService.boardMyList(cri, memberSeq);
 		model.addAttribute("list", list);
 
 	
@@ -188,33 +188,34 @@ public class BoardController {
 
 	// 게시글 디테일
 	@GetMapping(value = "/detail")
-	public String boardListDetail(@RequestParam int bSeq, Model model, HttpSession session) {
+	public String boardListDetail(@RequestParam int boardSeq, Model model, HttpSession session) {
 
-		boardService.boardCountup(bSeq);
+		boardService.boardCountup(boardSeq);
 
-		BoardlistCommand list = boardService.boardListDetail(bSeq);
-
+		BoardlistCommand list = boardService.boardListDetail(boardSeq);
+		boolean myArticle = false;
 		// 세션 값 loginMember에 저장
 
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-			int mSeq = loginMember.getmSeq();
+			int memberSeq = loginMember.getMemberSeq();
 			// 세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
-			if (mSeq == list.getmSeq()) {
-				boolean my = true;
-				model.addAttribute("my", my);
+			if (memberSeq == list.getMemberSeq()) {
+				myArticle = true;
 			}
+			
+			model.addAttribute("myArticle", myArticle);
 		}
 
 		model.addAttribute("list", list);
-		model.addAttribute("bSeq", bSeq);
+		model.addAttribute("boardSeq", boardSeq);
 
-		BoardLikeVo likeVo = new BoardLikeVo();
+		BoardHeartVo likeVo = new BoardHeartVo();
 
-		likeVo.setbSeq(bSeq);
-		likeVo.setmSeq(loginMember.getmSeq());
+		likeVo.setBoardSeq(boardSeq);
+		likeVo.setMemeberSeq(loginMember.getMemberSeq());
 
 		int boardlike = boardService.getBoardLike(likeVo);
 
@@ -229,10 +230,10 @@ public class BoardController {
 
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
-		BoardLikeVo likeVo = new BoardLikeVo();
+		BoardHeartVo likeVo = new BoardHeartVo();
 
-		likeVo.setbSeq(command.getbSeq());
-		likeVo.setmSeq(loginMember.getmSeq());
+		likeVo.setBoardSeq(command.getBoardSeq());
+		likeVo.setMemeberSeq(loginMember.getMemberSeq());
 
 		if (command.getHeart() >= 1) {
 			boardService.deleteBoardLike(likeVo);
@@ -271,17 +272,17 @@ public class BoardController {
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-			int mSeq = loginMember.getmSeq();
-			int bSeq = updateCommand.getbSeq();
+			
+			int boardSeq = updateCommand.getBoardSeq();
 
-			BoardlistCommand list = boardService.boardListDetail(bSeq);
+			BoardlistCommand list = boardService.boardListDetail(boardSeq);
 
 			model.addAttribute("list", list);
-			boardService.updateBoard(updateCommand.getbTitle(), updateCommand.getbContent(), bSeq);
+			boardService.updateBoard(updateCommand.getBoardTitle(), updateCommand.getBoardContent(), boardSeq);
 			System.out.println(" 수정 성공");
 		} else {
 			System.out.println("수정 실패");
-			// return errors - 삭제 실패
+			return "errors/mypageChangeError";
 		}
 
 		return "redirect:/board/list";
@@ -289,19 +290,19 @@ public class BoardController {
 
 	// 게시글 삭제
 	@GetMapping(value = "/delete")
-	public String boardDelect(@RequestParam int bSeq, Model model, HttpSession session, Criteria cri) {
+	public String boardDelect(@RequestParam int boardSeq, Model model, HttpSession session, Criteria cri) {
 
 		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-			int mSeq = loginMember.getmSeq();
-			boardService.deleteBoardOne(bSeq, mSeq);
+			int memberSeq = loginMember.getMemberSeq();
+			boardService.deleteBoardOne(boardSeq, memberSeq);
 			System.out.println("삭제 성공");
 		} else {
 			System.out.println("삭제 실패");
-			// return errors - 삭제 실패
+			return "errors/mypageChangeError";
 		}
 
 		return "redirect:/board/list";

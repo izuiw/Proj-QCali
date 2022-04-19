@@ -10,7 +10,7 @@ import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.dao.BoardDao;
-import com.group.exam.board.vo.BoardLikeVo;
+import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -40,11 +40,11 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public List<BoardlistCommand> boardMyList(Criteria cri, int mSeq) {
+	public List<BoardlistCommand> boardMyList(Criteria cri, int memberSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
 	
-		map.put("mSeq", mSeq);
+		map.put("memberSeq", memberSeq);
 		map.put("rowStart", cri.getRowStart());
 		map.put("rowEnd", cri.getRowEnd());
 		return boardDao.boardMyList(map);
@@ -52,20 +52,20 @@ public class BoardServiceImpl implements BoardService{
 	
 
 	@Override
-	public BoardlistCommand boardListDetail(int bSeq) {
+	public BoardlistCommand boardListDetail(int boardSeq) {
 		// TODO Auto-generated method stub
-		return boardDao.boardListDetail(bSeq);
+		return boardDao.boardListDetail(boardSeq);
 	}
 	
 
 
 	@Override
-	public void deleteBoardOne(int bSeq, int mSeq) {
+	public void deleteBoardOne(int boardSeq, int memberSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		
-		map.put("bSeq", bSeq);
-		map.put("mSeq", mSeq);
+		map.put("boardSeq", boardSeq);
+		map.put("memberSeq", memberSeq);
 		boardDao.deleteBoardOne(map);
 		
 		
@@ -75,10 +75,10 @@ public class BoardServiceImpl implements BoardService{
 
 	//게시물 조횟수 up
 	@Override
-	public void boardCountup(int bSeq) {
+	public void boardCountup(int boardSeq) {
 		// TODO Auto-generated method stub
 
-		boardDao.boardCountup(bSeq);
+		boardDao.boardCountup(boardSeq);
 		
 	}
 
@@ -91,12 +91,12 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public void updateBoard(String bTitle, String bContent, int bSeq) {
+	public void updateBoard(String boardTitle, String boardContent, int boardSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("bTitle", bTitle);
-		map.put("bContent", bContent);
-		map.put("bSeq", bSeq);
+		map.put("boardTitle", boardTitle);
+		map.put("boardContent", boardContent);
+		map.put("boardSeq", boardSeq);
 		
 		boardDao.updateBoard(map);
 		
@@ -104,52 +104,52 @@ public class BoardServiceImpl implements BoardService{
 
 
 	@Override
-	public int mylistCount(int mSeq) {
+	public int mylistCount(int memberSeq) {
 		// TODO Auto-generated method stub
-		return boardDao.boardMylistCount(mSeq);
+		return boardDao.boardMylistCount(memberSeq);
 	}
 
 
 	@Override
-	public void insertBoardLike(BoardLikeVo vo) {
+	public void insertBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		boardDao.insertBoardLike(vo);
-		boardDao.updateBoardLike(vo.getbSeq());
+		boardDao.updateBoardLike(vo.getBoardSeq());
 		
 	}
 
 
 	@Override
-	public void deleteBoardLike(BoardLikeVo vo) {
+	public void deleteBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		boardDao.deleteBoardLike(vo);
-		boardDao.updateBoardLike(vo.getbSeq());
+		boardDao.updateBoardLike(vo.getBoardSeq());
 		
 	}
 
 
 	@Override
-	public int getBoardLike(BoardLikeVo vo) {
+	public int getBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		return boardDao.getBoardLike(vo);
 	}
 
 
 	@Override
-	public String memberAuth(int mSeq) {
+	public String memberAuth(int memberSeq) {
 		// TODO Auto-generated method stub
-		return boardDao.memberAuth(mSeq);
+		return boardDao.memberAuth(memberSeq);
 	}
 
 
 	@Override
-	public int memberLevelup(int mSeq, int mytotal, int mLevel) {
+	public int memberLevelup(int memberSeq, int mytotal, int memberLevel) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("mSeq", mSeq);
+		map.put("memberSeq", memberSeq);
 		map.put("mytotal", mytotal);
-		map.put("mLevel", mLevel);
+		map.put("memberLevel", memberLevel);
 		
 		return boardDao.memberLevelup(map);
 		

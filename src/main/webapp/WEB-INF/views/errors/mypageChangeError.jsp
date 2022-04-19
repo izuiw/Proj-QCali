@@ -2,6 +2,6 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
-	alert("회원 탈퇴 성공");
-	document.location.href="<c:url value='/'/>";
+	alert("회원 정보 수정 에러! \n 메인 화면으로 돌아갑니다.");
+	document.location.href="<c:url value='/exam/'/>";
 </script>

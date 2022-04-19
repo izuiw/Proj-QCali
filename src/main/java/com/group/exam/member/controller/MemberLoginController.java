@@ -22,11 +22,18 @@ import com.group.exam.member.vo.MemberVo;
 @Controller
 public class MemberLoginController {
 	
-	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	
+	private MemberService memberService;
 	
 	@Autowired
-	private MemberService memberService;
+	public MemberLoginController(BCryptPasswordEncoder passwordEncoder, MemberService memberService ) {
+		// TODO Auto-generated constructor stub
+		this.passwordEncoder = passwordEncoder;
+		this.memberService = memberService;
+	}
 
 	@RequestMapping(value="/member/login", method=RequestMethod.GET)
 	public String handleLogin(@ModelAttribute("loginMemberData") LoginCommand logincommand) {
@@ -42,17 +49,17 @@ public class MemberLoginController {
 		}
 		
 		
-		LoginCommand member = memberService.login(command.getmId());
+		LoginCommand member = memberService.login(command.getMemberId());
 		
 		
 	
-		String password = command.getmPassword();
+		String password = command.getMemberPassword();
 		
 		LoginCommand login = member;
 		
 		//로그인 (비밀번호 암호화 했을 때)
-		String encodePassword = member.getmPassword();
-		boolean pwdEncode= bcryptPasswordEncoder.matches(password, encodePassword);
+		String encodePassword = member.getMemberPassword();
+		boolean pwdEncode= passwordEncoder.matches(password, encodePassword);
 	
 		
 		
@@ -64,6 +71,7 @@ public class MemberLoginController {
 			return "redirect:/board/list";
 		} else {
 			System.out.println("로그인 정보 없음 or 비밀번호 불일치 : " + member);
+			
 			model.addAttribute("msg", "해당 회원 정보가 없습니다.");
 			return "/member/loginForm";
 		}

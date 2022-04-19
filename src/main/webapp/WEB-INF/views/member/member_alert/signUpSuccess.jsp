@@ -8,7 +8,7 @@
 </head>
 <body>
 이메일 인증 성공! 회원가입이 완료되었습니다.<br><br>
-<a href="${pageContext.request.contextPath }/main">메인 페이지로 이동 </a>
+<a href="${pageContext.request.contextPath }/exam/">메인 페이지로 이동 </a>
 
 </body>
 </html>

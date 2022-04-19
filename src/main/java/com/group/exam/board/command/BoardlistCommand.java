@@ -4,82 +4,71 @@ import java.util.Date;
 
 public class BoardlistCommand {
 	
-	private int bSeq;
-	private String bTitle;
-	private Date bRegday;
-	private int bLike;
-	private int bCount;
-	private String mNickname;
-	private String bContent;
-	private int mSeq;
+	private int boardSeq;
+	private String boardTitle;
+	private Date boardRegday;
+	private int boardLike;
+	private int boardCount;
+	private String memberNickname;
+	private String boardContent;
+	private int memberSeq;
 	
 	
-	
-	
-	public int getmSeq() {
-		return mSeq;
+	public int getBoardSeq() {
+		return boardSeq;
 	}
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
+	public void setBoardSeq(int boardSeq) {
+		this.boardSeq = boardSeq;
 	}
-	public int getbSeq() {
-		return bSeq;
+	public String getBoardTitle() {
+		return boardTitle;
 	}
-	public void setbSeq(int bSeq) {
-		this.bSeq = bSeq;
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
-	public String getbTitle() {
-		return bTitle;
+	public Date getBoardRegday() {
+		return boardRegday;
 	}
-	public void setbTitle(String bTitle) {
-		this.bTitle = bTitle;
+	public void setBoardRegday(Date boardRegday) {
+		this.boardRegday = boardRegday;
 	}
-	public Date getbRegday() {
-		return bRegday;
+	public int getBoardLike() {
+		return boardLike;
 	}
-	public void setbRegday(Date bRegday) {
-		this.bRegday = bRegday;
+	public void setBoardLike(int boardLike) {
+		this.boardLike = boardLike;
 	}
-	public int getbLike() {
-		return bLike;
+	public int getBoardCount() {
+		return boardCount;
 	}
-	public void setbLike(int bLike) {
-		this.bLike = bLike;
+	public void setBoardCount(int boardCount) {
+		this.boardCount = boardCount;
 	}
-	public int getbCount() {
-		return bCount;
+	public String getMemberNickname() {
+		return memberNickname;
 	}
-	public void setbCount(int bCount) {
-		this.bCount = bCount;
+	public void setMemberNickname(String memberNickname) {
+		this.memberNickname = memberNickname;
 	}
-	public String getmNickname() {
-		return mNickname;
+	public String getBoardContent() {
+		return boardContent;
 	}
-	public void setmNickname(String mNickname) {
-		this.mNickname = mNickname;
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
 	}
-	
-	
-	public String getbContent() {
-		return bContent;
+	public int getMemberSeq() {
+		return memberSeq;
 	}
-	public void setbContent(String bContent) {
-		this.bContent = bContent;
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
 	}
 	@Override
 	public String toString() {
-		return "ListAdayCommand [bSeq=" + bSeq + ", bTitle=" + bTitle + ", bRegday=" + bRegday + ", bLike=" + bLike
-				+ ", bCount=" + bCount + ", mNickname=" + mNickname + "]";
+		return "BoardlistCommand [boardSeq=" + boardSeq + ", boardTitle=" + boardTitle + ", boardRegday=" + boardRegday
+				+ ", boardLike=" + boardLike + ", boardCount=" + boardCount + ", memberNickname=" + memberNickname
+				+ ", boardContent=" + boardContent + ", memberSeq=" + memberSeq + "]";
 	}
-
-	
-	
-	
-
-
-	
-	
-	
+		
 	
 	
 	

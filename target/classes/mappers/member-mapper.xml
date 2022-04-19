@@ -4,7 +4,7 @@
 
 <mapper namespace="MemberDao">
 
-	<resultMap type="com.group.exam.member.command.LoginCommand"
+	<!-- <resultMap type="com.group.exam.member.command.LoginCommand"
 		id="memberLoginCommand">
 		<result property="mSeq" column="MEMBER_SEQ" />
 		<result property="mId" column="MEMBER_ID" />
@@ -17,87 +17,87 @@
 		<result property="mLevel" column="MEMBER_LEVEL" />
 
 	</resultMap>
-
+ -->
 
 	<!-- 로그인 관련 -->
 	<select id="login" parameterType="String"
-		resultMap="memberLoginCommand">
+		resultType="com.group.exam.member.command.LoginCommand">
 		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_BPW
 		,MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH,
-		MEMBER_LEVEL from MEMBER where MEMBER_ID = #{mId}
+		MEMBER_LEVEL from MEMBER where MEMBER_ID = #{memberId}
 	</select>
 
 	<!-- 비밀번호 찾기 관련 -->
 
 	<select id="findPwd" parameterType="String"
-		resultMap="memberLoginCommand">
-		select * from MEMBER where MEMBER_ID = #{mId}
+		resultType="com.group.exam.member.command.LoginCommand">
+		select * from MEMBER where MEMBER_ID = #{memberId}
 	</select>
 
 	<update id="updateTmpPwd" parameterType="HashMap">
 		update MEMBER set
-		MEMBER_PASSWORD = #{tmpPwd} where MEMBER_ID = #{mId}
+		MEMBER_PASSWORD = #{tmpPwd} where MEMBER_ID = #{memberId}
 	</update>
 
 
 	<!-- 회원가입 관련 -->
 
-	<insert id="insert" parameterType="memberVo">
+	<insert id="memberInsert" parameterType="memberVo">
 		INSERT INTO member
 		(member_seq, member_id, member_password, member_bpw, member_nickname,
 		member_birth_day, member_reg_day)
 		VALUES
-		(member_seq.nextval, #{mId},
-		#{mPassword}, #{mPassword}, #{mNickname}, #{mBirthday}, SYSDATE)
+		(member_seq.nextval, #{memberId},
+		#{memberPassword}, #{memberPassword}, #{memberNickname}, #{memberBirthDay}, SYSDATE)
 	</insert>
 
-	<select id="idDup" parameterType="String" resultType="int">
+	<select id="idDup" parameterType="String" resultType="Integer">
 		SELECT
-		COUNT(*) FROM member WHERE member_id = #{mId}
+		COUNT(*) FROM member WHERE member_id = #{memberId}
 	</select>
 
-	<select id="nicknameDup" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM member WHERE member_nickname = #{mNickname}
+	<select id="nicknameDup" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) FROM member WHERE member_nickname = #{memberNickname}
 	</select>
 
 	<update id="updateAuthkey" parameterType="memberVo">
 		UPDATE
-		member SET member_authkey = #{mAuthkey} WHERE member_id = #{mId}
+		member SET member_authkey = #{memberAuthkey} WHERE member_id = #{memberId}
 	</update>
 
 	<update id="updateAuth" parameterType="memberVo">
 		UPDATE member
-		SET member_auth = #{mAuth} WHERE member_authkey = #{mAuthkey}
+		SET member_auth = #{memberAuth} WHERE member_authkey = #{memberAuthkey}
 	</update>
 
 	<!-- 회원 정보 변경 관련 -->
 	<update id="updateMemberPwd" parameterType="HashMap">
 		UPDATE
-		member SET MEMBER_PASSWORD = #{mPassword}, MEMBER_BPW = #{mPassword}
-		WHERE member_seq = #{mSeq}
+		member SET MEMBER_PASSWORD = #{memberPassword}, MEMBER_BPW = #{memberPassword}
+		WHERE member_seq = #{memberSeq}
 	</update>
 
 	<update id="updateMemberNickname" parameterType="HashMap">
-		UPDATE member SET MEMBER_NICKNAME = #{mNickname} WHERE member_seq =
-		#{mSeq}
+		UPDATE member SET MEMBER_NICKNAME = #{memberNickname} WHERE member_seq =
+		#{memberSeq}
 	</update>
 
 	<delete id="deleteMember" parameterType="Integer">
 		DELETE MEMBER WHERE
-		MEMBER_SEQ = #{mSeq}
+		MEMBER_SEQ = #{memberSeq}
 	</delete>
 
 	<!-- 회원 질문 등록 -->
 	<insert id="memberQuestionAdd"
 		parameterType="HashMap">
 		INSERT INTO QUESTION(QUESTION_SEQ, QUESTION_CONTENT, MEMBER_SEQ)
-		VALUES (Q_SEQ.nextval, #{qContent}, #{mSeq})
+		VALUES (Q_SEQ.nextval, #{questionContent}, #{memberSeq})
 	</insert>
 	
 		<!-- 멤버 AUTH 상태 확인 -->
 	<select id="memberAuth" parameterType="Integer"
 		resultType="String">
-		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{mSeq}
+		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{memberSeq}
 
 	</select>
 

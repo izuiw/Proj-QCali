@@ -7,61 +7,67 @@ import org.hibernate.validator.constraints.NotBlank;
 public class InsertCommand {
 	@NotBlank(message="이메일을 입력하세요.")
 	@Email(message="형식에 맞게 입력하세요.")
-	private String mId ;
+	private String memberId ;
 	
 	@NotBlank(message="비밀번호를 입력하세요.")
-	private String mPassword;
+	private String memberPassword;
 	@NotBlank(message="비밀번호를 입력하세요.")
-	private String mPasswordCheck;
+	private String memberPasswordCheck;
 	@NotBlank(message="닉네임을 입력하세요.")
-	private String mNickname;
+	private String memberNickname;
 	@NotBlank(message="생년월일을 입력하세요.")
-	private String mBirthday;
+	private String memberBirthDay;
 	
-	private String mAuthkey;
-	
-	
-	public String getmAuthkey() {
-		return mAuthkey;
+	private String memberAuthkey;
+
+	public String getMemberId() {
+		return memberId;
 	}
-	public void setmAuthkey(String mAuthkey) {
-		this.mAuthkey = mAuthkey;
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
-	public String getmId() {
-		return mId;
+
+	public String getMemberPassword() {
+		return memberPassword;
 	}
-	public void setmId(String mId) {
-		this.mId = mId;
+
+	public void setMemberPassword(String memberPassword) {
+		this.memberPassword = memberPassword;
 	}
-	public String getmPassword() {
-		return mPassword;
+
+	public String getMemberPasswordCheck() {
+		return memberPasswordCheck;
 	}
-	public void setmPassword(String mPassword) {
-		this.mPassword = mPassword;
+
+	public void setMemberPasswordCheck(String memberPasswordCheck) {
+		this.memberPasswordCheck = memberPasswordCheck;
 	}
-	public String getmPasswordCheck() {
-		return mPasswordCheck;
+
+	public String getMemberNickname() {
+		return memberNickname;
 	}
-	public void setmPasswordCheck(String mPasswordCheck) {
-		this.mPasswordCheck = mPasswordCheck;
+
+	public void setMemberNickname(String memberNickname) {
+		this.memberNickname = memberNickname;
 	}
-	public String getmNickname() {
-		return mNickname;
+
+	public String getMemberBirthDay() {
+		return memberBirthDay;
 	}
-	public void setmNickname(String mNickname) {
-		this.mNickname = mNickname;
+
+	public void setMemberBirthday(String memberBirthDay) {
+		this.memberBirthDay = memberBirthDay;
 	}
-	public String getmBirthday() {
-		return mBirthday;
+
+	public String getMemberAuthkey() {
+		return memberAuthkey;
 	}
-	public void setmBirthday(String mBirthday) {
-		this.mBirthday = mBirthday;
+
+	public void setMemberAuthkey(String memberAuthkey) {
+		this.memberAuthkey = memberAuthkey;
 	}
-	@Override
-	public String toString() {
-		return "InsertCommand [mId=" + mId + ", mPassword=" + mPassword + ", mPasswordCheck=" + mPasswordCheck
-				+ ", mNickname=" + mNickname + ", mBirthday=" + mBirthday + ", mAuthkey=" + mAuthkey + "]";
-	}
+
 
 	
 	

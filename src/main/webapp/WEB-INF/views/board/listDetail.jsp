@@ -28,13 +28,13 @@
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${memberLogin.mSeq}</td>
-				<td>${memberLogin.mId}</td>
-				<td>${memberLogin.mNickname}</td>
-				<td>${memberLogin.mBirthday}</td>
-				<td>${memberLogin.mRegday}</td>
-				<td>${memberLogin.mAuth}</td>
-				<td>${memberLogin.mLevel}</td>
+				<td>${memberLogin.memberSeq}</td>
+				<td>${memberLogin.memberId}</td>
+				<td>${memberLogin.memberNickname}</td>
+				<td>${memberLogin.memberBirthDay}</td>
+				<td>${memberLogin.memberRegDay}</td>
+				<td>${memberLogin.memberAuth}</td>
+				<td>${memberLogin.memberLevel}</td>
 
 
 			</tr>
@@ -66,15 +66,15 @@
 		<c:if test="${ !empty list}">
 
 			<tr>
-				<td>${list.bSeq}</td>
+				<td>${list.boardSeq}</td>
 
-				<td>${list.bTitle}</td>
-				<td>${list.bContent}</td>
+				<td>${list.boardTitle}</td>
+				<td>${list.boardContent}</td>
 
-				<td>${list.mNickname}</td>
-				<td>${list.bRegday}</td>
-				<td>${list.bLike}</td>
-				<td>${list.bCount}</td>
+				<td>${list.memberNickname}</td>
+				<td>${list.boardRegday}</td>
+				<td>${list.boardLike}</td>
+				<td>${list.boardCount}</td>
 			</tr>
 
 			<div style="text-align: right;">
@@ -87,13 +87,13 @@
 
 
 
-			<c:if test="${!empty my}">
+			<c:if test="${myArticle == true}">
 
-				<a href="<c:url value='/board/edit?bSeq=${list.bSeq}'/>"><button>글
+				<a href="<c:url value='/board/edit?boardSeq=${list.boardSeq}'/>"><button>글
 						수정</button></a>
 
 
-				<a href="<c:url value='/board/delete?bSeq=${list.bSeq}'/>"><button
+				<a href="<c:url value='/board/delete?boardSeq=${list.boardSeq}'/>"><button
 						onclick="button_event();">글 삭제</button></a>
 
 
@@ -123,7 +123,7 @@
 				var that = $(".heart");
 				console.log(that.prop('name'));
 				var sendData = {
-					'bSeq' : '${bSeq}',
+					'boardSeq' : '${boardSeq}',
 					'heart' : that.prop('name'),
 				};
 				$.ajax({

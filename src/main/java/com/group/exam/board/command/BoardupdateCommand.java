@@ -1,49 +1,42 @@
 package com.group.exam.board.command;
 
-import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-//@Alias("BoardupdateCommand")
+
 public class BoardupdateCommand {
 	
-	private int bSeq;
-	private int mSeq;
+	private int boardSeq;
+	private int memberSeq;
 	@NotBlank(message="제목을 입력해 주세요")
-	private String bTitle;
+	private String boardTitle;
 	@NotEmpty(message="내용을 입력해 주세요")
-	private String bContent;
-	
-	public int getbSeq() {
-		return bSeq;
+	private String boardContent;
+	public int getBoardSeq() {
+		return boardSeq;
 	}
-	public void setbSeq(int bSeq) {
-		this.bSeq = bSeq;
+	public void setBoardSeq(int boardSeq) {
+		this.boardSeq = boardSeq;
 	}
-	public String getbTitle() {
-		return bTitle;
+	public int getMemberSeq() {
+		return memberSeq;
 	}
-	public void setbTitle(String bTitle) {
-		this.bTitle = bTitle;
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
 	}
-	public String getbContent() {
-		return bContent;
+	public String getBoardTitle() {
+		return boardTitle;
 	}
-	public void setbContent(String bContent) {
-		this.bContent = bContent;
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
-	public int getmSeq() {
-		return mSeq;
+	public String getBoardContent() {
+		return boardContent;
 	}
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
 	}
-	@Override
-	public String toString() {
-		return "BoardupdateCommand [bSeq=" + bSeq + ", mSeq=" + mSeq + ", bTitle=" + bTitle + ", bContent=" + bContent
-				+ "]";
-	}
-	
+
 	
 
 

@@ -5,31 +5,30 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class MemberchangePwd {
 	@NotBlank(message = "비밀번호를 입력하세요.")
-	private String mPassword;
+	private String memberPassword;
 	@NotBlank(message="비밀번호를 입력하세요.")
-	private String mPasswordCheck;
+	private String memberPasswordCheck;
 
 	
-	public String getmPassword() {
-		return mPassword;
+	public String getMemberPassword() {
+		return memberPassword;
 	}
-	public void setmPassword(String mPassword) {
-		this.mPassword = mPassword;
+	public void setMemberPassword(String memberPassword) {
+		this.memberPassword = memberPassword;
 	}
-	public String getmPasswordCheck() {
-		return mPasswordCheck;
+	public String getMemberPasswordCheck() {
+		return memberPasswordCheck;
 	}
-	public void setmPasswordCheck(String mPasswordCheck) {
-		this.mPasswordCheck = mPasswordCheck;
+	public void setMemberPasswordCheck(String memberPasswordCheck) {
+		this.memberPasswordCheck = memberPasswordCheck;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "MemberchangePwd [memberPassword=" + memberPassword + ", memberPasswordCheck=" + memberPasswordCheck
+				+ "]";
+	}
 
 	
-	
-	
-	
 
-	
 
 }

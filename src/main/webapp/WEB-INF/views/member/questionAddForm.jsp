@@ -21,7 +21,7 @@
 
 		<tr>
 			<th>질문등록 </th>
-			<td><textarea rows="" cols="" name="qContent"></textarea>${msg}</td>
+			<td><textarea rows="" cols="" name="questionContent"></textarea>${msg}</td>
 	
 			
 		</tr>

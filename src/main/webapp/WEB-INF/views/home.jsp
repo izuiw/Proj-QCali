@@ -16,5 +16,6 @@
 	<P>The time on the server is ${serverTime}.</P>
 
 	<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
+	<a href="<c:url value='/member/insert'/>"><button>회원가입</button></a>
 </body>
 </html>

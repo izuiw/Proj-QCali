@@ -1,13 +1,15 @@
 package com.group.exam.board.command;
 
 public class BoardLikeCommand{
-	private int bSeq;
+	private int boardSeq;
 	private int heart;
-	public int getbSeq() {
-		return bSeq;
+	
+	
+	public int getBoardSeq() {
+		return boardSeq;
 	}
-	public void setbSeq(int bSeq) {
-		this.bSeq = bSeq;
+	public void setBoardSeq(int boardSeq) {
+		this.boardSeq = boardSeq;
 	}
 	public int getHeart() {
 		return heart;
@@ -15,5 +17,7 @@ public class BoardLikeCommand{
 	public void setHeart(int heart) {
 		this.heart = heart;
 	}
+
+	
 	
 }

@@ -17,8 +17,8 @@ var nickck = 0;
 
 	function pwCheck() {
 
-	    if(document.getElementById('mPassword').value!='' && document.getElementById('mPasswordCheck').value!='') {
-	        if(document.getElementById('mPassword').value==document.getElementById('mPasswordCheck').value) {
+	    if(document.getElementById('memberPassword').value!='' && document.getElementById('memberPasswordCheck').value!='') {
+	        if(document.getElementById('memberPassword').value==document.getElementById('memberPasswordCheck').value) {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치합니다.';
 	            document.getElementById('pwSame').style.color='blue';
 	            pwck = 1;
@@ -33,7 +33,7 @@ var nickck = 0;
 
 
 		function idCheck() {
-			var str = document.getElementById('mId').value;
+			var str = document.getElementById('memberId').value;
 			var pattern = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		  	  if(!pattern.test(str)) {
 			  		document.getElementById('idSame').innerHTML='형식에 맞게 입력하세요.';
@@ -44,7 +44,7 @@ var nickck = 0;
 				            url : "/exam/member/idDup",
 				            type : "POST",
 				            dataType :"JSON",
-				            data : {"mId" : $("#mId").val()},
+				            data : {"memberId" : $("#memberId").val()},
 				            success : function (data) {
 				                if(data == 1) {
 				                	document.getElementById('idSame').innerHTML='사용할 수 없는 이메일 입니다.';
@@ -70,7 +70,7 @@ var nickck = 0;
 	            url : "/exam/member/nicknameDup",
 	            type : "POST",
 	            dataType :"JSON",
-	            data : {"mNickname" : $("#mNickname").val()},
+	            data : {"memberNickname" : $("#memberNickname").val()},
 	            success : function (data) {
 	                if(data == 1) {
 	                	document.getElementById('nickSame').innerHTML='사용할 수 없는 닉네임 입니다.';
@@ -86,7 +86,7 @@ var nickck = 0;
 	    }
 
 	  function dateCheck(){
-	  var str = document.getElementById('mBirthday').value;
+	  var str = document.getElementById('memberBirthDay').value;
 	  var pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
 	  if(!pattern.test(str)) {
 		document.getElementById('date').innerHTML='형식에 맞게 입력하세요.';
@@ -99,9 +99,9 @@ var nickck = 0;
 	  
 	  function DoSignUp() {
 
-			 if (idck == 0) {alert("이메일 중복 체크를 해주세요"); $("#mId").focus(); return; }
-			 if (pwck == 0) {alert("비밀번호 확인 체크를 해주세요"); $("#mPassword").focus(); return; }
-			 if (nickck == 0) {alert("닉네임 중복 체크를 해주세요"); $("#mNickname").focus(); return; }
+			 if (idck == 0) {alert("이메일 중복 체크를 해주세요"); $("#memberId").focus(); return; }
+			 if (pwck == 0) {alert("비밀번호 확인 체크를 해주세요"); $("#memberPassword").focus(); return; }
+			 if (nickck == 0) {alert("닉네임 중복 체크를 해주세요"); $("#memberNickname").focus(); return; }
 		  
 		  if (confirm("회원가입을 하시겠습니까?")) {
 			  location.href = "<c:url value='/member/insert'/>";
@@ -112,32 +112,32 @@ var nickck = 0;
 
 
 회원가입 양식
-<form:form commandName="InsertCommand" action="${pageContext.request.contextPath}/member/insert" id="insertForm" >
+<form:form commandName="InsertCommand"  id="insertForm" >
 
 <table border="1">
 		<tr>
-			<th>이메일</th><td><form:input path="mId" id="mId" placeholder="이메일 입력  "/><form:errors path="mId"/>
+			<th>이메일</th><td><form:input path="memberId" id="memberId" placeholder="이메일 입력  "/><form:errors path="memberId"/>
 				<button type="button" onclick="idCheck()">아이디 중복확인</button>
 				<span id="idSame"></span>
 				</td>
 		</tr>
 		<tr>
-			<th>비밀번호</th><td><form:password path="mPassword" id="mPassword"/><form:errors path="mPassword"/></td>
+			<th>비밀번호</th><td><form:password path="memberPassword" id="memberPassword"/><form:errors path="memberPassword"/></td>
 		</tr>
 		<tr>
-			<th>비밀번호 확인</th><td><form:password path="mPasswordCheck" id="mPasswordCheck"/><form:errors path="mPasswordCheck"/>
+			<th>비밀번호 확인</th><td><form:password path="memberPasswordCheck" id="memberPasswordCheck"/><form:errors path="memberPasswordCheck"/>
 			<button type="button" onclick="pwCheck()"> 비밀번호 확인 </button>
 			<span id="pwSame"></span>
 		</td>
 		</tr>
 		<tr>
-			<th>닉네임</th><td><form:input path="mNickname" id="mNickname"/><form:errors path="mNickname"/>
+			<th>닉네임</th><td><form:input path="memberNickname" id="memberNickname"/><form:errors path="memberNickname"/>
 			<button type="button" onclick="nickCheck()"> 닉네임 중복확인 </button>
 			<span id="nickSame"></span>
 			</td>
 		</tr>
 		<tr>
-			<th>생년월일</th><td><form:input path="mBirthday" id="mBirthday" placeholder="yyyy-mm-dd" onchange="dateCheck()"/><form:errors path="mBirthday"/>
+			<th>생년월일</th><td><form:input path="memberBirthDay" id="memberBirthDay" placeholder="yyyy-mm-dd" onchange="dateCheck()"/><form:errors path="memberBirthDay"/>
 			
 			<span id="date"></span>
 			</td>
@@ -146,7 +146,7 @@ var nickck = 0;
 	</table>
 	<br>
 	
-	<input type="button" class="btn btn-lg btn-success btn-block" value="회원가입" onclick="DosignUp();" />
+	<input type="button" class="btn btn-lg btn-success btn-block" value="회원가입" onclick="DoSignUp();" />
 
 </form:form>
 

@@ -25,8 +25,8 @@ table {
 		<table border="1">
 			<tr>
 				<td>아이디 : </td>
-				<td><form:input path="mId" placeholder="필수입력"/>
-				<form:errors path="mId"/></td>
+				<td><form:input path="memberId" placeholder="필수입력"/>
+				<form:errors path="memberId"/></td>
 			</tr>
 		
 		</table>

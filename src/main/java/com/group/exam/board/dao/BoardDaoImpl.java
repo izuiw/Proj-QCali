@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
-import com.group.exam.board.vo.BoardLikeVo;
+import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -55,9 +55,9 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public BoardlistCommand boardListDetail(int bSeq) {
+	public BoardlistCommand boardListDetail(int boardSeq) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectOne("boardlistDetail", bSeq);
+		return sqlSessionTemplate.selectOne("boardlistDetail", boardSeq);
 	}
 
 	@Override
@@ -77,55 +77,55 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public void boardCountup(int bSeq) {
+	public void boardCountup(int boardSeq) {
 		// TODO Auto-generated method stub
 		
-		sqlSessionTemplate.update("boardCountup", bSeq);
+		sqlSessionTemplate.update("boardCountup", boardSeq);
 		
 	}
 
 
 	@Override
-	public int boardMylistCount(int mSeq) {
+	public int boardMylistCount(int memberSeq) {
 		// TODO Auto-generated method stub
 
-		return sqlSessionTemplate.selectOne("boardMylistCount", mSeq);
+		return sqlSessionTemplate.selectOne("boardMylistCount", memberSeq);
 	}
 	
 	
 	//좋아요 기능 관련
 	@Override
-	public int getBoardLike(BoardLikeVo vo) {
+	public int getBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("getLike", vo);
 	}
 
 	@Override
-	public void insertBoardLike(BoardLikeVo vo) {
+	public void insertBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.insert("createLike", vo);
 		
 	}
 
 	@Override
-	public void deleteBoardLike(BoardLikeVo vo) {
+	public void deleteBoardLike(BoardHeartVo vo) {
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.delete("deleteLike", vo);
 		
 	}
 
 	@Override
-	public void updateBoardLike(int bSeq) {
+	public void updateBoardLike(int boardSeq) {
 		// TODO Auto-generated method stub
-		sqlSessionTemplate.update("updateLike", bSeq);
+		sqlSessionTemplate.update("updateLike", boardSeq);
 		
 	}
 
 	
 	@Override
-	public String memberAuth(int mSeq) {
+	public String memberAuth(int memberSeq) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectOne("memberAuth", mSeq);
+		return sqlSessionTemplate.selectOne("memberAuth", memberSeq);
 	}
 
 

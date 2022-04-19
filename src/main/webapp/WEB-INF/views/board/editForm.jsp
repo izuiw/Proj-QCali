@@ -24,13 +24,13 @@
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${memberLogin.mSeq}</td>
-				<td>${memberLogin.mId}</td>
-				<td>${memberLogin.mNickname}</td>
-				<td>${memberLogin.mBirthday}</td>
-				<td>${memberLogin.mRegday}</td>
-				<td>${memberLogin.mAuth}</td>
-				<td>${memberLogin.mLevel}</td>
+				<td>${memberLogin.memberSeq}</td>
+				<td>${memberLogin.memberId}</td>
+				<td>${memberLogin.memberNickname}</td>
+				<td>${memberLogin.memberBirthDay}</td>
+				<td>${memberLogin.memberRegDay}</td>
+				<td>${memberLogin.memberAuth}</td>
+				<td>${memberLogin.memberLevel}</td>
 
 
 			</tr>
@@ -40,16 +40,16 @@
 	<form:form commandName="boardEditData">
 		<table border="1">
 			<tr>
-				<td><form:label path="bTitle">제목</form:label></td>
+				<td><form:label path="boardTitle">제목</form:label></td>
 				
-				<td><form:input path="bTitle"/> 
-				<form:errors path="bTitle" /></td>
+				<td><form:input path="boardTitle"/> 
+				<form:errors path="boardTitle" /></td>
 
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td><form:input path="bContent" label="${ bContent}"/> 
-				<form:errors path="bContent" /></td>
+				<td><form:input path="boardContent" label="${ boardContent}"/> 
+				<form:errors path="boardContent" /></td>
 
 			</tr>
 		</table>

@@ -22,16 +22,16 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public LoginCommand login(String mId) {
+	public LoginCommand login(String memberId) {
 		// TODO Auto-generated method stub
-		return  sqlSessionTemplate.selectOne("login", mId);
+		return  sqlSessionTemplate.selectOne("login", memberId);
 		
 	}
 
 	@Override
-	public LoginCommand findPwd(String mId) {
+	public LoginCommand findPwd(String memberId) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectOne("findPwd", mId);
+		return sqlSessionTemplate.selectOne("findPwd", memberId);
 	}
 
 	@Override
@@ -44,19 +44,19 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	@Override
 	public void insert(MemberVo memberVo) {
-		sqlSessionTemplate.insert("insert", memberVo);
+		sqlSessionTemplate.insert("memberInsert", memberVo);
 
 	}
 
 	@Override
-	public int nicknameDup(String mNickname) {
-		int res = sqlSessionTemplate.selectOne("nicknameDup", mNickname);
+	public int nicknameDup(String memberNickname) {
+		int res = sqlSessionTemplate.selectOne("nicknameDup", memberNickname);
 		return res;
 	}
 
 	@Override
-	public int idDup(String mId) {
-		return sqlSessionTemplate.selectOne("idDup", mId);
+	public int idDup(String memberId) {
+		return sqlSessionTemplate.selectOne("idDup", memberId);
 
 	}
 
@@ -83,9 +83,9 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public int deleteMember(int mSeq) {
+	public int deleteMember(int memberSeq) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.delete("deleteMember", mSeq);
+		return sqlSessionTemplate.delete("deleteMember", memberSeq);
 	}
 
 	@Override

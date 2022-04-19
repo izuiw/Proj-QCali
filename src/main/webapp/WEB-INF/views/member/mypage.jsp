@@ -25,25 +25,25 @@
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${memberLogin.mSeq}</td>
-				<td>${memberLogin.mId}</td>
-				<td>${memberLogin.mNickname}</td>
-				<td>${memberLogin.mBirthday}</td>
-				<td>${memberLogin.mRegday}</td>
-				<td>${memberLogin.mAuth}</td>
-				<td>${memberLogin.mLevel}</td>
+				<td>${memberLogin.memberSeq}</td>
+				<td>${memberLogin.memberId}</td>
+				<td>${memberLogin.memberNickname}</td>
+				<td>${memberLogin.memberBirthday}</td>
+				<td>${memberLogin.memberRegDay}</td>
+				<td>${memberLogin.memberAuth}</td>
+				<td>${memberLogin.memberLevel}</td>
 
 			</tr>
 		</table>
 
 
-	<a href="<c:url value='/member/mypage/changePwd?mSeq=${memberLogin.mSeq}'/>"><button>비밀번호 변경하기</button></a>
-	<a href="<c:url value='/member/mypage/changeNickname?mSeq=${memberLogin.mSeq}'/>"><button>닉네임 변경하기</button></a>
-	<a href="<c:url value='/board/mylist?mSeq=${memberLogin.mSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
+	<a href="<c:url value='/member/mypage/changePwd?memberSeq=${memberLogin.memberSeq}'/>"><button>비밀번호 변경하기</button></a>
+	<a href="<c:url value='/member/mypage/changeNickname?memberSeq=${memberLogin.memberSeq}'/>"><button>닉네임 변경하기</button></a>
+	<a href="<c:url value='/board/mylist?memberSeq=${memberLogin.memberSeq}'/>"><button>내가 쓴 글 모아보기</button></a>
 	
 	<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
 	
-	<a href="<c:url value='/member/mypage/delete?mSeq=${memberLogin.mSeq }'/>" ><button>회원탈퇴</button></a>
+	<a href="<c:url value='/member/mypage/delete?memberSeq=${memberLogin.memberSeq }'/>" ><button>회원탈퇴</button></a>
 	
 
 	

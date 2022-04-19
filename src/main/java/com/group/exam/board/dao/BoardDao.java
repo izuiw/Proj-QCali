@@ -6,7 +6,7 @@ import java.util.List;
 import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.Criteria;
 import com.group.exam.board.command.QuestionAdayCommand;
-import com.group.exam.board.vo.BoardLikeVo;
+import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
 
 public interface BoardDao {
@@ -21,15 +21,15 @@ public interface BoardDao {
 	
 	public List<BoardlistCommand> boardMyList (HashMap<String, Object> map); // 내가 쓴 글 모아보기
 	
-	public BoardlistCommand boardListDetail (int bSeq); // 특정 게시글 디테일
+	public BoardlistCommand boardListDetail (int boardSeq); // 특정 게시글 디테일
 	
 	public int listCount (); // board 테이블 전체 글 수
 	
-	public int boardMylistCount (int mSeq); // 내가 쓴 글 수 
+	public int boardMylistCount (int memberSeq); // 내가 쓴 글 수 
 	
-	public void boardCountup (int bSeq); // 해당 게시글 카운트 업
+	public void boardCountup (int boardSeq); // 해당 게시글 카운트 업
 	
-	public String memberAuth (int mSeq); //멤버 Auth 상태 체크
+	public String memberAuth (int memberSeq); //멤버 Auth 상태 체크
 	
 	public int memberLevelup (HashMap<String, Object> map); //멤버 level up 기능
 	
@@ -41,11 +41,11 @@ public interface BoardDao {
 	public int currentSequence();
 	
 	//좋아요 기능 관련
-    public int getBoardLike(BoardLikeVo vo);
+    public int getBoardLike(BoardHeartVo vo);
 
-    public void insertBoardLike(BoardLikeVo vo);
+    public void insertBoardLike(BoardHeartVo vo);
 
-    public void deleteBoardLike(BoardLikeVo vo);
+    public void deleteBoardLike(BoardHeartVo vo);
 
-    public void updateBoardLike(int bSeq);
+    public void updateBoardLike(int boardSeq);
 }

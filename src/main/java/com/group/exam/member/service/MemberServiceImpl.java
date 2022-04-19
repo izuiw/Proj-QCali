@@ -24,25 +24,25 @@ public class MemberServiceImpl implements MemberService {
 	MemberDAO memberDAO;
 	
 	@Override
-	public LoginCommand login(String mId) {
+	public LoginCommand login(String memberId) {
 		// TODO Auto-generated method stub
 		
-		return memberDAO.login(mId);
+		return memberDAO.login(memberId);
 		
 	}
 
 	@Override
-	public LoginCommand findPwd(String mId) {
+	public LoginCommand findPwd(String memberId) {
 		// TODO Auto-generated method stub
-		return memberDAO.findPwd(mId);
+		return memberDAO.findPwd(memberId);
 	}
 
 	@Override
-	public int updateTmpPwd(String tmpPwd, String mId) {
+	public int updateTmpPwd(String tmpPwd, String memberId) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("tmpPwd", tmpPwd);
-		map.put("mId", mId);
+		map.put("memberId", memberId);
 				
 		return memberDAO.updateTmpPwd(map);
 	}
@@ -52,17 +52,17 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	@Override
-	public void insert(InsertCommand insertCommand) {
+	public void memberInsert(InsertCommand insertCommand) {
 		
 		MemberVo memberVo = new MemberVo();
-		memberVo.setmId(insertCommand.getmId());
-		memberVo.setmPassword(insertCommand.getmPassword());
-		memberVo.setmNickname(insertCommand.getmNickname());
+		memberVo.setMemberId(insertCommand.getMemberId());
+		memberVo.setMemberPassword(insertCommand.getMemberPassword());
+		memberVo.setMemberNickname(insertCommand.getMemberNickname());
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			Date date = format.parse(insertCommand.getmBirthday());
-			memberVo.setmBirthday(date);
-			System.out.println(memberVo);
+			Date date = format.parse(insertCommand.getMemberBirthDay());
+			memberVo.setMemberBirthDay(date);
+			
 			memberDAO.insert(memberVo);
 		} catch (ParseException e) {
 			//날짜로 형변환 실패
@@ -72,63 +72,63 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int nicknameDup(String mNickname) {
-		int res = memberDAO.nicknameDup(mNickname);
+	public int nicknameDup(String memberNickname) {
+		int res = memberDAO.nicknameDup(memberNickname);
 		return res;
 	}
 
 	@Override
-	public int idDup(String mId) {	
-		return memberDAO.idDup(mId);
+	public int idDup(String memberId) {	
+		return memberDAO.idDup(memberId);
 	}
 	
 	@Override
 	public void updateAuthkey(InsertCommand insertCommand) {
 		MemberVo memberVo = new MemberVo();
-		memberVo.setmId(insertCommand.getmId());
-		memberVo.setmAuthkey(insertCommand.getmAuthkey());
+		memberVo.setMemberId(insertCommand.getMemberId());
+		memberVo.setMemberAuthkey(insertCommand.getMemberAuthkey());
 		memberDAO.updateAuthkey(memberVo);
 	}
 	
 	public void updateAuth(String mAuthkey) {
 		MemberVo memberVo = new MemberVo();
-		memberVo.setmAuth("T");
-		memberVo.setmAuthkey(mAuthkey);
+		memberVo.setMemberAuth("T");
+		memberVo.setMemberAuthkey(mAuthkey);
 		memberDAO.updateAuth(memberVo);
 	}
 
 	@Override
-	public int updateMemberPwd(String mPassword, int mSeq) {
+	public int updateMemberPwd(String memberPassword, int memberSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("mPassword", mPassword);
-		map.put("mSeq", mSeq);
+		map.put("memberPassword", memberPassword);
+		map.put("memberSeq", memberSeq);
 		return memberDAO.updateMemberPwd(map);
 	}
 
 	@Override
-	public int updateMemberNickname(String mNickname, int mSeq) {
+	public int updateMemberNickname(String memberNickname, int memberSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("mNickname", mNickname);
-		map.put("mSeq", mSeq);
+		map.put("memberNickname", memberNickname);
+		map.put("memberSeq", memberSeq);
 		
 		return memberDAO.updateMemberNickname(map);
 	}
 
 	@Override
-	public int deleteMember(int mSeq) {
+	public int deleteMember(int memberSeq) {
 		// TODO Auto-generated method stub
-		return memberDAO.deleteMember(mSeq);
+		return memberDAO.deleteMember(memberSeq);
 	}
 
 	@Override
-	public int memberQuestionAdd(String qContent, int mSeq) {
+	public int memberQuestionAdd(String questionContent, int memberSeq) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("qContent", qContent);
-		map.put("mSeq", mSeq);
+		map.put("questionContent", questionContent);
+		map.put("memberSeq", memberSeq);
 		return memberDAO.memberQuestionAdd(map);
 	}
 

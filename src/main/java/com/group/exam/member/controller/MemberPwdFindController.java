@@ -19,17 +19,17 @@ import com.group.exam.member.service.MemberService;
 @Controller
 public class MemberPwdFindController {
 
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	private MailSendService mss;
 
 	private MemberService memberService;
 
 	@Autowired
-	public MemberPwdFindController( MailSendService mss, BCryptPasswordEncoder bcryptPasswordEncoder,
+	public MemberPwdFindController( MailSendService mss, BCryptPasswordEncoder passwordEncoder,
 			MemberService memberService) {
 
-		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+		this.passwordEncoder = passwordEncoder;
 		this.mss = mss;
 		this.memberService = memberService;
 	}
@@ -48,17 +48,17 @@ public class MemberPwdFindController {
 			return "member/findPwdForm";
 		}
 
-		LoginCommand findMember = memberService.findPwd(findcommand.getmId());
+		LoginCommand findMember = memberService.findPwd(findcommand.getMemberId());
 
 		if (findMember != null) {
-			String tmpPwd = mss.sendPwdMail(findcommand.getmId()); // 임시 비밀번호 메일 발송
-			String encodePwd = bcryptPasswordEncoder.encode(tmpPwd); // 임시 비밀번호 암호화
+			String tmpPwd = mss.sendPwdMail(findcommand.getMemberId()); // 임시 비밀번호 메일 발송
+			String encodePwd = passwordEncoder.encode(tmpPwd); // 임시 비밀번호 암호화
 
-			int result = memberService.updateTmpPwd(encodePwd, findcommand.getmId()); // db에 해당 회원 비밀번호 임시 비밀번호로 변경
+			int result = memberService.updateTmpPwd(encodePwd, findcommand.getMemberId()); // db에 해당 회원 비밀번호 임시 비밀번호로 변경
 
 			if (result == 1) {
 				// 임시 비밀번호로 변경 성공
-				return "member/member_tmp/findPwdnext";
+				return "member/member_alert/findPwdNext";
 			}
 
 		}

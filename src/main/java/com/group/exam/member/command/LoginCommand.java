@@ -2,107 +2,99 @@ package com.group.exam.member.command;
 
 import java.util.Date;
 
-import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-@Alias("LoginCommand")
 public class LoginCommand {
-	private int mSeq;
+	private int memberSeq;
 	@Email(message="이메일 형식이 아닙니다.")
 	@NotEmpty(message = "아이디를 입력해주세요.")
-	private String mId;
+	private String memberId;
 	@NotEmpty(message = "비밀번호를 입력해주세요.")
-	private String mPassword;
+	private String memberPassword;
 	
-	private String mBpw;
+	private String memberBpw;
 
-	private String mNickname;
-	private Date mBirthday;
-	private Date mRegday;
-	private String mAuth;
+	private String memberNickname;
+	private Date memberBirthDay;
+	private Date memberRegDay;
+	private String memberAuth;
 
-	private int mLevel;
+	private int memberLevel;
 
-	public int getmSeq() {
-		return mSeq;
+	public int getMemberSeq() {
+		return memberSeq;
 	}
 
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
 	}
 
-	public String getmNickname() {
-		return mNickname;
+	public String getMemberId() {
+		return memberId;
 	}
 
-	public void setmNickname(String mNickname) {
-		this.mNickname = mNickname;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
-	public Date getmBirthday() {
-		return mBirthday;
+	public String getMemberPassword() {
+		return memberPassword;
 	}
 
-	public void setmBirthday(Date mBirthday) {
-		this.mBirthday = mBirthday;
+	public void setMemberPassword(String memberPassword) {
+		this.memberPassword = memberPassword;
 	}
 
-	public Date getmRegday() {
-		return mRegday;
+	public String getMemberBpw() {
+		return memberBpw;
 	}
 
-	public void setmRegday(Date mRegday) {
-		this.mRegday = mRegday;
+	public void setMemberBpw(String memberBpw) {
+		this.memberBpw = memberBpw;
 	}
 
-	public String getmAuth() {
-		return mAuth;
+	public String getMemberNickname() {
+		return memberNickname;
 	}
 
-	public void setmAuth(String mAuth) {
-		this.mAuth = mAuth;
+	public void setMemberNickname(String memberNickname) {
+		this.memberNickname = memberNickname;
 	}
 
-	public int getmLevel() {
-		return mLevel;
+	public Date getMemberBirthDay() {
+		return memberBirthDay;
 	}
 
-	public void setmLevel(int mLevel) {
-		this.mLevel = mLevel;
+	public void setMemberBirthday(Date memberBirthDay) {
+		this.memberBirthDay = memberBirthDay;
 	}
 
-	public String getmId() {
-		return mId;
+	public Date getMemberRegDay() {
+		return memberRegDay;
 	}
 
-	public void setmId(String mId) {
-		this.mId = mId;
+	public void setMemberRegday(Date memberRegDay) {
+		this.memberRegDay = memberRegDay;
 	}
 
-	public String getmPassword() {
-		return mPassword;
+	public String getMemberAuth() {
+		return memberAuth;
 	}
 
-	public void setmPassword(String mPassword) {
-		this.mPassword = mPassword;
+	public void setMemberAuth(String memberAuth) {
+		this.memberAuth = memberAuth;
 	}
+
+	public int getMemberLevel() {
+		return memberLevel;
+	}
+
+	public void setMemberLevel(int memberLevel) {
+		this.memberLevel = memberLevel;
+	}
+
+
 	
-	
-
-	public String getmBpw() {
-		return mBpw;
-	}
-
-	public void setmBpw(String mBpw) {
-		this.mBpw = mBpw;
-	}
-
-	@Override
-	public String toString() {
-		return "LoginCommand [mSeq=" + mSeq + ", mId=" + mId + ", mPassword=" + mPassword + ", mNickname=" + mNickname
-				+ ", mBirthday=" + mBirthday + ", mRegday=" + mRegday + ", mAuth=" + mAuth + ", mLevel=" + mLevel + "]";
-	}
-
 
 }

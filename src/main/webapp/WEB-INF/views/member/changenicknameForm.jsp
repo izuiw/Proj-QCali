@@ -18,7 +18,7 @@
 	            url : "/exam/member/nicknameDup",
 	            type : "POST",
 	            dataType :"JSON",
-	            data : {"mNickname" : $("#mNickname").val()},
+	            data : {"memberNickname" : $("#memberNickname").val()},
 	            success : function (data) {
 	                if(data == 1) {
 	                	
@@ -40,13 +40,13 @@
 
 <h3>닉네임 변경</h3> 
 
-현재 닉네임 : ${memberLogin.mNickname} <br>
+현재 닉네임 : ${memberLogin.memberNickname} <br>
 <form action="${pageContext.request.contextPath}/member/mypage/changeNickname" method="POST" >
 
 <table border="1">
 
 		<tr>
-			<th>닉네임</th><td><input name="mNickname" id="mNickname" />
+			<th>닉네임</th><td><input name="memberNickname" id="memberNickname" />
 			
 			<button type="button" onclick="nickCheck()">중복확인</button>
 			${msg}

@@ -14,8 +14,8 @@
 
 	function pwCheck() {
 
-	    if(document.getElementById('mPassword').value!='' && document.getElementById('mPasswordCheck').value!='') {
-	        if(document.getElementById('mPassword').value==document.getElementById('mPasswordCheck').value) {
+	    if(document.getElementById('memberPassword').value!='' && document.getElementById('memberPasswordCheck').value!='') {
+	        if(document.getElementById('memberPassword').value==document.getElementById('memberPasswordCheck').value) {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치합니다.';
 	            document.getElementById('pwSame').style.color='blue';
 	        }
@@ -35,14 +35,14 @@
 <table border="1">
 
 		<tr>
-			<th>비밀번호</th><td><form:password path="mPassword" id="mPassword"/>
+			<th>비밀번호</th><td><form:password path="memberPassword" id="memberPassword"/>
 		
-			<form:errors path="mPassword"/>
+			<form:errors path="memberPassword"/>
 				</td>
 		</tr>
 		<tr>
-			<th>비밀번호 확인</th><td><form:password path="mPasswordCheck" id="mPasswordCheck" />
-			<form:errors path="mPasswordCheck"/>
+			<th>비밀번호 확인</th><td><form:password path="memberPasswordCheck" id="memberPasswordCheck" />
+			<form:errors path="memberPasswordCheck"/>
 			<button type="button" onclick="pwCheck()">비밀번호 확인</button>
 			<span id="pwSame"></span>
 		</td>

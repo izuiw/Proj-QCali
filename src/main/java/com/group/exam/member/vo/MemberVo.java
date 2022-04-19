@@ -5,103 +5,80 @@ import java.util.Date;
 
 public class MemberVo {
 	
-	private int mSeq;
+	private int memberSeq;
 
-	private String mId;
-	private String mBpw;
-	private String mPassword;
-	private String mNickname;
-	private Date mBirthday;
-	private Date mRegday;
-	private String mAuth;
-	private String mAuthkey;
-	private long mLevel;
+	private String memberId;
+	private String memberBpw;
+	private String memberPassword;
+	private String memberNickname;
+	private Date memberBirthDay;
+	private Date memberRegDay;
+	private String memberAuth;
+	private String memberAuthkey;
+	private long memberLevel;
+	public int getMemberSeq() {
+		return memberSeq;
+	}
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getMemberBpw() {
+		return memberBpw;
+	}
+	public void setMemberBpw(String memberBpw) {
+		this.memberBpw = memberBpw;
+	}
+	public String getMemberPassword() {
+		return memberPassword;
+	}
+	public void setMemberPassword(String memberPassword) {
+		this.memberPassword = memberPassword;
+	}
+	public String getMemberNickname() {
+		return memberNickname;
+	}
+	public void setMemberNickname(String memberNickname) {
+		this.memberNickname = memberNickname;
+	}
+	public Date getMemberBirthDay() {
+		return memberBirthDay;
+	}
+	public void setMemberBirthDay(Date memberBirthDay) {
+		this.memberBirthDay = memberBirthDay;
+	}
+	public Date getMemberRegDay() {
+		return memberRegDay;
+	}
+	public void setMemberRegDay(Date memberRegDay) {
+		this.memberRegDay = memberRegDay;
+	}
+	public String getMemberAuth() {
+		return memberAuth;
+	}
+	public void setMemberAuth(String memberAuth) {
+		this.memberAuth = memberAuth;
+	}
+	public String getMemberAuthkey() {
+		return memberAuthkey;
+	}
+	public void setMemberAuthkey(String memberAuthkey) {
+		this.memberAuthkey = memberAuthkey;
+	}
+	public long getMemberLevel() {
+		return memberLevel;
+	}
+	public void setMemberLevel(long memberLevel) {
+		this.memberLevel = memberLevel;
+	}
 
 	
-	public int getmSeq() {
-		return mSeq;
-	}
+	
 
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
-	}
-
-	public String getmId() {
-		return mId;
-	}
-
-	public void setmId(String mId) {
-		this.mId = mId;
-	}
-
-	public String getmBpw() {
-		return mBpw;
-	}
-
-	public void setmBpw(String mBpw) {
-		this.mBpw = mBpw;
-	}
-
-	public String getmPassword() {
-		return mPassword;
-	}
-
-	public void setmPassword(String mPassword) {
-		this.mPassword = mPassword;
-	}
-
-	public String getmNickname() {
-		return mNickname;
-	}
-
-	public void setmNickname(String mNickname) {
-		this.mNickname = mNickname;
-	}
-
-	public Date getmBirthday() {
-		return mBirthday;
-	}
-
-	public void setmBirthday(Date mBirthday) {
-		this.mBirthday = mBirthday;
-	}
-
-	public Date getmRegday() {
-		return mRegday;
-	}
-
-	public void setmRegday(Date mRegday) {
-		this.mRegday = mRegday;
-	}
-
-	public String getmAuth() {
-		return mAuth;
-	}
-
-	public void setmAuth(String mAuth) {
-		this.mAuth = mAuth;
-	}
-
-	public String getmAuthkey() {
-		return mAuthkey;
-	}
-
-	public void setmAuthkey(String mAuthkey) {
-		this.mAuthkey = mAuthkey;
-	}
-
-	public long getmLevel() {
-		return mLevel;
-	}
-
-	public void setmLevel(long mLevel) {
-		this.mLevel = mLevel;
-	}
-
-	@Override
-	public String toString() {
-		return "MemberVo [mSeq=" + mSeq + ", mId=" + mId + ", mBpw=" + mBpw + ", mPassword=" + mPassword
-				+ ", mNickname=" + mNickname + ", mBirthday=" + mBirthday + ", mRegday=" + mRegday + ", mAuth=" + mAuth
-				+ ", mAuthkey=" + mAuthkey + ", mLevel=" + mLevel + "]";
-	}
+	 
 }

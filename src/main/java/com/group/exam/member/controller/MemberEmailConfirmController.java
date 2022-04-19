@@ -18,14 +18,14 @@ public class MemberEmailConfirmController {
 	
 	 @RequestMapping(value="/member/EmailConfirm") 
 	 public String signUpConfirm(HttpServletRequest request){
-		 String mId= request.getParameter("email");
-		 String mAuthkey = request.getParameter("authKey");
-		 if(memberService.idDup(mId)==1) { //가입된 이메일이 있다면
-			 memberService.updateAuth(mAuthkey);	//mAuth를 'T'로 바꾸기 
+		 String memberId= request.getParameter("email");
+		 String memberAuthkey = request.getParameter("authKey");
+		 if(memberService.idDup(memberId)==1) { //가입된 이메일이 있다면
+			 memberService.updateAuth(memberAuthkey);	//mAuth를 'T'로 바꾸기 
 
 		 }
 
-	    return "/member/member_tmp/signUpSuccess";
+	    return "/member/member_alert/signUpSuccess";
 	}
 	 
 	 

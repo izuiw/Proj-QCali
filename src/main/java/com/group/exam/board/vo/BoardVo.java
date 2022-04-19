@@ -9,71 +9,72 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Alias("BoardVo")
 public class BoardVo {
 
-	private int bSeq;
+	private int boardSeq;
 	@NotEmpty(message="제목을 입력해주세요.")
-	private String bTitle;
+	private String boardTitle;
 	@NotEmpty(message="내용을 입력해주세요.")
-	private String bContent;
-	private Date bRegday;
-	private int bLike;
-	private int bCount;
-	private int mSeq;
-	private int qSeq;
+	private String boardContent;
+	private Date boardRegday;
+	private int boardLike;
+	private int boardCount;
+	private int memberSeq;
+	private int questionSeq;
+	public int getBoardSeq() {
+		return boardSeq;
+	}
+	public void setBoardSeq(int boardSeq) {
+		this.boardSeq = boardSeq;
+	}
+	public String getBoardTitle() {
+		return boardTitle;
+	}
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
+	}
+	public String getBoardContent() {
+		return boardContent;
+	}
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
+	}
+	public Date getBoardRegday() {
+		return boardRegday;
+	}
+	public void setBoardRegday(Date boardRegday) {
+		this.boardRegday = boardRegday;
+	}
+	public int getBoardLike() {
+		return boardLike;
+	}
+	public void setBoardLike(int boardLike) {
+		this.boardLike = boardLike;
+	}
+	public int getBoardCount() {
+		return boardCount;
+	}
+	public void setBoardCount(int boardCount) {
+		this.boardCount = boardCount;
+	}
+	public int getMemberSeq() {
+		return memberSeq;
+	}
+	public void setMemberSeq(int memberSeq) {
+		this.memberSeq = memberSeq;
+	}
+	public int getQuestionSeq() {
+		return questionSeq;
+	}
+	public void setQuestionSeq(int questionSeq) {
+		this.questionSeq = questionSeq;
+	}
 	
-	
-	public int getbSeq() {
-		return bSeq;
-	}
-	public void setbSeq(int bSeq) {
-		this.bSeq = bSeq;
-	}
-	public String getbTitle() {
-		return bTitle;
-	}
-	public void setbTitle(String bTitle) {
-		this.bTitle = bTitle;
-	}
-	public String getbContent() {
-		return bContent;
-	}
-	public void setbContent(String bContent) {
-		this.bContent = bContent;
-	}
-	public Date getbRegday() {
-		return bRegday;
-	}
-	public void setbRegday(Date bRegday) {
-		this.bRegday = bRegday;
-	}
-	public int getbLike() {
-		return bLike;
-	}
-	public void setbLike(int bLike) {
-		this.bLike = bLike;
-	}
-	public int getbCount() {
-		return bCount;
-	}
-	public void setbCount(int bCount) {
-		this.bCount = bCount;
-	}
-	public int getmSeq() {
-		return mSeq;
-	}
-	public void setmSeq(int mSeq) {
-		this.mSeq = mSeq;
-	}
-	public int getqSeq() {
-		return qSeq;
-	}
-	public void setqSeq(int qSeq) {
-		this.qSeq = qSeq;
-	}
 	@Override
 	public String toString() {
-		return "BoardVo [bSeq=" + bSeq + ", bTitle=" + bTitle + ", bContent=" + bContent + ", bRegday=" + bRegday
-				+ ", bLike=" + bLike + ", bCount=" + bCount + ", mSeq=" + mSeq + ", qSeq=" + qSeq + "]";
+		return "BoardVo [boardSeq=" + boardSeq + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", boardRegday=" + boardRegday + ", boardLike=" + boardLike + ", boardCount=" + boardCount
+				+ ", memberSeq=" + memberSeq + ", questionSeq=" + questionSeq + "]";
 	}
 	
+
 	
 }

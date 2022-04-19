@@ -6,7 +6,7 @@ public class MemberMypageCommand {
 	
 	private String memberBpw;
 
-	private String MemberNickname;
+	private String memberNickname;
 	
 	
 	public String getMemberPassword() {
@@ -22,16 +22,12 @@ public class MemberMypageCommand {
 		this.memberBpw = memberBpw;
 	}
 	public String getMemberNickname() {
-		return MemberNickname;
+		return memberNickname;
 	}
 	public void setMemberNickname(String memberNickname) {
-		MemberNickname = memberNickname;
+		this.memberNickname = memberNickname;
 	}
-	@Override
-	public String toString() {
-		return "MemberMypageCommand [memberPassword=" + memberPassword + ", memberBpw=" + memberBpw
-				+ ", MemberNickname=" + MemberNickname + "]";
-	}
+
 	
 	
 	

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +22,24 @@ import com.group.exam.member.command.InsertCommand;
 @Controller
 public class MemberInsertController {
 
-	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
+	
+	private BCryptPasswordEncoder passwordEncoder; 
 
-	@Autowired
+
 	private MemberService memberService;
 
-	@Autowired
+	
 	private MailSendService mss;
+	
+	@Autowired
+	public MemberInsertController(BCryptPasswordEncoder passwordEncoder, MemberService memberService,MailSendService mss) {
+		// TODO Auto-generated constructor stub
+	
+		this.passwordEncoder = passwordEncoder;
+		this.memberService = memberService;
+		this.mss = mss;
+		
+	}
 
 	@RequestMapping(value = "/member/insert", method = RequestMethod.GET)
 	public String insert(@ModelAttribute("InsertCommand") InsertCommand insertCommand) {
@@ -36,54 +47,57 @@ public class MemberInsertController {
 	}
 
 	@RequestMapping(value = "/member/insert", method = RequestMethod.POST)
-	public String insert(@Valid @ModelAttribute("InsertCommand") InsertCommand insertCommand, Errors errors)
+	public String insert(@Valid @ModelAttribute("InsertCommand") InsertCommand insertCommand, BindingResult bindingResult)
 			throws Exception, IOException {
 
-		if (errors.hasErrors()) {
+		if (bindingResult.hasErrors()) {
+			System.out.println("입력 안 받은 값 있음");
 			return "/member/insertForm";
 		}
 		
-		boolean pwdcheck =  insertCommand.getmPassword().equals(insertCommand.getmPasswordCheck());
+		boolean pwdcheck =  insertCommand.getMemberPassword().equals(insertCommand.getMemberPasswordCheck());
 		if (pwdcheck != true) {
+			System.out.println("비밀번호 에러 ");
 			return "/member/insertForm";
 		}
 		
 		System.out.println(insertCommand);
 
 		// 비밀번호 암호화
-		String encodedPw = passwordEncoder.encode(insertCommand.getmPassword());
+		String encodedPw = passwordEncoder.encode(insertCommand.getMemberPassword());
 		// 암호화한 비번 셋
-		insertCommand.setmPassword(encodedPw);
+		insertCommand.setMemberPassword(encodedPw);
 		// insert
-		memberService.insert(insertCommand);
+		memberService.memberInsert(insertCommand);
 
 		// 인증 메일을 발송,인증키 6자리 String 반환
-		String authKey = mss.sendAuthMail(insertCommand.getmId());
+		String authKey = mss.sendAuthMail(insertCommand.getMemberId());
 		// 인증키 셋
-		insertCommand.setmAuthkey(authKey);
+		insertCommand.setMemberAuthkey(authKey);
 
 		// DB에 인증키 업데이트
 		memberService.updateAuthkey(insertCommand);
 
-		return "/member/member_tmp/emailConfirm";
+		return "/member/member_alert/emailConfirm";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/member/idDup", method = RequestMethod.POST)
 	public int idDup(@ModelAttribute("InsertCommand") InsertCommand insertCommand) {
-		String mId = insertCommand.getmId();
-
-		return memberService.idDup(mId);
+		String memberId = insertCommand.getMemberId();
+		System.out.println("FDA?????" + memberService.idDup(memberId));
+		
+		return memberService.idDup(memberId);
 
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/member/nicknameDup", method = RequestMethod.POST)
 	public int nicknameDup(@ModelAttribute("InsertCommand") InsertCommand insertCommand) {
-		String mNickname = insertCommand.getmNickname();
+		String memberNickname = insertCommand.getMemberNickname();
 		int res = 1;
-		if (mNickname.length() >= 1) {
-			res = memberService.nicknameDup(mNickname);
+		if (memberNickname.length() >= 1) {
+			res = memberService.nicknameDup(memberNickname);
 		}
 		return res;
 

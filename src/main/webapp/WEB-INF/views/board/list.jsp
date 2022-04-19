@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
 <meta charset="UTF-8">
@@ -24,7 +25,9 @@ li {
 <title>Insert title here</title>
 </head>
 <body>
-
+토큰<br><br>
+<div th:text="'TOKEN : ' + ${token}"></div>
+<div th:text="'Email : ' + ${email}"></div>
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		<table border="1">
@@ -38,21 +41,21 @@ li {
 				<th>회원 레벨</th>
 			</tr>
 			<tr>
-				<td>${memberLogin.mSeq}</td>
-				<td>${memberLogin.mId}</td>
-				<td>${memberLogin.mNickname}</td>
-				<td>${memberLogin.mBirthday}</td>
-				<td>${memberLogin.mRegday}</td>
-				<td>${memberLogin.mAuth}</td>
-				<td>${memberLogin.mLevel}</td>
+				<td>${memberLogin.memberSeq}</td>
+				<td>${memberLogin.memberId}</td>
+				<td>${memberLogin.memberNickname}</td>
+				<td>${memberLogin.memberBirthDay}</td>
+				<td>${memberLogin.memberRegDay}</td>
+				<td>${memberLogin.memberAuth}</td>
+				<td>${memberLogin.memberLevel}</td>
 
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
-		<a href="<c:url value='/board/write?qSeq=${question.qSeq }'/>"><button>글쓰기</button></a>
+		<a href="<c:url value='/board/write?questionSeq=${question.questionSeq }'/>"><button>글쓰기</button></a>
 
 		<a href="<c:url value='/member/questionAdd'/>"><button>질문 등록하기</button></a>
-		<a href="<c:url value='/member/mypage/confirmPwd?mSeq=${memberLogin.mSeq}'/>"><button>마이페이지</button></a>		
+		<a href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>		
 
 	</c:if>
 	
@@ -60,8 +63,8 @@ li {
 	
 	<table border="1">
 		<tr >
-			<td>${question.qContent}</td>
-			<td>${question.qSeq}</td>
+			<td>${question.questionContent}</td>
+			<td>${question.questionSeq}</td>
 		</tr>
 	</table>
 	
@@ -95,18 +98,18 @@ li {
 		<c:if test="${ !empty list}">
 			<c:forEach var="list" items="${list}">
 				<tr>
-					<td>${list.bSeq}</td>
+					<td>${list.boardSeq}</td>
 
-					<td><a href="<c:url value='/board/detail?bSeq=${list.bSeq}'/>">${list.bTitle}</a>
+					<td><a href="<c:url value='/board/detail?boardSeq=${list.boardSeq}'/>">${list.boardTitle}</a>
 					
 					</td>
 					
 
-					<td>${list.mNickname}</td>
-					<td>${list.bRegday}</td>
-					<td>${list.bLike}</td>
-					<td>${list.bCount}</td>
-					<td>${list.mSeq}</td>
+					<td>${list.memberNickname}</td>
+					<td>${list.boardRegday}</td>
+					<td>${list.boardLike}</td>
+					<td>${list.boardCount}</td>
+					<td>${list.memberSeq}</td>
 					
 				</tr>
 

@@ -17,19 +17,19 @@
 		<table border="1">
 			<tr>
 				<td>제목</td>
-				<td><form:input path="bTitle" placeholder="8자리 숫자 입력" /> 
-				<form:errors path="bTitle" /></td>
+				<td><form:input path="boardTitle" placeholder="8자리 숫자 입력" /> 
+				<form:errors path="boardTitle" /></td>
 
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td><form:input path="bContent" /> 
-				<form:errors path="bContent" /></td>
+				<td><form:textarea path="boardContent" /> 
+				<form:errors path="boardContent" /></td>
 
 			</tr>
 		</table>
 
-		<input type="hidden" name="qSeq" value="${qSeq}" />
+		<input type="hidden" name="questionSeq" value="${questionSeq}" />
 		<input type="submit" value="글쓰기" />
 	</form:form>
 
