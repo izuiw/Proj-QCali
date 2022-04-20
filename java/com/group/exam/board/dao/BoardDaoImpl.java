@@ -158,4 +158,11 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSessionTemplate.selectOne("currentSequence");
 	}
 
+
+	@Override
+	public List<BoardlistCommand> boardSearch(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList("boardSearch", map);
+	}
+
 }

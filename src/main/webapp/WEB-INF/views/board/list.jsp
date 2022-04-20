@@ -75,6 +75,18 @@ li {
 	<c:if test="${empty memberLogin}">
 		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
 	</c:if>
+	
+	<form action="<c:url value='/board/search'/>">
+	<p>
+	<select name="searchOption">
+		<option value="B.BOARD_TITLE" >제목</option>
+		<option value="M.MEMBER_NICKNAME" >닉네임</option>
+	</select>
+		<label>(으)로 검색  <input name="searchWord"/></label>
+		<input type="submit" value="조회">
+	</p>
+	
+	</form>
 
 
 	<table border="1">

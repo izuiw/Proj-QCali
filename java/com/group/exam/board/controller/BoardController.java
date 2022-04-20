@@ -1,6 +1,7 @@
 package com.group.exam.board.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -161,7 +162,7 @@ public class BoardController {
 		return "board/list";
 	}
 
-	@Scheduled(cron = "0 0 12 1/1 * ?") // 하루마다 출력으로 표현식 
+	@Scheduled(cron = "0 0 12 1/1 * ?") // 하루마다 출력으로 표현식
 	public void getSequence() {
 		logger.info(new Date() + "스케쥴러 실행");
 		num = boardService.getSequence();
@@ -306,6 +307,22 @@ public class BoardController {
 		}
 
 		return "redirect:/board/list";
+	}
+
+	// 닉네임 , 제목으로 검색
+	@GetMapping(value = "/search")
+	public String boardListMy(@RequestParam("searchOption") String searchOption,
+			@RequestParam("searchWord") String searchWord, Model model, Criteria cri) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		map.put("searchOption", searchOption);
+		map.put("searchWord", searchWord);
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
+		List<BoardlistCommand> list = boardService.boardSearch(map);
+		model.addAttribute("boardList", list);
+
+		return "/board/list";
 	}
 
 }

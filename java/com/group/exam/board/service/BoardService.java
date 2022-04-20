@@ -1,5 +1,6 @@
 package com.group.exam.board.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.group.exam.board.command.BoardlistCommand;
@@ -32,6 +33,8 @@ public interface BoardService {
 	public String memberAuth (int memberSeq); //멤버 Auth 상태 확인 
 	
 	public int memberLevelup (int memberSeq, int mytotal, int memberLevel);
+	
+	public List<BoardlistCommand> boardSearch (HashMap<String, Object> map);//닉네임, 제목으로 검색
 	
 	//하루마다 질문 출력
 	

@@ -176,6 +176,13 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.currentSequence();
 	}
 
+
+	@Override
+	public List<BoardlistCommand> boardSearch(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return boardDao.boardSearch(map);
+	}
+
 	
 
 	
