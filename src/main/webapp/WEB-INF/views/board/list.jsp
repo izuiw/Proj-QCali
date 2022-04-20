@@ -30,6 +30,8 @@ li {
 <div th:text="'Email : ' + ${email}"></div>
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
+		
+		게시글 수 : ${boardTotal }
 		<table border="1">
 			<tr>
 				<th>회원 번호</th>
@@ -52,7 +54,7 @@ li {
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
-		<a href="<c:url value='/board/write?questionSeq=${question.questionSeq }'/>"><button>글쓰기</button></a>
+		<a href="<c:url value='/board/write?questionSeq=${boardQuestion.questionSeq }'/>"><button>글쓰기</button></a>
 
 		<a href="<c:url value='/member/questionAdd'/>"><button>질문 등록하기</button></a>
 		<a href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>		
@@ -63,8 +65,8 @@ li {
 	
 	<table border="1">
 		<tr >
-			<td>${question.questionContent}</td>
-			<td>${question.questionSeq}</td>
+			<td>${boardQuestion.questionContent}</td>
+			<td>${boardQuestion.questionSeq}</td>
 		</tr>
 	</table>
 	
@@ -87,16 +89,18 @@ li {
 
 
 		</tr>
+		
+		
 
 
-		<c:if test="${ empty list}">
+		<c:if test="${ empty boardList}">
 			<tr>
 				<td colspan="7">게시판에 저장된 글이 없습니다.</td>
 			</tr>
 		</c:if>
 
-		<c:if test="${ !empty list}">
-			<c:forEach var="list" items="${list}">
+		<c:if test="${ !empty boardList}">
+			<c:forEach var="list" items="${boardList}">
 				<tr>
 					<td>${list.boardSeq}</td>
 
@@ -117,22 +121,22 @@ li {
 
 		</c:if>
 		<div>
-			<ul class="pagination">
+			<ul>
 				<c:if test="${pageMaker.prev }">
-					<li class="pagination_button"><a
-						href="<c:url value='/board/list${pageMaker.makeQuery(pageMaker.startPage - 1) }'/>">Previous</a>
+					<li><a
+						href="list${pageMaker.makeQuery(pageMaker.startPage - 1) }">Previous</a>
 					</li>
 				</c:if>
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
-					<li class="pagination_button"><a
-						href="<c:url value='/board/list${pageMaker.makeQuery(currentPage) }'/>">${currentPage }</a></li>
+					<li><a
+						href="list${pageMaker.makeQuery(currentPage) }">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next && pageMaker.endPage}">
-					<li class="pagination_button"><a
-						href="<c:url value='/board/list${pageMaker.makeQuery(pageMaker.endPage + 1) }'/>">Next</a>
+					<li><a
+						href="list${pageMaker.makeQuery(pageMaker.endPage + 1) }">Next</a>
 					</li>
 				</c:if>
 			</ul>

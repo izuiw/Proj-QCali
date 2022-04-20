@@ -57,24 +57,24 @@
 
 
 		</tr>
-		<c:if test="${ empty list}">
+		<c:if test="${ empty boardList}">
 			<tr>
 				<td colspan="7">게시판에 저장된 글이 없습니다.</td>
 			</tr>
 		</c:if>
 
-		<c:if test="${ !empty list}">
+		<c:if test="${ !empty boardList}">
 
 			<tr>
-				<td>${list.boardSeq}</td>
+				<td>${boardList.boardSeq}</td>
 
-				<td>${list.boardTitle}</td>
-				<td>${list.boardContent}</td>
+				<td>${boardList.boardTitle}</td>
+				<td>${boardList.boardContent}</td>
 
-				<td>${list.memberNickname}</td>
-				<td>${list.boardRegday}</td>
-				<td>${list.boardLike}</td>
-				<td>${list.boardCount}</td>
+				<td>${boardList.memberNickname}</td>
+				<td>${boardList.boardRegday}</td>
+				<td>${boardList.boardLike}</td>
+				<td>${boardList.boardCount}</td>
 			</tr>
 
 			<div style="text-align: right;">

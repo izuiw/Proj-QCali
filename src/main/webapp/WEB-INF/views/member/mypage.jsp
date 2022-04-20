@@ -28,7 +28,7 @@
 				<td>${memberLogin.memberSeq}</td>
 				<td>${memberLogin.memberId}</td>
 				<td>${memberLogin.memberNickname}</td>
-				<td>${memberLogin.memberBirthday}</td>
+				<td>${memberLogin.memberBirthDay}</td>
 				<td>${memberLogin.memberRegDay}</td>
 				<td>${memberLogin.memberAuth}</td>
 				<td>${memberLogin.memberLevel}</td>

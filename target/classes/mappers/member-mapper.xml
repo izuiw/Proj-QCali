@@ -23,12 +23,12 @@
 	<select id="login" parameterType="String"
 		resultType="com.group.exam.member.command.LoginCommand">
 		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_BPW
-		,MEMBER_NICKNAME, MEMBER_BIRTH_DAY, MEMBER_REG_DAY, MEMBER_AUTH,
+		, MEMBER_NICKNAME, to_char(MEMBER_BIRTH_DAY, 'yyyy.mm.dd') MEMBER_BIRTH_DAY, to_char(MEMBER_REG_DAY, 'yyyy.mm.dd') MEMBER_REG_DAY, MEMBER_AUTH,
 		MEMBER_LEVEL from MEMBER where MEMBER_ID = #{memberId}
 	</select>
 
-	<!-- 비밀번호 찾기 관련 -->
 
+	<!-- 비밀번호 찾기 관련 -->
 	<select id="findPwd" parameterType="String"
 		resultType="com.group.exam.member.command.LoginCommand">
 		select * from MEMBER where MEMBER_ID = #{memberId}
@@ -47,7 +47,7 @@
 		(member_seq, member_id, member_password, member_bpw, member_nickname,
 		member_birth_day, member_reg_day)
 		VALUES
-		(member_seq.nextval, #{memberId},
+		(m_seq.nextval, #{memberId},
 		#{memberPassword}, #{memberPassword}, #{memberNickname}, #{memberBirthDay}, SYSDATE)
 	</insert>
 

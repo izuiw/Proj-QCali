@@ -11,9 +11,9 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 	<script type="text/javascript">
-var idck = 0;
-var pwck = 0;
-var nickck = 0;
+let idck = false;
+let pwck = false;
+let nickck = false;
 
 	function pwCheck() {
 
@@ -21,7 +21,7 @@ var nickck = 0;
 	        if(document.getElementById('memberPassword').value==document.getElementById('memberPasswordCheck').value) {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치합니다.';
 	            document.getElementById('pwSame').style.color='blue';
-	            pwck = 1;
+	            pwck = true;
 	        }
 	        else {
 	            document.getElementById('pwSame').innerHTML='비밀번호가 일치하지 않습니다.';
@@ -29,6 +29,7 @@ var nickck = 0;
 	            
 	        }
 	    }
+	    DoSignUp();
 	}
 
 
@@ -52,14 +53,15 @@ var nickck = 0;
 				                } else if (data == 0) {		           
 						            document.getElementById('idSame').innerHTML='사용 가능한 이메일 입니다.';
 						            document.getElementById('idSame').style.color='blue';
-						            idck = 1;
+						            idck = true;
 				                }
+				                DoSignUp();
 				            }
 
 				        })
 			  	  }    	
 			
-
+		  	
 		   
 		}
 
@@ -78,34 +80,51 @@ var nickck = 0;
 	                } else if (data == 0) {
 	                    document.getElementById('nickSame').innerHTML='사용 가능한 닉네임 입니다.';
 			            document.getElementById('nickSame').style.color='blue';
-			            nickck = 1;
+			            nickck = true;
 	                }
+	                DoSignUp();
 	            }
 
-	        })
+	        });
+	        
 	    }
 
-	  function dateCheck(){
-	  var str = document.getElementById('memberBirthDay').value;
-	  var pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
-	  if(!pattern.test(str)) {
-		document.getElementById('date').innerHTML='형식에 맞게 입력하세요.';
-	      document.getElementById('date').style.color='red';
-	  } else{
-		  document.getElementById('date').innerHTML='';
-	  }
-	  }
-	  
-	  
-	  function DoSignUp() {
+		function dateCheck() {
+			var str = document.getElementById('memberBirthDay').value;
+			var pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+			if (!pattern.test(str)) {
+				document.getElementById('date').innerHTML = '형식에 맞게 입력하세요.';
+				document.getElementById('date').style.color = 'red';
+			} else {
+				document.getElementById('date').innerHTML = '';
+			}
+		}
 
-			 if (idck == 0) {alert("이메일 중복 체크를 해주세요"); $("#memberId").focus(); return; }
-			 if (pwck == 0) {alert("비밀번호 확인 체크를 해주세요"); $("#memberPassword").focus(); return; }
-			 if (nickck == 0) {alert("닉네임 중복 체크를 해주세요"); $("#memberNickname").focus(); return; }
-		  
-		  if (confirm("회원가입을 하시겠습니까?")) {
-			  location.href = "<c:url value='/member/insert'/>";
-		  }
+		function DoSignUp() {
+
+			/* if (idck == false) {
+				alert("이메일 중복 체크를 해주세요");
+				$("#memberId").focus();
+				return;
+			}
+			if (pwck == false) {
+				alert("비밀번호 확인 체크를 해주세요");
+				$("#memberPassword").focus();
+				return;
+			}
+			if (nickck == false) {
+				alert("닉네임 중복 체크를 해주세요");
+				$("#memberNickname").focus();
+				return;
+			} */
+	<%-- if (confirm("회원가입을 하시겠습니까?")) {
+			  location.href = "<c:url value='/member/insert'/>"; } --%>
+			  console.log(idck);
+			  console.log(pwck);
+			  console.log(nickck);
+			  if (idck == true && pwck == true && nickck == true) {
+			  		$("#memberInsert").prop("disabled", false);
+			  }
 	  }
 	</script>
 <body>
@@ -146,7 +165,7 @@ var nickck = 0;
 	</table>
 	<br>
 	
-	<input type="button" class="btn btn-lg btn-success btn-block" value="회원가입" onclick="DoSignUp();" />
+	<input type="submit" class="btn btn-lg btn-success btn-block" value="회원가입" id="memberInsert" disabled/>
 
 </form:form>
 
