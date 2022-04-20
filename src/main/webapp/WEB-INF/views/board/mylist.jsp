@@ -78,14 +78,14 @@ li {
 		</tr>
 
 	
-		<c:if test="${ empty list}">
+		<c:if test="${ empty boardList}">
 			<tr>
 				<td colspan="7">게시판에 저장된 글이 없습니다.</td>
 			</tr>
 		</c:if>
 
-		<c:if test="${ !empty list}">
-			<c:forEach var="list" items="${list}">
+		<c:if test="${ !empty boardList}">
+			<c:forEach var="list" items="${boardList}">
 				
 				<tr>
 					<td>${list.boardSeq}</td>
@@ -116,7 +116,7 @@ li {
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
 					<li><a
-						href="mylist${pageMaker.makeQuery(currentPage) }&memberSeq=${memberLogin.memberSeq}'/>">${currentPage }</a></li>
+						href="mylist${pageMaker.makeQuery(currentPage) }&memberSeq=${memberLogin.memberSeq}">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next }">
