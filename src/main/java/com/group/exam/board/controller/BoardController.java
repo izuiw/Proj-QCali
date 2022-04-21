@@ -311,7 +311,7 @@ public class BoardController {
 
 	// 닉네임 , 제목으로 검색
 	@GetMapping(value = "/search")
-	public String boardListMy(@RequestParam("searchOption") String searchOption,
+	public String boardSearchList(@RequestParam("searchOption") String searchOption,
 			@RequestParam("searchWord") String searchWord, Model model, Criteria cri) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
