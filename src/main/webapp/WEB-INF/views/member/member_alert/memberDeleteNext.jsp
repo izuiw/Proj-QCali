@@ -3,5 +3,5 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
 	alert("회원 탈퇴 성공");
-	document.location.href="<c:url value='/exam/'/>";
+	document.location.href="<c:url value='/'/>";
 </script>

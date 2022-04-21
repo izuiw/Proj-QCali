@@ -176,6 +176,8 @@ public class MemberMypageController {
 				return "errors/mypageChangeError";
 			}
 
+			session.invalidate(); //탈퇴 성공시, 로그인 세션 제거 
+			
 			return "/member/member_alert/memberDeleteNext";
 
 		}

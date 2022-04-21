@@ -1,9 +1,18 @@
 package com.group.exam.board.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -21,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.command.BoardlistCommand;
@@ -109,6 +119,55 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+	@PostMapping(value = "/ckUpload")
+	@ResponseBody
+	public void ckUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile file) {
+
+		OutputStream out = null;
+		PrintWriter printWriter = null;
+
+		// 서버의 업로드할 물리적 위치
+		String resources = "C:/project/workspacesQcali/resources";
+		String upload = resources + "/upload";
+		String folder = upload + "/" + "board" + "/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+		File f = new File(folder);
+
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+
+		String uuid = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+		try {
+			
+			byte[] bytes = upload.getBytes();
+
+
+
+			out = new FileOutputStream(new File(folder));
+			out.write(bytes);
+			out.flush(); // out에 저장된 데이터를 전송하고 초기화
+			String callback = request.getParameter("CKEditorFuncNum");
+			printWriter = response.getWriter();
+			String fileUrl = "/ckUpload/" + uuid + "_" + file.getOriginalFilename(); // 작성화면
+			// String fileUrl = "/ckUpload/" + uid + "&fileName=" + fileName; // 작성화면
+			// 업로드시 메시지 출력
+			printWriter.println("<script type='text/javascript'>" + "window.parent.CKEDITOR.tools.callFunction("
+					+ callback + ",'" + fileUrl + "','이미지를 업로드하였습니다.')" + "</script>");
+			printWriter.flush();
+
+			file.transferTo(new File(folder, uuid));
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	// 리스트 전체
 	@GetMapping(value = "/list")
 	public String boardListAll(Criteria cri, Model model, HttpSession session) {
@@ -120,10 +179,6 @@ public class BoardController {
 		 * - int 형의 경우 (defaultValue="0")
 		 * 
 		 */
-
-//		if (currentPage == 0) {
-//			currentPage = 1;
-//		}
 
 		int total = boardService.listCount();
 

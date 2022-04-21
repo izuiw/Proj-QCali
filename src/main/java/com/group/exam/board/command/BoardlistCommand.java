@@ -1,7 +1,5 @@
 package com.group.exam.board.command;
 
-import java.util.Date;
-
 public class BoardlistCommand {
 	
 	private int boardSeq;

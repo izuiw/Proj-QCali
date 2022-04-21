@@ -51,7 +51,12 @@ public class MemberLoginController {
 		
 		LoginCommand member = memberService.login(command.getMemberId());
 		
-		
+		if(member == null) {
+			System.out.println("로그인 정보 없음 or 비밀번호 불일치 : " + member);
+			
+			model.addAttribute("msg", "해당 회원 정보가 없습니다.");
+			return "/member/loginForm";
+		}
 	
 		String password = command.getMemberPassword();
 		

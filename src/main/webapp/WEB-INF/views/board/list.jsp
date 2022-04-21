@@ -120,13 +120,16 @@ li {
 					
 					</td>
 					
+			 	<c:if test="${empty list.memberNickname }">
+					<td>탈퇴 회원</td>
+				</c:if>  
 
 					<td>${list.memberNickname}</td>
 					<td>${list.boardRegday}</td>
 					<td>${list.boardLike}</td>
 					<td>${list.boardCount}</td>
 					<td>${list.memberSeq}</td>
-					
+
 				</tr>
 
 			</c:forEach>
