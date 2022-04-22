@@ -1,6 +1,8 @@
 package com.group.exam.board.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,8 +33,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.command.BoardlistCommand;
@@ -118,52 +124,64 @@ public class BoardController {
 
 		return "redirect:/board/list";
 	}
+	
 
 	@PostMapping(value = "/ckUpload")
-	@ResponseBody
-	public void ckUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile file) {
+	public void ckUpload(HttpServletRequest request, HttpServletResponse response, @RequestParam MultipartFile upload) {
 
 		OutputStream out = null;
 		PrintWriter printWriter = null;
 
-		// 서버의 업로드할 물리적 위치
-		String resources = "C:/project/workspacesQcali/resources";
-		String upload = resources + "/upload";
-		String folder = upload + "/" + "board" + "/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+		// 인코딩
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
 
+		// 서버의 업로드할 물리적 위치
+		String resources = "C:/dev1/workspacesQcali/resources/upload";
+		String folder =  resources + "/" + "board" + "/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+		
+		// 파일 이름
+		UUID uuid = UUID.randomUUID();
+		String ckUploadPath =  uuid + "_" + upload.getOriginalFilename();
+
+		// 폴더 생성
 		File f = new File(folder);
 
 		if (!f.exists()) {
 			f.mkdirs();
 		}
 
-		String uuid = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
 		try {
-			
+
 			byte[] bytes = upload.getBytes();
 
-
-
-			out = new FileOutputStream(new File(folder));
+			out = new FileOutputStream(new File(folder, ckUploadPath));
 			out.write(bytes);
 			out.flush(); // out에 저장된 데이터를 전송하고 초기화
+
 			String callback = request.getParameter("CKEditorFuncNum");
 			printWriter = response.getWriter();
-			String fileUrl = "/ckUpload/" + uuid + "_" + file.getOriginalFilename(); // 작성화면
-			// String fileUrl = "/ckUpload/" + uid + "&fileName=" + fileName; // 작성화면
+			//String fileUrl = "localhost:8080/exam/board/ckUploadSubmit?uuid=" + uuid + "&fileName=" + upload.getOriginalFilename(); // 작성화면
+			String fileUrl = "/imgUpload/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())+ "/" + ckUploadPath;
+		
+			
 			// 업로드시 메시지 출력
-			printWriter.println("<script type='text/javascript'>" + "window.parent.CKEDITOR.tools.callFunction("
-					+ callback + ",'" + fileUrl + "','이미지를 업로드하였습니다.')" + "</script>");
+			printWriter.println("{\"filename\" : \""+ckUploadPath+"\", \"uploaded\" : 1, \"url\":\""+fileUrl+"\"}");
 			printWriter.flush();
 
-			file.transferTo(new File(folder, uuid));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (printWriter != null) {
+					printWriter.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -193,7 +211,7 @@ public class BoardController {
 
 		model.addAttribute("boardList", list);
 
-		// model.addAttribute("currentPage", currentPage);
+
 		PaginVo pageCommand = new PaginVo();
 		pageCommand.setCri(cri);
 		pageCommand.setTotalCount(total);
@@ -309,7 +327,8 @@ public class BoardController {
 	// 게시글 수정
 	@GetMapping(value = "/edit")
 	public String boardEdit(@ModelAttribute("boardEditData") BoardVo boardVo, HttpSession session, Model model) {
-
+		
+		model.addAttribute("articleInfo", boardService.boardListDetail(boardVo.getBoardSeq()));
 		return "board/editForm";
 	}
 
@@ -355,6 +374,9 @@ public class BoardController {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 			int memberSeq = loginMember.getMemberSeq();
 			boardService.deleteBoardOne(boardSeq, memberSeq);
+			
+			
+			
 			System.out.println("삭제 성공");
 		} else {
 			System.out.println("삭제 실패");

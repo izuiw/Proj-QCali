@@ -70,7 +70,11 @@
 
 				<td>${boardList.boardTitle}</td>
 				<td>${boardList.boardContent}</td>
-
+				
+			 	<c:if test="${empty list.memberNickname }">
+					<td>탈퇴 회원</td>
+				</c:if>  
+				
 				<td>${boardList.memberNickname}</td>
 				<td>${boardList.boardRegday}</td>
 				<td>${boardList.boardLike}</td>
@@ -89,11 +93,11 @@
 
 			<c:if test="${myArticle == true}">
 
-				<a href="<c:url value='/board/edit?boardSeq=${list.boardSeq}'/>"><button>글
+				<a href="<c:url value='/board/edit?boardSeq=${boardList.boardSeq}'/>"><button>글
 						수정</button></a>
 
 
-				<a href="<c:url value='/board/delete?boardSeq=${list.boardSeq}'/>"><button
+				<a href="<c:url value='/board/delete?boardSeq=${boardList.boardSeq}'/>"><button
 						onclick="button_event();">글 삭제</button></a>
 
 

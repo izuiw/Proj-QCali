@@ -9,44 +9,31 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js">
-var ckeditor_config = {
-
-	      resize_enaleb : false,
-
-	      enterMode : CKEDITOR.ENTER_BR,
-
-	      shiftEnterMode : CKEDITOR.ENTER_P,
-
-	      filebrowserUploadUrl : "/board/ckUpload"
-
-	      };
-
-
-
-	출처: https://ninedc.tistory.com/54 [기록하고 나누는 행복]
-</script>
+<script type="text/javascript"
+	src="<c:url value="/resources"/>/static/js/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 
 
 
-	<form:form commandName="boardData">
+	<form:form commandName="boardData" >
 		<table border="1">
 			<tr>
 				<td>제목</td>
-				<td><form:input path="boardTitle" placeholder="8자리 숫자 입력" /> 
-				<form:errors path="boardTitle" /></td>
+				<td><form:input path="boardTitle" placeholder="제목 입력" /> <form:errors
+						path="boardTitle" /></td>
 
 			</tr>
 			<tr>
 				<td>내용</td>
 				<td><form:textarea path="boardContent" /> 
-				<script type="text/javascript">
-					CKEDITOR.replace("boardContent", ckeditor_config);
-				</script>
-				
-				<form:errors path="boardContent" /></td>
+				<script>
+			
+					CKEDITOR.replace('boardContent', {
+						
+						filebrowserUploadUrl : '${pageContext.request.contextPath}/board/ckUpload'
+					});
+				</script> <form:errors path="boardContent" /></td>
 
 			</tr>
 		</table>

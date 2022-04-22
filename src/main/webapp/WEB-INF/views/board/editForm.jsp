@@ -8,6 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script type="text/javascript"
+	src="<c:url value="/resources"/>/static/js/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 
@@ -40,22 +43,27 @@
 	<form:form commandName="boardEditData">
 		<table border="1">
 			<tr>
-				<td><form:label path="boardTitle">제목</form:label></td>
-				
-				<td><form:input path="boardTitle"/> 
+				<td>제목</td>
+				<td><input name="boardTitle" value="${ articleInfo.boardTitle}"/> 
 				<form:errors path="boardTitle" /></td>
 
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td><form:input path="boardContent" label="${ boardContent}"/> 
+				<td><textarea name="boardContent" id="boardContent"> ${ articleInfo.boardContent }</textarea>
+						<script type="text/javascript">	
+			CKEDITOR.replace('boardContent',
+			{filebrowserUploadUrl:'${pageContext.request.contextPath}/board/ckUpload'
+			});
+		</script>
+				
 				<form:errors path="boardContent" /></td>
 
 			</tr>
 		</table>
 
 		
-		<input type="submit" value="글쓰기" />
+		<input type="submit" value="수정하기" />
 	</form:form>
 
 </body>

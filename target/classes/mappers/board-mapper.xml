@@ -86,7 +86,7 @@ where rn between #{rowStart} and #{rowEnd} ]]>
 		resultType="com.group.exam.board.command.BoardlistCommand">
 
 		<![CDATA[
-select 
+select *
 from (select ROWNUM rn, B.BOARD_SEQ, 
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
