@@ -390,6 +390,7 @@ public class BoardController {
 	@GetMapping(value = "/search")
 	public String boardSearchList(@RequestParam("searchOption") String searchOption,
 			@RequestParam("searchWord") String searchWord, Model model, Criteria cri) {
+		System.out.println("?" + searchOption + "\t" + searchWord);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
 		map.put("searchOption", searchOption);
@@ -397,8 +398,10 @@ public class BoardController {
 		map.put("rowStart", cri.getRowStart());
 		map.put("rowEnd", cri.getRowEnd());
 		List<BoardlistCommand> list = boardService.boardSearch(map);
+		
+		System.out.println("list" + list.toString());
 		model.addAttribute("boardList", list);
-
+		
 		return "/board/list";
 	}
 

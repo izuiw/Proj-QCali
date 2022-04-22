@@ -162,6 +162,8 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public List<BoardlistCommand> boardSearch(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
+		
+		System.out.println("dao\n" + map.toString());
 		return sqlSessionTemplate.selectList("boardSearch", map);
 	}
 

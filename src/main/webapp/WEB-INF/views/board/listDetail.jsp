@@ -71,11 +71,16 @@
 				<td>${boardList.boardTitle}</td>
 				<td>${boardList.boardContent}</td>
 				
-			 	<c:if test="${empty list.memberNickname }">
-					<td>탈퇴 회원</td>
-				</c:if>  
+			
 				
-				<td>${boardList.memberNickname}</td>
+				<td>
+				
+					<td>
+					<c:if test="${empty boarList.memberNickname }">
+						탈퇴 회원
+					</c:if>
+			
+				${boardList.memberNickname}</td>
 				<td>${boardList.boardRegday}</td>
 				<td>${boardList.boardLike}</td>
 				<td>${boardList.boardCount}</td>

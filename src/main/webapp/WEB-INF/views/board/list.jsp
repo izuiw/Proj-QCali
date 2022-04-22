@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
@@ -25,9 +25,11 @@ li {
 <title>Insert title here</title>
 </head>
 <body>
-토큰<br><br>
-<div th:text="'TOKEN : ' + ${token}"></div>
-<div th:text="'Email : ' + ${email}"></div>
+	토큰
+	<br>
+	<br>
+	<div th:text="'TOKEN : ' + ${token}"></div>
+	<div th:text="'Email : ' + ${email}"></div>
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		
@@ -54,38 +56,40 @@ li {
 			</tr>
 		</table>
 		<a href="<c:url value='/member/logout'/>"><button>로그아웃</button></a>
-		<a href="<c:url value='/board/write?questionSeq=${boardQuestion.questionSeq }'/>"><button>글쓰기</button></a>
+		<a
+			href="<c:url value='/board/write?questionSeq=${boardQuestion.questionSeq }'/>"><button>글쓰기</button></a>
 
-		<a href="<c:url value='/member/questionAdd'/>"><button>질문 등록하기</button></a>
-		<a href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>		
+		<a href="<c:url value='/member/questionAdd'/>"><button>질문
+				등록하기</button></a>
+		<a
+			href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>
 
 	</c:if>
-	
 
-	
+
+
 	<table border="1">
-		<tr >
+		<tr>
 			<td>${boardQuestion.questionContent}</td>
 			<td>${boardQuestion.questionSeq}</td>
 		</tr>
 	</table>
-	
-	
-	
+
+
+
 	<c:if test="${empty memberLogin}">
 		<a href="<c:url value='/member/login'/>"><button>로그인</button></a>
 	</c:if>
-	
+
 	<form action="<c:url value='/board/search'/>">
-	<p>
-	<select name="searchOption">
-		<option value="B.BOARD_TITLE" >제목</option>
-		<option value="M.MEMBER_NICKNAME" >닉네임</option>
-	</select>
-		<label>(으)로 검색  <input name="searchWord"/></label>
-		<input type="submit" value="조회">
-	</p>
-	
+		<p>
+			<select name="searchOption">
+				<option value="boardTitle">제목</option>
+				<option value="memberNickname">닉네임</option>
+			</select> <label>(으)로 검색 <input name="searchWord" /></label> <input
+				type="submit" value="조회">
+		</p>
+
 	</form>
 
 
@@ -101,8 +105,8 @@ li {
 
 
 		</tr>
-		
-		
+
+
 
 
 		<c:if test="${ empty boardList}">
@@ -116,15 +120,18 @@ li {
 				<tr>
 					<td>${list.boardSeq}</td>
 
-					<td><a href="<c:url value='/board/detail?boardSeq=${list.boardSeq}'/>">${list.boardTitle}</a>
-					
-					</td>
-					
-			 	<c:if test="${empty list.memberNickname }">
-					<td>탈퇴 회원</td>
-				</c:if>  
+					<td><a
+						href="<c:url value='/board/detail?boardSeq=${list.boardSeq}'/>">${list.boardTitle}</a>
 
-					<td>${list.memberNickname}</td>
+					</td>
+
+
+
+					<td>
+					<c:if test="${empty list.memberNickname }">
+						탈퇴 회원
+					</c:if>
+				 ${list.memberNickname}</td>
 					<td>${list.boardRegday}</td>
 					<td>${list.boardLike}</td>
 					<td>${list.boardCount}</td>
@@ -145,8 +152,7 @@ li {
 
 				<c:forEach var="currentPage" begin="${pageMaker.startPage }"
 					end="${pageMaker.endPage }">
-					<li><a
-						href="list${pageMaker.makeQuery(currentPage) }">${currentPage }</a></li>
+					<li><a href="list${pageMaker.makeQuery(currentPage) }">${currentPage }</a></li>
 				</c:forEach>
 
 				<c:if test="${pageMaker.next && pageMaker.endPage}">
