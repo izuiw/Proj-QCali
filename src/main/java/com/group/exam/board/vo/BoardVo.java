@@ -4,12 +4,14 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Alias("BoardVo")
 public class BoardVo {
 
 	private int boardSeq;
+	@Length(min=2, max=30, message="2자 이상, 30자 미만으로 입력해주세요.")
 	@NotEmpty(message="제목을 입력해주세요.")
 	private String boardTitle;
 	@NotEmpty(message="내용을 입력해주세요.")

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.service.MemberService;
 import com.group.exam.member.vo.MemberVo;
+import com.group.exam.utils.MemberSessionConfig;
 
 
 @Controller
@@ -29,14 +30,21 @@ public class MemberLoginController {
 	private MemberService memberService;
 	
 	@Autowired
-	public MemberLoginController(BCryptPasswordEncoder passwordEncoder, MemberService memberService ) {
+	public MemberLoginController(BCryptPasswordEncoder passwordEncoder, MemberService memberService) {
 		// TODO Auto-generated constructor stub
 		this.passwordEncoder = passwordEncoder;
 		this.memberService = memberService;
 	}
 
 	@RequestMapping(value="/member/login", method=RequestMethod.GET)
-	public String handleLogin(@ModelAttribute("loginMemberData") LoginCommand logincommand) {
+	public String handleLogin(@ModelAttribute("loginMemberData") LoginCommand logincommand, HttpSession session) {
+		
+		//로그인 세션이 이미 있을 경우 
+		if (session.getAttribute("memberLogin") != null) {
+			return "/";
+		}
+		
+		
 		return "/member/loginForm";
 	}
 	
@@ -70,7 +78,13 @@ public class MemberLoginController {
 		
 		if(member != null && pwdEncode) {
 
-			System.out.println("로그인 성공 : " + login);
+			System.out.println("로그인 성공 ");
+			//중복 로그인 방지
+			String memberId = MemberSessionConfig.getSessionidCheck("memberLogin",
+					command.getMemberId());
+			
+			// 세션 만료 시간
+			session.setMaxInactiveInterval(60 * 60);
 
 			session.setAttribute("memberLogin", login);	
 			return "redirect:/board/list";
