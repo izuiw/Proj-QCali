@@ -7,6 +7,7 @@ import com.group.exam.board.command.BoardlistCommand;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
+import com.group.exam.board.vo.ReplyVo;
 import com.group.exam.utils.Criteria;
 
 public interface BoardDao {
@@ -50,4 +51,16 @@ public interface BoardDao {
     public void deleteBoardLike(BoardHeartVo vo);
 
     public void updateBoardLike(int boardSeq);
+    
+  //댓글 기능 관련
+  	public List<ReplyVo> replySelect(int boardSeq); // 게시글에 맞춰서 댓글 리스트 띄우기
+  	
+  	public int replyCount(int boardSeq); //댓글 갯수 카운트  -> 해당 글에 달린 댓글 수를 가져와야함.
+  	
+  	public void replyInsert(ReplyVo replyVo); //댓글 쓰기
+  	
+  	public void replyUpdate(ReplyVo replyVo); //댓글 수정
+  	
+  	public void replyDelete(int replySeq); //댓글 삭제
+    
 }

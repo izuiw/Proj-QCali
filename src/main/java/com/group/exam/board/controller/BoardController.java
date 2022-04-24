@@ -1,8 +1,6 @@
 package com.group.exam.board.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,22 +29,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.group.exam.board.command.BoardLikeCommand;
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.BoardreplyInsertCommand;
 import com.group.exam.board.command.BoardupdateCommand;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.service.BoardService;
 import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
+import com.group.exam.board.vo.ReplyVo;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.service.MemberService;
-import com.group.exam.utils.PaginVo;
 import com.group.exam.utils.Criteria;
+import com.group.exam.utils.PaginVo;
 
 @Controller
 @RequestMapping("/board")
@@ -159,7 +155,7 @@ public class BoardController {
 			out.write(bytes);
 			out.flush(); // out에 저장된 데이터를 전송하고 초기화
 
-			String callback = request.getParameter("CKEditorFuncNum");
+			//String callback = request.getParameter("CKEditorFuncNum");
 			printWriter = response.getWriter();
 			//String fileUrl = "localhost:8080/exam/board/ckUploadSubmit?uuid=" + uuid + "&fileName=" + upload.getOriginalFilename(); // 작성화면
 			String fileUrl = "/imgUpload/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())+ "/" + ckUploadPath;
@@ -323,6 +319,34 @@ public class BoardController {
 		return command.getHeart();
 
 	}
+	
+	//댓글 insert ajax
+	@PostMapping(value = "/reply", produces = "application/json")
+	@ResponseBody
+	public List<ReplyVo> boardReply(@RequestBody BoardreplyInsertCommand command, HttpSession session, Model model) {
+		
+		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
+		
+		//댓글 입력 값이 있을 떄 (클릭 시)
+		if (command.getReplyContent() != null) {
+		ReplyVo replyVo = new ReplyVo();
+
+		replyVo.setBoardSeq(command.getBoardSeq());
+		replyVo.setMemberSeq(loginMember.getMemberSeq());
+		replyVo.setMemberNickname(loginMember.getMemberNickname());
+		replyVo.setReplyRegDay(replyVo.getReplyRegDay());
+		replyVo.setReplyContent(command.getReplyContent());
+		
+		boardService.replyInsert(replyVo);
+		}
+		
+		List<ReplyVo> replySelect = boardService.replySelect(command.getBoardSeq());
+		//model.addAttribute("replySelect", replySelect);
+		System.out.println("댓글 리스트 : " + replySelect);
+		
+		return replySelect;
+	}
+
 
 	// 게시글 수정
 	@GetMapping(value = "/edit")

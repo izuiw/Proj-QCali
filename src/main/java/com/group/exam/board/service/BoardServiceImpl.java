@@ -11,6 +11,7 @@ import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.dao.BoardDao;
 import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
+import com.group.exam.board.vo.ReplyVo;
 import com.group.exam.utils.Criteria;
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -181,6 +182,49 @@ public class BoardServiceImpl implements BoardService{
 	public List<BoardlistCommand> boardSearch(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		return boardDao.boardSearch(map);
+	}
+
+	
+	//댓글 기능 관련
+	@Override
+	public List<ReplyVo> replySelect(int boardSeq) {
+		// TODO Auto-generated method stub
+		return boardDao.replySelect(boardSeq);
+	}
+
+
+	@Override
+	public void replyInsert(ReplyVo replyVo) {
+		// TODO Auto-generated method stub
+		ReplyVo newreply = new ReplyVo();
+		//newreply.setReplySeq(replywriteCommand.getReplySeq());
+		newreply.setBoardSeq(replyVo.getBoardSeq());
+		newreply.setMemberSeq(replyVo.getMemberSeq());
+		newreply.setReplyContent(replyVo.getReplyContent());
+		
+		boardDao.replyInsert(newreply);
+	}
+
+
+	@Override
+	public void replyUpdate(ReplyVo replyVo) {
+		// TODO Auto-generated method stub
+		ReplyVo updatereply = new ReplyVo();
+		//updatereply.setReplySeq(replyVo.getReplySeq());
+		//updatereply.setBoardSeq(replyVo.getBoardSeq());
+		//updatereply.setMemberSeq(replyVo.getMemberSeq());
+		updatereply.setReplyContent(replyVo.getReplyContent());
+		
+		boardDao.replyUpdate(updatereply);
+		
+	}
+
+
+	@Override
+	public void replyDelete(int replySeq) {
+		// TODO Auto-generated method stub
+		boardDao.replyDelete(replySeq);
+		
 	}
 
 	
