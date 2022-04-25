@@ -98,7 +98,7 @@ public class BoardController {
 
 		int mytotal = boardService.mylistCount(loginMember.getMemberSeq());
 
-		if (mytotal > 10) {
+		if (mytotal >= 10) {
 			int memberLevel = boardService.memberLevelup(loginMember.getMemberSeq(), mytotal,
 					loginMember.getMemberLevel());
 

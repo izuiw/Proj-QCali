@@ -25,11 +25,14 @@ li {
 <title>Insert title here</title>
 </head>
 <body>
-	토큰
+	
 	<br>
 	<br>
-	<div th:text="'TOKEN : ' + ${token}"></div>
-	<div th:text="'Email : ' + ${email}"></div>
+	<			${naverSessionId} 
+	<br><br>
+	${naverResult}
+		<a href="<c:url value='/naver/logout'/>"><button>로그아웃</button></a>
+		
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		

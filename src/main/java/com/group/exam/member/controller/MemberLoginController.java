@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.group.exam.member.command.LoginCommand;
+import com.group.exam.member.command.NaverLoginBO;
 import com.group.exam.member.service.MemberService;
 import com.group.exam.member.vo.MemberVo;
 import com.group.exam.utils.MemberSessionConfig;
@@ -26,25 +27,36 @@ public class MemberLoginController {
 	
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	private NaverLoginBO naverLoginBO;
 	
 	private MemberService memberService;
 	
 	@Autowired
-	public MemberLoginController(BCryptPasswordEncoder passwordEncoder, MemberService memberService) {
+	public MemberLoginController(BCryptPasswordEncoder passwordEncoder, MemberService memberService, NaverLoginBO naverLoginBO) {
 		// TODO Auto-generated constructor stub
 		this.passwordEncoder = passwordEncoder;
 		this.memberService = memberService;
+		this.naverLoginBO = naverLoginBO;
 	}
 
 	@RequestMapping(value="/member/login", method=RequestMethod.GET)
-	public String handleLogin(@ModelAttribute("loginMemberData") LoginCommand logincommand, HttpSession session) {
+	public String handleLogin(@ModelAttribute("loginMemberData") LoginCommand logincommand, HttpSession session, Model model) {
+		
+		//네이버 로그인
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		System.out.println("네이버:" + naverAuthUrl);
+		
+		model.addAttribute("naverLoginURL", naverAuthUrl);
+		
+		//카카오 로그인 추가
+		
+		
+		
 		
 		//로그인 세션이 이미 있을 경우 
 		if (session.getAttribute("memberLogin") != null) {
 			return "home";
 		}
-		
-		
 		return "/member/loginForm";
 	}
 	
