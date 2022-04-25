@@ -51,9 +51,18 @@
 		#{memberPassword}, #{memberPassword}, #{memberNickname}, #{memberBirthDay}, SYSDATE)
 	</insert>
 
-	<select id="idDup" parameterType="String" resultType="Integer">
+	<select id="idDup" parameterType="HashMap" resultType="Integer">
+		
+		<if test="tableName.equals('member')">
 		SELECT
 		COUNT(*) FROM member WHERE member_id = #{memberId}
+		</if>
+		
+		<if test="tableName.equals('apiuser')">
+		SELECT
+		COUNT(*) FROM apiuser WHERE member_id = #{memberId} and
+		</if>
+		
 	</select>
 
 	<select id="nicknameDup" parameterType="String" resultType="Integer">
@@ -100,5 +109,20 @@
 		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{memberSeq}
 
 	</select>
+	
+	
+	
+	<!-- api 처음 로그인시, db에 회원 정보 저장 -->
+
+	<select id="memberApiLogin" parameterType="com.group.exam.member.command.ApiLoginCommand">
+	
+		INSERT INTO apiuser
+		(member_seq, member_id, member_api , member_birth_day, member_reg_day, member_nickname)
+		VALUES
+		(m_seq.nextval, #{memberId},
+		 #{memberApi}, #{memberBirthDay}, SYSDATE, #{memberNickname})
+	</select>
+	
+	
 
 </mapper>

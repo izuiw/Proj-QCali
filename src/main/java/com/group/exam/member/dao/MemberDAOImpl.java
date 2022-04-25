@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.group.exam.member.command.ApiLoginCommand;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.vo.MemberVo;
 
@@ -55,8 +56,8 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public int idDup(String memberId) {
-		return sqlSessionTemplate.selectOne("idDup", memberId);
+	public int idDup(HashMap<String, Object> map) {
+		return sqlSessionTemplate.selectOne("idDup", map);
 
 	}
 
@@ -92,6 +93,13 @@ public class MemberDAOImpl implements MemberDAO{
 	public int memberQuestionAdd(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.insert("memberQuestionAdd", map);
+	}
+
+	@Override
+	public void memberApiLogin(ApiLoginCommand apiCommand) {
+		// TODO Auto-generated method stub\
+		sqlSessionTemplate.insert("memberApiLogin", apiCommand);
+		
 	}
 	
 

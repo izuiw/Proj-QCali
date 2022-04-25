@@ -1,5 +1,6 @@
 package com.group.exam.member.service;
 
+import com.group.exam.member.command.ApiLoginCommand;
 import com.group.exam.member.command.InsertCommand;
 import com.group.exam.member.command.LoginCommand;
 
@@ -13,9 +14,13 @@ public interface MemberService {
 	
 	
 	public void memberInsert(InsertCommand insertCommand);//회원가입	
+	
 	public int nicknameDup(String memberNickname);//닉네임 중복확인
-	public int idDup(String memberId);//id(email) 중복확인
+	
+	public int idDup(String memberId, String tableName);//id(email) 중복확인
+	
 	public void updateAuthkey(InsertCommand insertCommand);//인증메일 발송후 인증키 저장
+	
 	public void updateAuth(String memberAuthkey);//메일 클릭시 인증 완료
 	
 	//회원 정보 수정 관련
@@ -29,6 +34,11 @@ public interface MemberService {
 	//회원 질문 추가
 	
 	public int memberQuestionAdd(String questionContent, int memberSeq);
+	
+	
+	//api 로그인 회원 
+	
+	public void memberApiLogin(ApiLoginCommand apiCommand);
 
 }
 

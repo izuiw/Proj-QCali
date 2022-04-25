@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.group.exam.member.command.ApiLoginCommand;
 import com.group.exam.member.command.NaverLoginBO;
+import com.group.exam.member.service.MemberService;
+import com.group.exam.utils.MemberSessionConfig;
 
 @Controller
 @RequestMapping(value = "/naver")
@@ -22,9 +25,11 @@ public class MemberNaverLoginController {
 	private NaverLoginBO naverLoginBO;
 	private String apiResult = null;
 
+	private MemberService memberService;
 	@Autowired
-	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
+	private void setNaverLoginBO(NaverLoginBO naverLoginBO, MemberService memberService) {
 		this.naverLoginBO = naverLoginBO;
+		this.memberService = memberService;
 	}
 
 //	// 로그인 첫 화면 요청 메소드
@@ -61,14 +66,26 @@ public class MemberNaverLoginController {
 		// Top레벨 단계 _response 파싱
 		JSONObject response_obj = (JSONObject) jsonObj.get("response");
 		// response의 nickname값 파싱
-		String nickname = (String) response_obj.get("nickname");
+		String id = (String) response_obj.get("id");
 	
-		// 4.파싱 닉네임 세션으로 저장
-		session.setAttribute("naverSessionId", nickname); // 세션 생성
-		model.addAttribute("naverResult", apiResult);
+		if (memberService.idDup(id, "apiuser") == 0) {
+			ApiLoginCommand apiCommand = new ApiLoginCommand();
+			apiCommand.setMemberApi("naver");
+			//apiCommand.setMemberBirthDay(response_obj.get(""));
+			apiCommand.setMemberId(id);
+			apiCommand.setMemberNickname(memberNickname);
+			memberService.memberApiLogin(apiCommand);
+		}
 		
-		System.out.println(apiResult);
-		return "board/list";
+		// 4.파싱 닉네임 세션으로 저장
+		//session.setAttribute("naverSessionId", nickname); // 세션 생성
+		//model.addAttribute("naverResult", apiResult);
+		
+		System.out.println("네이버 로그인 정보 : " + apiResult);
+		
+		
+		
+		return "member/apiMemberInsertForm";
 	}
 
 	// 로그아웃

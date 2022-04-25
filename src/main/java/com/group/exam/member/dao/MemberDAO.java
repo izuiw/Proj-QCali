@@ -3,6 +3,7 @@ package com.group.exam.member.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import com.group.exam.member.command.ApiLoginCommand;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.vo.MemberVo;
 
@@ -23,11 +24,15 @@ public interface MemberDAO {
 	
 	public abstract int nicknameDup(String memberNickname);//닉네임 중복확인
 	
-	public abstract int idDup(String memberId);//id(email) 중복확인
+	public abstract int idDup(HashMap<String, Object> map);//id(email) 중복확인
 	
 	public abstract void updateAuthkey(MemberVo memebrVo);//인증메일 발송후 인증키 저장
 	
 	public abstract void updateAuth(MemberVo memebrVo);//메일 클릭시 인증 완료
+	
+	//api 로그인 회원 가입
+	
+	public void memberApiLogin(ApiLoginCommand apiCommand);
 	
 	//회원 정보 수정 관련
 	

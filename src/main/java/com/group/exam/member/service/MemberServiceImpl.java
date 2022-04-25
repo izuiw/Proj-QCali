@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.group.exam.member.command.ApiLoginCommand;
 import com.group.exam.member.command.InsertCommand;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.dao.MemberDAO;
@@ -78,8 +79,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int idDup(String memberId) {	
-		return memberDAO.idDup(memberId);
+	public int idDup(String memberId, String tableName) {	
+		HashMap<String, Object> map = new HashMap<String, Object>();
+ 		
+		map.put("tableName", tableName);
+		map.put("memberId", memberId);
+		return memberDAO.idDup(map);
 	}
 	
 	@Override
@@ -130,6 +135,12 @@ public class MemberServiceImpl implements MemberService {
 		map.put("questionContent", questionContent);
 		map.put("memberSeq", memberSeq);
 		return memberDAO.memberQuestionAdd(map);
+	}
+
+	@Override
+	public void memberApiLogin(ApiLoginCommand apiCommand) {
+		// TODO Auto-generated method stub
+		memberDAO.memberApiLogin(apiCommand);
 	}
 
 
