@@ -156,7 +156,7 @@ let nickck = false;
 			</td>
 		</tr>
 		<tr>
-			<th>생년월일</th><td><form:input path="memberBirthDay" id="memberBirthDay" placeholder="yyyy-mm-dd" onchange="dateCheck()"/><form:errors path="memberBirthDay"/>
+			<th>생년월일</th><td><form:input path="memberBirthDay" id="memberBirthDay" placeholder="mm-dd" <%--onchange="dateCheck()" --%>/><form:errors path="memberBirthDay"/>
 			
 			<span id="date"></span>
 			</td>

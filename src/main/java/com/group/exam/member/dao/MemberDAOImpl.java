@@ -1,13 +1,12 @@
 package com.group.exam.member.dao;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.group.exam.member.command.ApiLoginCommand;
+import com.group.exam.member.command.InsertCommand;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.vo.MemberVo;
 
@@ -25,7 +24,7 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public LoginCommand login(String memberId) {
 		// TODO Auto-generated method stub
-		return  sqlSessionTemplate.selectOne("login", memberId);
+		return  sqlSessionTemplate.selectOne("memberlogin", memberId);
 		
 	}
 
@@ -44,20 +43,20 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	
 	@Override
-	public void insert(MemberVo memberVo) {
-		sqlSessionTemplate.insert("memberInsert", memberVo);
+	public void insert(InsertCommand command) {
+		sqlSessionTemplate.insert("memberInsert", command);
 
 	}
 
 	@Override
-	public int nicknameDup(String memberNickname) {
-		int res = sqlSessionTemplate.selectOne("nicknameDup", memberNickname);
+	public int nicknameDup(String memberId) {
+		int res = sqlSessionTemplate.selectOne("nicknameDup", memberId);
 		return res;
 	}
 
 	@Override
-	public int idDup(HashMap<String, Object> map) {
-		return sqlSessionTemplate.selectOne("idDup", map);
+	public int idDup(String memberId) {
+		return sqlSessionTemplate.selectOne("idDup", memberId);
 
 	}
 
@@ -84,7 +83,7 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public int deleteMember(int memberSeq) {
+	public int deleteMember(Long memberSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.delete("deleteMember", memberSeq);
 	}
@@ -95,10 +94,12 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSessionTemplate.insert("memberQuestionAdd", map);
 	}
 
+
 	@Override
-	public void memberApiLogin(ApiLoginCommand apiCommand) {
-		// TODO Auto-generated method stub\
-		sqlSessionTemplate.insert("memberApiLogin", apiCommand);
+	public void updateApiStatus(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		
+		sqlSessionTemplate.update("updateApiStatus", map);
 		
 	}
 	

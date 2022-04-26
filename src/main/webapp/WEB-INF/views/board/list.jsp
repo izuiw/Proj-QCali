@@ -26,12 +26,7 @@ li {
 </head>
 <body>
 	
-	<br>
-	<br>
-	<			${naverSessionId} 
-	<br><br>
-	${naverResult}
-		<a href="<c:url value='/naver/logout'/>"><button>로그아웃</button></a>
+
 		
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>

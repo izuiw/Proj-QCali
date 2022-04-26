@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.group.exam.board.command.BoardlistCommand;
+import com.group.exam.board.command.BoardupdateCommand;
 import com.group.exam.board.command.QuestionAdayCommand;
 import com.group.exam.board.vo.BoardHeartVo;
 import com.group.exam.board.vo.BoardVo;
@@ -32,18 +33,17 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public void updateBoard(HashMap<String, Object> map) {
+	public void updateBoard(BoardupdateCommand command) {
 		// TODO Auto-generated method stub
 		// 게시글 제목과 내용 수정 
-		sqlSessionTemplate.update("updateBoard", map);
+		sqlSessionTemplate.update("updateBoard", command);
 		
 	}
 
 	@Override
-	public void deleteBoardOne(HashMap<String, Integer> map) {
+	public void deleteBoardOne(Long boardSeq) {
 		// TODO Auto-generated method stub
-	
-		sqlSessionTemplate.delete("deleteBoardOne", map);
+		sqlSessionTemplate.delete("deleteBoardOne", boardSeq);
 		
 	}
 
@@ -56,7 +56,7 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public BoardlistCommand boardListDetail(int boardSeq) {
+	public BoardlistCommand boardListDetail(Long boardSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("boardlistDetail", boardSeq);
 	}
@@ -78,7 +78,7 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public void boardCountup(int boardSeq) {
+	public void boardCountup(Long boardSeq) {
 		// TODO Auto-generated method stub
 		
 		sqlSessionTemplate.update("boardCountup", boardSeq);
@@ -87,7 +87,7 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public int boardMylistCount(int memberSeq) {
+	public int boardMylistCount(Long memberSeq) {
 		// TODO Auto-generated method stub
 
 		return sqlSessionTemplate.selectOne("boardMylistCount", memberSeq);
@@ -116,7 +116,7 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public void updateBoardLike(int boardSeq) {
+	public void updateBoardLike(Long boardSeq) {
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.update("updateLike", boardSeq);
 		
@@ -124,7 +124,7 @@ public class BoardDaoImpl implements BoardDao{
 
 	
 	@Override
-	public String memberAuth(int memberSeq) {
+	public String memberAuth(Long memberSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("memberAuth", memberSeq);
 	}
@@ -170,7 +170,7 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public List<ReplyVo> replySelect(int boardSeq) {
+	public List<ReplyVo> replySelect(Long boardSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("replySelect", boardSeq);
 		// 게시글에 맞춰서 댓글 리스트 띄우기
@@ -178,7 +178,7 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public int replyCount(int boardSeq) {
+	public int replyCount(Long boardSeq) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne("replyCount", boardSeq);
 		//댓글 갯수 카운트;
@@ -202,7 +202,7 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public void replyDelete(int replySeq) {
+	public void replyDelete(Long replySeq) {
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.delete("replyDelete", replySeq);
 		//댓글 삭제

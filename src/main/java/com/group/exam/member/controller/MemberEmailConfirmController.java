@@ -19,7 +19,7 @@ public class MemberEmailConfirmController {
 	public String signUpConfirm(HttpServletRequest request, HttpSession session) {
 		String memberId = request.getParameter("email");
 		String memberAuthkey = request.getParameter("authKey");
-		if (memberService.idDup(memberId, "member") == 1) { // 가입된 이메일이 있다면
+		if (memberService.idDup(memberId) == 1) { // 가입된 이메일이 있다면
 			memberService.updateAuth(memberAuthkey); // mAuth를 'T'로 바꾸기
 
 		}

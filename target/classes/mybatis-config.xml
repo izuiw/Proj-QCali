@@ -15,12 +15,17 @@
 
 		<typeAlias type="com.group.exam.board.vo.BoardVo"
 			alias="boardVo" />
-			
+
 		<typeAlias alias="memberVo"
 			type="com.group.exam.member.vo.MemberVo" />
 
 		<typeAlias alias="replyVo"
 			type="com.group.exam.board.vo.ReplyVo" />
+
+		<typeAlias alias="insertCommand"
+			type="com.group.exam.member.command.InsertCommand" />
+
+	
 
 	</typeAliases>
 </configuration>

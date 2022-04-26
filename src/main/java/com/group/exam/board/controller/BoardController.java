@@ -239,7 +239,7 @@ public class BoardController {
 
 	// 해당list 내 글 모아보기
 	@GetMapping(value = "/mylist")
-	public String boardListMy(@RequestParam("memberSeq") int memberSeq, Model model, Criteria cri,
+	public String boardListMy(@RequestParam("memberSeq") Long memberSeq, Model model, Criteria cri,
 			HttpSession session) {
 
 		int total = boardService.mylistCount(memberSeq);
@@ -258,7 +258,7 @@ public class BoardController {
 
 	// 게시글 디테일
 	@GetMapping(value = "/detail")
-	public String boardListDetail(@RequestParam int boardSeq, Model model, HttpSession session) {
+	public String boardListDetail(@RequestParam Long boardSeq, Model model, HttpSession session) {
 
 		boardService.boardCountup(boardSeq);
 
@@ -270,7 +270,7 @@ public class BoardController {
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-			int memberSeq = loginMember.getMemberSeq();
+			Long memberSeq = loginMember.getMemberSeq();
 			// 세션에 저장된 mSeq와 게시글의 mSeq를 비교하여 내 글이면 수정 삭제 버튼이 뜨게
 			if (memberSeq == list.getMemberSeq()) {
 				myArticle = true;
@@ -372,12 +372,14 @@ public class BoardController {
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
 
-			int boardSeq = updateCommand.getBoardSeq();
+			//Long boardSeq = updateCommand.getBoardSeq();
 
-			BoardlistCommand list = boardService.boardListDetail(boardSeq);
+			BoardlistCommand list = boardService.boardListDetail(updateCommand.getBoardSeq());
 
 			model.addAttribute("boardList", list);
-			boardService.updateBoard(updateCommand.getBoardTitle(), updateCommand.getBoardContent(), boardSeq);
+			
+			boardService.updateBoard(updateCommand);
+			
 			System.out.println(" 수정 성공");
 		} else {
 			System.out.println("수정 실패");
@@ -389,15 +391,15 @@ public class BoardController {
 
 	// 게시글 삭제
 	@GetMapping(value = "/delete")
-	public String boardDelect(@RequestParam int boardSeq, Model model, HttpSession session, Criteria cri) {
+	public String boardDelect(@RequestParam Long boardSeq, Model model, HttpSession session, Criteria cri) {
 
 		// 세션 값 loginMember에 저장
 		LoginCommand loginMember = (LoginCommand) session.getAttribute("memberLogin");
 
 		if (loginMember != null) {
 			// 세션에서 멤버의 mSeq 를 boardVo에 셋팅
-			int memberSeq = loginMember.getMemberSeq();
-			boardService.deleteBoardOne(boardSeq, memberSeq);
+		
+			boardService.deleteBoardOne(boardSeq);
 			
 			
 			

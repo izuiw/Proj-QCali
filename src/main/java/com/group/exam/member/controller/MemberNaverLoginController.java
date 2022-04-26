@@ -1,7 +1,10 @@
 package com.group.exam.member.controller;
 
 import java.io.IOException;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -11,11 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.group.exam.member.command.ApiLoginCommand;
+import com.group.exam.member.command.InsertCommand;
+import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.command.NaverLoginBO;
 import com.group.exam.member.service.MemberService;
-import com.group.exam.utils.MemberSessionConfig;
 
 @Controller
 @RequestMapping(value = "/naver")
@@ -26,6 +30,7 @@ public class MemberNaverLoginController {
 	private String apiResult = null;
 
 	private MemberService memberService;
+
 	@Autowired
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO, MemberService memberService) {
 		this.naverLoginBO = naverLoginBO;
@@ -49,7 +54,7 @@ public class MemberNaverLoginController {
 	@RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
 			throws IOException, ParseException {
-		System.out.println("여기는 callback");
+
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		// 1. 로그인 사용자 정보를 읽어온다.
@@ -66,36 +71,56 @@ public class MemberNaverLoginController {
 		// Top레벨 단계 _response 파싱
 		JSONObject response_obj = (JSONObject) jsonObj.get("response");
 		// response의 nickname값 파싱
-		String id = (String) response_obj.get("id");
-	
-		if (memberService.idDup(id, "apiuser") == 0) {
-			ApiLoginCommand apiCommand = new ApiLoginCommand();
-			apiCommand.setMemberApi("naver");
-			//apiCommand.setMemberBirthDay(response_obj.get(""));
-			apiCommand.setMemberId(id);
-			apiCommand.setMemberNickname(memberNickname);
-			memberService.memberApiLogin(apiCommand);
-		}
-		
-		// 4.파싱 닉네임 세션으로 저장
-		//session.setAttribute("naverSessionId", nickname); // 세션 생성
-		//model.addAttribute("naverResult", apiResult);
-		
+		String email = (String) response_obj.get("email");
+
 		System.out.println("네이버 로그인 정보 : " + apiResult);
+
+		if (memberService.idDup(email) == 0) {
+
+			InsertCommand insertCommand = new InsertCommand();
+
+			// 생일
+			insertCommand.setMemberBirthDay((String) response_obj.get("birthday"));
+			// 이메일
+			insertCommand.setMemberId(email);
+
+			// 닉네임 랜덤 설정 -> insert 이후, 회원이 직접 수정 가능
+			UUID uuid = UUID.randomUUID();
+
+			String memberNickname = "USER_" + uuid;
+
+			if (memberService.nicknameDup(memberNickname) == 0) {
+				insertCommand.setMemberNickname(memberNickname);
+
+			} else {
+				System.out.println("user임시 닉네임 중복");
+			}
+			
+			//임시 비밀번호 셋팅
+			
+			insertCommand.setMemberPassword("1234");
 		
-		
-		
-		return "member/apiMemberInsertForm";
+
+			// db 등록
+			System.out.println("db저장 값 \n" + insertCommand);
+			memberService.memberInsert(insertCommand);
+			
+			//api 상태 변경 
+			LoginCommand member = memberService.login(insertCommand.getMemberId());
+			
+			memberService.updateApiStatus("naver", member.getMemberSeq());
+
+			// 4.파싱 닉네임 세션으로 저장
+
+	
+
+			System.out.println("member \n" + member);
+			session.setAttribute("memberLogin", member); // 세션 생성
+
+		}
+
+
+		return "home";
 	}
-
-	// 로그아웃
-	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
-	public String logout(HttpSession session)throws IOException {
-	System.out.println("Naver Logout");
-	session.invalidate();
-	return "home";
-	}
-
-
 
 }

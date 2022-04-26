@@ -2,20 +2,18 @@ package com.group.exam.board.command;
 
 public class BoardlistCommand {
 	
-	private int boardSeq;
+	private Long boardSeq;
 	private String boardTitle;
 	private String boardRegday;
 	private int boardLike;
 	private int boardCount;
 	private String memberNickname;
 	private String boardContent;
-	private int memberSeq;
-	
-	
-	public int getBoardSeq() {
+	private Long memberSeq;
+	public Long getBoardSeq() {
 		return boardSeq;
 	}
-	public void setBoardSeq(int boardSeq) {
+	public void setBoardSeq(Long boardSeq) {
 		this.boardSeq = boardSeq;
 	}
 	public String getBoardTitle() {
@@ -54,10 +52,10 @@ public class BoardlistCommand {
 	public void setBoardContent(String boardContent) {
 		this.boardContent = boardContent;
 	}
-	public int getMemberSeq() {
+	public Long getMemberSeq() {
 		return memberSeq;
 	}
-	public void setMemberSeq(int memberSeq) {
+	public void setMemberSeq(Long memberSeq) {
 		this.memberSeq = memberSeq;
 	}
 	@Override
@@ -66,7 +64,8 @@ public class BoardlistCommand {
 				+ ", boardLike=" + boardLike + ", boardCount=" + boardCount + ", memberNickname=" + memberNickname
 				+ ", boardContent=" + boardContent + ", memberSeq=" + memberSeq + "]";
 	}
-		
+	
+	
 	
 	
 	

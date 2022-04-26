@@ -4,15 +4,14 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class LoginCommand {
-	private int memberSeq;
+
+	private Long memberSeq;
 	@Email(message="이메일 형식이 아닙니다.")
 	@NotEmpty(message = "아이디를 입력해주세요.")
 	private String memberId;
 	@NotEmpty(message = "비밀번호를 입력해주세요.")
 	private String memberPassword;
-	
 	private String memberBpw;
-
 	private String memberNickname;
 	private String memberBirthDay;
 	private String memberRegDay;
@@ -20,11 +19,21 @@ public class LoginCommand {
 
 	private int memberLevel;
 
-	public int getMemberSeq() {
+	
+	
+	public String getMemberBpw() {
+		return memberBpw;
+	}
+
+	public void setMemberBpw(String memberBpw) {
+		this.memberBpw = memberBpw;
+	}
+
+	public Long getMemberSeq() {
 		return memberSeq;
 	}
 
-	public void setMemberSeq(int memberSeq) {
+	public void setMemberSeq(Long memberSeq) {
 		this.memberSeq = memberSeq;
 	}
 
@@ -44,14 +53,6 @@ public class LoginCommand {
 		this.memberPassword = memberPassword;
 	}
 
-	public String getMemberBpw() {
-		return memberBpw;
-	}
-
-	public void setMemberBpw(String memberBpw) {
-		this.memberBpw = memberBpw;
-	}
-
 	public String getMemberNickname() {
 		return memberNickname;
 	}
@@ -64,7 +65,7 @@ public class LoginCommand {
 		return memberBirthDay;
 	}
 
-	public void setMemberBirthday(String memberBirthDay) {
+	public void setMemberBirthDay(String memberBirthDay) {
 		this.memberBirthDay = memberBirthDay;
 	}
 
@@ -72,7 +73,7 @@ public class LoginCommand {
 		return memberRegDay;
 	}
 
-	public void setMemberRegday(String memberRegDay) {
+	public void setMemberRegDay(String memberRegDay) {
 		this.memberRegDay = memberRegDay;
 	}
 
@@ -92,6 +93,15 @@ public class LoginCommand {
 		this.memberLevel = memberLevel;
 	}
 
+	@Override
+	public String toString() {
+		return "LoginCommand [memberSeq=" + memberSeq + ", memberId=" + memberId + ", memberPassword=" + memberPassword
+				+ ", memberNickname=" + memberNickname + ", memberBirthDay=" + memberBirthDay + ", memberRegDay="
+				+ memberRegDay + ", memberAuth=" + memberAuth + ", memberLevel=" + memberLevel + "]";
+	}
+
+	
+	
 
 	
 

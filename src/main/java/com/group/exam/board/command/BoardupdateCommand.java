@@ -7,23 +7,23 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class BoardupdateCommand {
 	
-	private int boardSeq;
-	private int memberSeq;
+	private Long boardSeq;
+	private Long memberSeq;
 	@Length(min=2, max=30, message="2자 이상, 30자 미만으로 입력해주세요.")
 	@NotBlank(message="제목을 입력해 주세요")
 	private String boardTitle;
 	@NotEmpty(message="내용을 입력해 주세요")
 	private String boardContent;
-	public int getBoardSeq() {
+	public Long getBoardSeq() {
 		return boardSeq;
 	}
-	public void setBoardSeq(int boardSeq) {
+	public void setBoardSeq(Long boardSeq) {
 		this.boardSeq = boardSeq;
 	}
-	public int getMemberSeq() {
+	public Long getMemberSeq() {
 		return memberSeq;
 	}
-	public void setMemberSeq(int memberSeq) {
+	public void setMemberSeq(Long memberSeq) {
 		this.memberSeq = memberSeq;
 	}
 	public String getBoardTitle() {
@@ -38,7 +38,11 @@ public class BoardupdateCommand {
 	public void setBoardContent(String boardContent) {
 		this.boardContent = boardContent;
 	}
-
+	
+	
+	
+	
+	
 	
 
 

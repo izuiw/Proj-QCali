@@ -32,19 +32,19 @@
 		(B_SEQ.nextval, #{boardTitle}, #{boardContent}, SYSDATE,
 		(select MEMBER_SEQ from MEMBER where MEMBER_SEQ = #{memberSeq}), (select
 		QUESTION_SEQ from QUESTION where QUESTION_SEQ= #{questionSeq}))
-
+		
 	</insert>
 
-	<update id="updateBoard" parameterType="HashMap">
+	<update id="updateBoard" parameterType="com.group.exam.board.command.BoardupdateCommand">
 		update BOARD set
 		BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent} where BOARD_SEQ =
 		#{boardSeq}
 	</update>
 
-	<delete id="deleteBoardOne" parameterType="HashMap">
+	<delete id="deleteBoardOne">
 		delete from BOARD
-		where BOARD_SEQ = #{boardSeq} and MEMBER_SEQ = #{memberSeq}
-	</delete>
+		where BOARD_SEQ = #{boardSeq} 
+			</delete>
 
 
 
@@ -97,7 +97,7 @@ where M.member_seq = #{memberSeq}) where rn between #{rowStart} and #{rowEnd}
 	</select>
 
 	<!-- 게시글 디테일  -->
-	<select id="boardlistDetail" parameterType="Integer"
+	<select id="boardlistDetail" 
 		resultType="com.group.exam.board.command.BoardlistCommand">
 
 		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ, B.BOARD_CONTENT
@@ -113,7 +113,7 @@ from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SE
 	</select>
 
 	<!-- 내가 쓴 글 수 -->
-	<select id="boardMylistCount" parameterType="Integer"
+	<select id="boardMylistCount" 
 		resultType="Integer">
 		select count(*) from
 		BOARD where MEMBER_SEQ = #{memberSeq}
@@ -121,7 +121,7 @@ from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SE
 	</select>
 
 	<!-- board 조회수 up -->
-	<update id="boardCountup" parameterType="Integer">
+	<update id="boardCountup" >
 		update BOARD set
 		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{boardSeq}
 	</update>

@@ -83,7 +83,7 @@ public class MemberInsertController {
 	public int idDup(@ModelAttribute("InsertCommand") InsertCommand insertCommand) {
 		String memberId = insertCommand.getMemberId();
 
-		return memberService.idDup(memberId, "member");
+		return memberService.idDup(memberId);
 
 	}
 

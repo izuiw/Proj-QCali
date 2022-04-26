@@ -3,19 +3,19 @@ package com.group.exam.board.command;
 public class QuestionAdayCommand {
 
 	private String questionContent;
-	private int questionSeq;
+	private Long questionSeq;
 	private String questionStatus;
-	private int memberSeq;
+	private Long memberSeq;
 	public String getQuestionContent() {
 		return questionContent;
 	}
 	public void setQuestionContent(String questionContent) {
 		this.questionContent = questionContent;
 	}
-	public int getQuestionSeq() {
+	public Long getQuestionSeq() {
 		return questionSeq;
 	}
-	public void setQuestionSeq(int questionSeq) {
+	public void setQuestionSeq(Long questionSeq) {
 		this.questionSeq = questionSeq;
 	}
 	public String getQuestionStatus() {
@@ -24,16 +24,15 @@ public class QuestionAdayCommand {
 	public void setQuestionStatus(String questionStatus) {
 		this.questionStatus = questionStatus;
 	}
-	public int getMemberSeq() {
+	public Long getMemberSeq() {
 		return memberSeq;
 	}
-	public void setMemberSeq(int memberSeq) {
+	public void setMemberSeq(Long memberSeq) {
 		this.memberSeq = memberSeq;
 	}
 
 	
 	
-
 	
 	
 

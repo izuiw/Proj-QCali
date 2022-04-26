@@ -5,21 +5,24 @@ import java.util.Date;
 
 public class MemberVo {
 	
-	private int memberSeq;
+	private Long memberSeq;
 
 	private String memberId;
 	private String memberBpw;
 	private String memberPassword;
 	private String memberNickname;
-	private Date memberBirthDay;
-	private Date memberRegDay;
+	private String memberBirthDay;
+	private String memberRegDay;
 	private String memberAuth;
 	private String memberAuthkey;
-	private long memberLevel;
-	public int getMemberSeq() {
+	private int memberLevel;
+	
+	private String naver;
+	private String kakao;
+	public Long getMemberSeq() {
 		return memberSeq;
 	}
-	public void setMemberSeq(int memberSeq) {
+	public void setMemberSeq(Long memberSeq) {
 		this.memberSeq = memberSeq;
 	}
 	public String getMemberId() {
@@ -46,16 +49,16 @@ public class MemberVo {
 	public void setMemberNickname(String memberNickname) {
 		this.memberNickname = memberNickname;
 	}
-	public Date getMemberBirthDay() {
+	public String getMemberBirthDay() {
 		return memberBirthDay;
 	}
-	public void setMemberBirthDay(Date memberBirthDay) {
+	public void setMemberBirthDay(String memberBirthDay) {
 		this.memberBirthDay = memberBirthDay;
 	}
-	public Date getMemberRegDay() {
+	public String getMemberRegDay() {
 		return memberRegDay;
 	}
-	public void setMemberRegDay(Date memberRegDay) {
+	public void setMemberRegDay(String memberRegDay) {
 		this.memberRegDay = memberRegDay;
 	}
 	public String getMemberAuth() {
@@ -70,20 +73,33 @@ public class MemberVo {
 	public void setMemberAuthkey(String memberAuthkey) {
 		this.memberAuthkey = memberAuthkey;
 	}
-	public long getMemberLevel() {
+	public int getMemberLevel() {
 		return memberLevel;
 	}
-	public void setMemberLevel(long memberLevel) {
+	public void setMemberLevel(int memberLevel) {
 		this.memberLevel = memberLevel;
+	}
+	public String getNaver() {
+		return naver;
+	}
+	public void setNaver(String naver) {
+		this.naver = naver;
+	}
+	public String getKakao() {
+		return kakao;
+	}
+	public void setKakao(String kakao) {
+		this.kakao = kakao;
 	}
 	@Override
 	public String toString() {
 		return "MemberVo [memberSeq=" + memberSeq + ", memberId=" + memberId + ", memberBpw=" + memberBpw
 				+ ", memberPassword=" + memberPassword + ", memberNickname=" + memberNickname + ", memberBirthDay="
 				+ memberBirthDay + ", memberRegDay=" + memberRegDay + ", memberAuth=" + memberAuth + ", memberAuthkey="
-				+ memberAuthkey + ", memberLevel=" + memberLevel + "]";
+				+ memberAuthkey + ", memberLevel=" + memberLevel + ", naver=" + naver + ", kakao=" + kakao + "]";
 	}
-
+	
+	
 	
 	
 

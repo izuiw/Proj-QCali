@@ -20,18 +20,19 @@
  -->
 
 	<!-- 로그인 관련 -->
-	<select id="login" parameterType="String"
+	<select id="memberlogin" parameterType="String"
 		resultType="com.group.exam.member.command.LoginCommand">
-		select MEMBER_SEQ, MEMBER_ID, MEMBER_PASSWORD, MEMBER_BPW
-		, MEMBER_NICKNAME, to_char(MEMBER_BIRTH_DAY, 'yyyy.mm.dd') MEMBER_BIRTH_DAY, to_char(MEMBER_REG_DAY, 'yyyy.mm.dd') MEMBER_REG_DAY, MEMBER_AUTH,
-		MEMBER_LEVEL from MEMBER where MEMBER_ID = #{memberId}
+		select MEMBER_SEQ, MEMBER_ID
+		, MEMBER_NICKNAME, to_char(MEMBER_BIRTH_DAY, 'mm.dd') MEMBER_BIRTH_DAY, to_char(MEMBER_REG_DAY, 'yyyy.mm.dd') MEMBER_REG_DAY, MEMBER_AUTH,
+		MEMBER_LEVEL, NAVER, KAKAO from MEMBER where MEMBER_ID = #{memberId}
+	
 	</select>
 
 
 	<!-- 비밀번호 찾기 관련 -->
 	<select id="findPwd" parameterType="String"
 		resultType="com.group.exam.member.command.LoginCommand">
-		select * from MEMBER where MEMBER_ID = #{memberId}
+		select member_password, member_bpw from MEMBER where MEMBER_ID = #{memberId}
 	</select>
 
 	<update id="updateTmpPwd" parameterType="HashMap">
@@ -42,31 +43,33 @@
 
 	<!-- 회원가입 관련 -->
 
-	<insert id="memberInsert" parameterType="memberVo">
+	<insert id="memberInsert" parameterType="insertCommand">
 		INSERT INTO member
 		(member_seq, member_id, member_password, member_bpw, member_nickname,
 		member_birth_day, member_reg_day)
 		VALUES
 		(m_seq.nextval, #{memberId},
-		#{memberPassword}, #{memberPassword}, #{memberNickname}, #{memberBirthDay}, SYSDATE)
+		#{memberPassword}, #{memberPassword}, #{memberNickname}, to_date(#{memberBirthDay}, 'mm-dd'), SYSDATE)	
 	</insert>
 
-	<select id="idDup" parameterType="HashMap" resultType="Integer">
+	<update id="updateApiStatus" parameterType="HashMap">
 		
-		<if test="tableName.equals('member')">
+		update MEMBER set ${api} = 'T' where member_seq = #{memberSeq}
+	
+	</update>
+
+	<select id="idDup" parameterType="String" resultType="Integer">
+		
+
 		SELECT
 		COUNT(*) FROM member WHERE member_id = #{memberId}
-		</if>
-		
-		<if test="tableName.equals('apiuser')">
-		SELECT
-		COUNT(*) FROM apiuser WHERE member_id = #{memberId} and
-		</if>
-		
+
 	</select>
 
 	<select id="nicknameDup" parameterType="String" resultType="Integer">
+
 		SELECT COUNT(*) FROM member WHERE member_nickname = #{memberNickname}
+		
 	</select>
 
 	<update id="updateAuthkey" parameterType="memberVo">
@@ -91,7 +94,7 @@
 		#{memberSeq}
 	</update>
 
-	<delete id="deleteMember" parameterType="Integer">
+	<delete id="deleteMember">
 		DELETE MEMBER WHERE
 		MEMBER_SEQ = #{memberSeq}
 	</delete>
@@ -110,18 +113,7 @@
 
 	</select>
 	
-	
-	
-	<!-- api 처음 로그인시, db에 회원 정보 저장 -->
 
-	<select id="memberApiLogin" parameterType="com.group.exam.member.command.ApiLoginCommand">
-	
-		INSERT INTO apiuser
-		(member_seq, member_id, member_api , member_birth_day, member_reg_day, member_nickname)
-		VALUES
-		(m_seq.nextval, #{memberId},
-		 #{memberApi}, #{memberBirthDay}, SYSDATE, #{memberNickname})
-	</select>
 	
 	
 

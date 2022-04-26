@@ -68,6 +68,13 @@ public class InsertCommand {
 		this.memberAuthkey = memberAuthkey;
 	}
 
+	@Override
+	public String toString() {
+		return "InsertCommand [memberId=" + memberId + ", memberPassword=" + memberPassword + ", memberPasswordCheck="
+				+ memberPasswordCheck + ", memberNickname=" + memberNickname + ", memberBirthDay=" + memberBirthDay
+				+ ", memberAuthkey=" + memberAuthkey + "]";
+	}
+
 
 	
 	
