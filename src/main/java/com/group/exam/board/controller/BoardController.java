@@ -437,6 +437,12 @@ public class BoardController {
 		model.addAttribute("pageMaker", pageCommand);
 		model.addAttribute("boardList", list);
 		
+		//질문 출력
+		
+		QuestionAdayCommand question = boardService.questionselect(num);
+		model.addAttribute("boardQuestion", question);
+		
+		
 		return "/board/list";
 	}
 

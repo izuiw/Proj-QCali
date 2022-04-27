@@ -52,7 +52,7 @@
 <![CDATA[select *
 from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY,
 B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ  
-from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ order by rn desc)
+from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ order by board_seq desc)
 where rn between #{rowStart} and #{rowEnd} ]]>
 	</select>
 
@@ -90,7 +90,7 @@ from (select ROWNUM rn, B.BOARD_SEQ,
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where M.member_seq = #{memberSeq} order by rn desc) where rn between #{rowStart} and #{rowEnd}
+where M.member_seq = #{memberSeq} order by board_seq desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
 
 	</select>
@@ -161,7 +161,7 @@ from (select ROWNUM rn, B.BOARD_SEQ,
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where M.MEMBER_NICKNAME = #{searchWord} order by rn desc) where rn between #{rowStart} and #{rowEnd}
+where M.MEMBER_NICKNAME = #{searchWord} order by board_seq desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
 		</if>
 
@@ -171,7 +171,7 @@ from (select ROWNUM rn, B.BOARD_SEQ,
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where B.BOARD_TITLE LIKE '%'||#{searchWord}||'%' order by rn desc) where rn between #{rowStart} and #{rowEnd}
+where B.BOARD_TITLE LIKE '%'||#{searchWord}||'%' order by board_seq desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
 		</if>
 	</select>
