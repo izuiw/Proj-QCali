@@ -1,7 +1,5 @@
 package com.group.exam.member.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.group.exam.member.command.LoginCommand;
 import com.group.exam.member.command.NaverLoginBO;
 import com.group.exam.member.service.MemberService;
-import com.group.exam.member.vo.MemberVo;
 import com.group.exam.utils.MemberSessionConfig;
 
 
@@ -72,18 +69,32 @@ public class MemberLoginController {
 		LoginCommand member = memberService.login(command.getMemberId());
 		
 		if(member == null) {
-			System.out.println("로그인 정보 없음 or 비밀번호 불일치 : " + member);
+			System.out.println("로그인 정보 없음 : " + member);
 			
 			model.addAttribute("msg", "해당 회원 정보가 없습니다.");
-			return "/member/loginForm";
+			
 		}
 	
+		
+		//네이버 - 카카오 간편 로그인  한 적있는 계정 체크 
+		if(member != null && member.getNaver().equals("T")) {
+			
+			model.addAttribute("msg", "네이버 간편 로그인 사용 기록이 있습니다.");
+			return "/member/loginForm";
+		
+		} else if (member != null && member.getKakao().equals("T")) {
+		
+			model.addAttribute("msg", "카카오 간편 로그인 사용 기록이 있습니다.");
+			return "/member/loginForm";
+		}
+		
+		
 		String password = command.getMemberPassword();
 		
 		LoginCommand login = member;
 		
 		//로그인 (비밀번호 암호화 했을 때)
-		String encodePassword = member.getMemberPassword();
+		String encodePassword = memberService.findPwd(command.getMemberId()).getMemberPassword();
 		boolean pwdEncode= passwordEncoder.matches(password, encodePassword);
 	
 		
@@ -91,21 +102,24 @@ public class MemberLoginController {
 		if(member != null && pwdEncode) {
 
 			System.out.println("로그인 성공 ");
+			
 			//중복 로그인 방지
-			String memberId = MemberSessionConfig.getSessionidCheck("memberLogin",
-					command.getMemberId());
+			String memberId = MemberSessionConfig.getSessionidCheck("memberLogin", command.getMemberId());
 			
 			// 세션 만료 시간
 			session.setMaxInactiveInterval(60 * 60);
 
 			session.setAttribute("memberLogin", login);	
 			return "redirect:/board/list";
+			
 		} else {
-			System.out.println("로그인 정보 없음 or 비밀번호 불일치 : " + member);
+			System.out.println("비밀번호 불일치 : " + member);
 			
 			model.addAttribute("msg", "해당 회원 정보가 없습니다.");
-			return "/member/loginForm";
+			
 		}
+		
+		return "/member/loginForm";
 	}
 	
 	

@@ -51,7 +51,7 @@ public class MemberMypageController {
 
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
-		String encodePassword = command.getMemberPassword();
+		String encodePassword = memberService.findPwd(command.getMemberId()).getMemberPassword();
 		boolean pwdEncode = passwordEncoder.matches(memberPassword, encodePassword);
 
 		if (pwdEncode) {
@@ -205,7 +205,7 @@ public class MemberMypageController {
 
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
-		// 수정해야함
+	
 		String encodePassword = memberService.findPwd(command.getMemberId()).getMemberPassword();
 		boolean pwdEncode = passwordEncoder.matches(memberPassword, encodePassword);
 

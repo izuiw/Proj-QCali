@@ -45,7 +45,7 @@ table {
 
 	</form:form>
 
-	<a href="<c:url value='/member/findPwd'/>"><button>비밀번호 찾기</button></a>
+	<a href="<c:url value='/member/mypage/findPwd'/>"><button>비밀번호 찾기</button></a>
 	<a href="<c:url value='/member/insert'/>"><button>회원가입</button></a>
 
                 <!--네이버 로그인 추가-->

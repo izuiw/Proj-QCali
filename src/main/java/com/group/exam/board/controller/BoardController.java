@@ -158,7 +158,7 @@ public class BoardController {
 			//String callback = request.getParameter("CKEditorFuncNum");
 			printWriter = response.getWriter();
 			//String fileUrl = "localhost:8080/exam/board/ckUploadSubmit?uuid=" + uuid + "&fileName=" + upload.getOriginalFilename(); // 작성화면
-			String fileUrl = "/imgUpload/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())+ "/" + ckUploadPath;
+			String fileUrl = "/boardImg/" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())+ "/" + ckUploadPath;
 		
 			
 			// 업로드시 메시지 출력

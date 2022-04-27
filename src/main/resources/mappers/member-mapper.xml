@@ -54,7 +54,7 @@
 
 	<update id="updateApiStatus" parameterType="HashMap">
 		
-		update MEMBER set ${api} = 'T' where member_seq = #{memberSeq}
+		update MEMBER set ${api} = 'T', member_auth = 'T' where member_seq = #{memberSeq}
 	
 	</update>
 
@@ -107,8 +107,7 @@
 	</insert>
 	
 		<!-- 멤버 AUTH 상태 확인 -->
-	<select id="memberAuth" parameterType="Integer"
-		resultType="String">
+	<select id="memberAuth"	resultType="String">
 		select MEMBER_AUTH from MEMBER where MEMBER_SEQ = #{memberSeq}
 
 	</select>

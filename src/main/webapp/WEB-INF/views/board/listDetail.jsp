@@ -76,10 +76,10 @@
 				
 			
 				
-				<td>
+	
 				
 					<td>
-					<c:if test="${empty boarList.memberNickname }">
+					<c:if test="${empty boardList.memberNickname }">
 						탈퇴 회원
 					</c:if>
 			

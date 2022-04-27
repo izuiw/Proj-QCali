@@ -1,6 +1,7 @@
 package com.group.exam.member.controller;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -73,6 +74,10 @@ public class MemberNaverLoginController {
 		// response의 nickname값 파싱
 		String email = (String) response_obj.get("email");
 
+		// member 정보가 db에 있을 경우, login 정보 그대로 사용
+		LoginCommand member = memberService.login(email);
+		;
+
 		System.out.println("네이버 로그인 정보 : " + apiResult);
 
 		if (memberService.idDup(email) == 0) {
@@ -85,40 +90,49 @@ public class MemberNaverLoginController {
 			insertCommand.setMemberId(email);
 
 			// 닉네임 랜덤 설정 -> insert 이후, 회원이 직접 수정 가능
-			UUID uuid = UUID.randomUUID();
 
-			String memberNickname = "USER_" + uuid;
+			Random random = new Random();
+			StringBuffer buffer = new StringBuffer();
+			int num = 0;
+
+			while (buffer.length() < 6) {
+				num = random.nextInt(10);
+				buffer.append(num);
+			}
+
+			String memberNickname = "USER_" + buffer.toString();
 
 			if (memberService.nicknameDup(memberNickname) == 0) {
 				insertCommand.setMemberNickname(memberNickname);
 
-			} else {
+			} else if (memberService.nicknameDup(memberNickname) != 0) {
+			
 				System.out.println("user임시 닉네임 중복");
+				memberNickname = "USER_" + buffer.toString() + "_N";
+			} else {
+				
+				return "errors/erros";
 			}
 			
-			//임시 비밀번호 셋팅
-			
+
+			// 임시 비밀번호 셋팅
+
 			insertCommand.setMemberPassword("1234");
-		
 
 			// db 등록
 			System.out.println("db저장 값 \n" + insertCommand);
 			memberService.memberInsert(insertCommand);
-			
-			//api 상태 변경 
-			LoginCommand member = memberService.login(insertCommand.getMemberId());
-			
+
+			// member insert 후, memberId로 login 정보 셋팅
+			member = memberService.login(email);
+
+			// api 상태 변경
 			memberService.updateApiStatus("naver", member.getMemberSeq());
 
-			// 4.파싱 닉네임 세션으로 저장
-
-	
-
-			System.out.println("member \n" + member);
-			session.setAttribute("memberLogin", member); // 세션 생성
-
 		}
+		// 4.파싱 닉네임 세션으로 저장
 
+		session.setAttribute("memberLogin", member); // 세션 생성
 
 		return "home";
 	}
