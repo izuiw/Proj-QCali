@@ -27,21 +27,26 @@ public class MemberMypageController {
 
 	private MemberService memberService;
 
-	private MailSendService mss;
-
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	public MemberMypageController(MemberService memberService, BCryptPasswordEncoder passwordEncoder,
-			MailSendService mss) {
-		this.mss = mss;
+	public MemberMypageController(MemberService memberService, BCryptPasswordEncoder passwordEncoder) {
+		
 		this.memberService = memberService;
 		this.passwordEncoder = passwordEncoder;
 	}
 
 	@GetMapping(value = "/confirmPwd")
 	public String confirmPwd(String memberPassword, HttpSession session) {
-
+		
+		//api 로그인 시, 비밀번호 확인 안하고 마이페이지 바로 이동.
+		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
+		
+		if(command.getNaver().equals("T") || command.getKakao().equals("T")) {
+			return "member/mypage";
+		}
+		
+		
 		return "/member/mypagePwd";
 	}
 
@@ -78,7 +83,7 @@ public class MemberMypageController {
 
 		// 비밀번호-비밀번호 확인 check
 		boolean pwdcheck = changepwdData.getMemberPassword().equals(changepwdData.getMemberPasswordCheck());
-		
+
 		if (pwdcheck != true) {
 
 			return "/member/changePwdForm";
@@ -97,10 +102,9 @@ public class MemberMypageController {
 		}
 
 		// 기존 비밀번호와 같은지 체크
-		
-				
+
 		encodePassword = memberService.findPwd(command.getMemberId()).getMemberBpw();
-		
+
 		pwdEncode = passwordEncoder.matches(changepwdData.getMemberPassword(), encodePassword);
 
 		if (pwdEncode) {
@@ -136,11 +140,6 @@ public class MemberMypageController {
 	public String changeNickname(@RequestParam(required = false) String memberNickname, HttpSession session,
 			Model model) {
 
-		if (memberNickname == null) {
-			model.addAttribute("msg", "변경 할 닉네임을 입력해 주세요.");
-			return "/member/changeNicknameForm";
-		}
-
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
 		int result = memberService.updateMemberNickname(memberNickname, command.getMemberSeq());
@@ -159,38 +158,6 @@ public class MemberMypageController {
 
 }
 
-	@RequestMapping(value = "/findPwd", method = RequestMethod.GET)
-	public String findPwd(@ModelAttribute("findPwdData") MemberFindPwdCommand findcommand) {
-
-		return "member/findPwdForm";
-	}
-
-	@RequestMapping(value = "/findPwd", method = RequestMethod.POST)
-	public String findPwd(@Valid @ModelAttribute("findPwdData") MemberFindPwdCommand findcommand,
-			BindingResult bindingResult, Model model) {
-
-		if (bindingResult.hasErrors()) {
-			return "member/findPwdForm";
-		}
-
-		LoginCommand findMember = memberService.findPwd(findcommand.getMemberId());
-
-		if (findMember != null) {
-			String tmpPwd = mss.sendPwdMail(findcommand.getMemberId()); // 임시 비밀번호 메일 발송
-			String encodePwd = passwordEncoder.encode(tmpPwd); // 임시 비밀번호 암호화
-
-			int result = memberService.updateTmpPwd(encodePwd, findcommand.getMemberId()); // db에 해당 회원 비밀번호 임시 비밀번호로 변경
-
-			if (result == 1) {
-				// 임시 비밀번호로 변경 성공
-				return "member/member_alert/findPwdNext";
-			}
-
-		}
-
-		model.addAttribute("msg", "해당 회원 정보가 없습니다.");
-		return "member/findPwdForm";
-	}
 
 	// 회원 탈퇴
 	@GetMapping(value = "/delete")
@@ -205,7 +172,6 @@ public class MemberMypageController {
 
 		LoginCommand command = (LoginCommand) session.getAttribute("memberLogin");
 
-	
 		String encodePassword = memberService.findPwd(command.getMemberId()).getMemberPassword();
 		boolean pwdEncode = passwordEncoder.matches(memberPassword, encodePassword);
 

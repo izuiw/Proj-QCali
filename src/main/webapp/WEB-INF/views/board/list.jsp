@@ -25,9 +25,9 @@ li {
 <title>Insert title here</title>
 </head>
 <body>
-	
 
-		
+
+
 	<c:if test="${!empty memberLogin}">
 		<h2>로그인 성공</h2>
 		
@@ -59,8 +59,9 @@ li {
 
 		<a href="<c:url value='/member/questionAdd'/>"><button>질문
 				등록하기</button></a>
-		<a
-			href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>
+
+			<a
+				href="<c:url value='/member/mypage/confirmPwd?memberSeq=${memberLogin.memberSeq}'/>"><button>마이페이지</button></a>
 
 	</c:if>
 
@@ -125,11 +126,9 @@ li {
 
 
 
-					<td>
-					<c:if test="${empty list.memberNickname }">
+					<td><c:if test="${empty list.memberNickname }">
 						탈퇴 회원
-					</c:if>
-				 ${list.memberNickname}</td>
+					</c:if> ${list.memberNickname}</td>
 					<td>${list.boardRegday}</td>
 					<td>${list.boardLike}</td>
 					<td>${list.boardCount}</td>

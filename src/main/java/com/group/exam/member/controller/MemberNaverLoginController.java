@@ -76,7 +76,6 @@ public class MemberNaverLoginController {
 
 		// member 정보가 db에 있을 경우, login 정보 그대로 사용
 		LoginCommand member = memberService.login(email);
-		;
 
 		System.out.println("네이버 로그인 정보 : " + apiResult);
 
@@ -125,7 +124,7 @@ public class MemberNaverLoginController {
 
 			// member insert 후, memberId로 login 정보 셋팅
 			member = memberService.login(email);
-
+	
 			// api 상태 변경
 			memberService.updateApiStatus("naver", member.getMemberSeq());
 
@@ -134,7 +133,7 @@ public class MemberNaverLoginController {
 
 		session.setAttribute("memberLogin", member); // 세션 생성
 
-		return "home";
+		return "main";
 	}
 
 }

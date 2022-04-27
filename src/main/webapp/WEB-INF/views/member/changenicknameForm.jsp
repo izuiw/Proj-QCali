@@ -11,8 +11,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 	<script type="text/javascript">
-		var submitFlag = false;
-		
+
 	  function nickCheck() {
 	        $.ajax({
 	            url : "/exam/member/nicknameDup",
@@ -28,6 +27,9 @@
 	                    document.getElementById('nickSame').innerHTML='사용 가능한 닉네임 입니다.';
 			            document.getElementById('nickSame').style.color='blue';
 	                }
+	                
+	 
+	                $("#insertData").prop("disabled", false);
 	            }
 
 	        })
@@ -46,10 +48,14 @@
 <table border="1">
 
 		<tr>
-			<th>닉네임</th><td><input name="memberNickname" id="memberNickname" />
+			<th>닉네임</th><td><input type="text" name="memberNickname" id="memberNickname"
+				required maxlength="10" size="20" />
+						<button type="button" onclick="nickCheck()">중복확인</button>
+				<br>
+			<label for="memberNickname">변경할 닉네임을 10자 이내로 작성해주세요.</label>
 			
-			<button type="button" onclick="nickCheck()">중복확인</button>
-			${msg}
+	
+
 			<span id="nickSame"></span>
 			</td>
 		</tr>
@@ -57,7 +63,7 @@
 	</table>
 	
 	<br>
-	<input type="submit" value="닉네임 변경하기" >
+	<input type="submit" value="닉네임 변경하기" id="insertData" disabled>
 </form>
 
 

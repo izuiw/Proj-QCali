@@ -3,7 +3,7 @@ package com.group.exam.utils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class PaginVo {
+public class PagingVo {
 	
 	private int totalCount;
 	private int startPage;

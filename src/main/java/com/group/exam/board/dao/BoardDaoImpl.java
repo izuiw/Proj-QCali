@@ -208,4 +208,11 @@ public class BoardDaoImpl implements BoardDao{
 		//댓글 삭제
 	}
 
+
+	@Override
+	public int boardSearchCount(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("boardSearchCount", map);
+	}
+
 }

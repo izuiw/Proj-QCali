@@ -5,57 +5,54 @@
 <mapper namespace="BoardDao">
 
 
-	<!-- <resultMap
-		type="com.group.exam.board.command.BoardlistCommand" id="listCommand">
-		<id property="bSeq" column="board_seq" />
-		<id property="bTitle" column="board_title" />
-		<id property="bRegday" column="board_reg_day" />
-		<id property="bLike" column="board_like" />
-		<id property="bCount" column="board_count" />
-		<id property="mNickname" column="member_nickname" />
-		<id property="mSeq" column="member_seq" />
-		<id property="bContent" column="board_content" />
-	</resultMap>
-
-	<resultMap
-		type="com.group.exam.board.command.QuestionAdayCommand"
-		id="questionCommand">
-		<id property="qSeq" column="question_seq" />
-		<id property="qContent" column="question_content" />
-	</resultMap> -->
+	<!-- <resultMap type="com.group.exam.board.command.BoardlistCommand" id="listCommand"> 
+		<id property="bSeq" column="board_seq" /> <id property="bTitle" column="board_title" 
+		/> <id property="bRegday" column="board_reg_day" /> <id property="bLike" 
+		column="board_like" /> <id property="bCount" column="board_count" /> <id 
+		property="mNickname" column="member_nickname" /> <id property="mSeq" column="member_seq" 
+		/> <id property="bContent" column="board_content" /> </resultMap> <resultMap 
+		type="com.group.exam.board.command.QuestionAdayCommand" id="questionCommand"> 
+		<id property="qSeq" column="question_seq" /> <id property="qContent" column="question_content" 
+		/> </resultMap> -->
 
 	<insert id="insertBoard" parameterType="boardVo">
 		insert into BOARD
 		(BOARD_SEQ, BOARD_TITLE, BOARD_CONTENT,BOARD_REG_DAY,
 		MEMBER_SEQ,
 		QUESTION_SEQ)values
-		(B_SEQ.nextval, #{boardTitle}, #{boardContent}, SYSDATE,
-		(select MEMBER_SEQ from MEMBER where MEMBER_SEQ = #{memberSeq}), (select
-		QUESTION_SEQ from QUESTION where QUESTION_SEQ= #{questionSeq}))
-		
+		(B_SEQ.nextval, #{boardTitle}, #{boardContent},
+		SYSDATE,
+		(select MEMBER_SEQ from MEMBER where MEMBER_SEQ =
+		#{memberSeq}), (select
+		QUESTION_SEQ from QUESTION where QUESTION_SEQ=
+		#{questionSeq}))
+
 	</insert>
 
-	<update id="updateBoard" parameterType="com.group.exam.board.command.BoardupdateCommand">
+	<update id="updateBoard"
+		parameterType="com.group.exam.board.command.BoardupdateCommand">
 		update BOARD set
-		BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent} where BOARD_SEQ =
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent} where BOARD_SEQ =
 		#{boardSeq}
 	</update>
 
 	<delete id="deleteBoardOne">
 		delete from BOARD
-		where BOARD_SEQ = #{boardSeq} 
-			</delete>
+		where BOARD_SEQ = #{boardSeq}
+	</delete>
 
 
 
 	<!-- 전체 게시글 -->
-	<select id="boardlist" parameterType="com.group.exam.utils.Criteria"
+	<select id="boardlist"
+		parameterType="com.group.exam.utils.Criteria"
 		resultType="com.group.exam.board.command.BoardlistCommand">
 	
 <![CDATA[select *
 from (select ROWNUM rn, B.BOARD_SEQ, B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY,
 B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ  
-from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ )
+from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ order by rn desc)
 where rn between #{rowStart} and #{rowEnd} ]]>
 	</select>
 
@@ -63,9 +60,11 @@ where rn between #{rowStart} and #{rowEnd} ]]>
 	<select id="questionselect" parameterType="Integer"
 		resultType="com.group.exam.board.command.QuestionAdayCommand">
 		select question_content, question_seq from
-		(select rownum AS ROWNUMBER, question_content, question_seq
+		(select rownum AS
+		ROWNUMBER, question_content, question_seq
 		from question
-		where question_status = 'T')q
+		where
+		question_status = 'T')q
 		where q.ROWNUMBER = #{num}
 	</select>
 
@@ -91,13 +90,13 @@ from (select ROWNUM rn, B.BOARD_SEQ,
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where M.member_seq = #{memberSeq}) where rn between #{rowStart} and #{rowEnd}
+where M.member_seq = #{memberSeq} order by rn desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
 
 	</select>
 
-	<!-- 게시글 디테일  -->
-	<select id="boardlistDetail" 
+	<!-- 게시글 디테일 -->
+	<select id="boardlistDetail"
 		resultType="com.group.exam.board.command.BoardlistCommand">
 
 		<![CDATA[select B.BOARD_SEQ, B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, M.MEMBER_NICKNAME, M.MEMBER_SEQ, B.BOARD_CONTENT
@@ -113,17 +112,18 @@ from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SE
 	</select>
 
 	<!-- 내가 쓴 글 수 -->
-	<select id="boardMylistCount" 
-		resultType="Integer">
+	<select id="boardMylistCount" resultType="Integer">
 		select count(*) from
 		BOARD where MEMBER_SEQ = #{memberSeq}
 
 	</select>
 
 	<!-- board 조회수 up -->
-	<update id="boardCountup" >
+	<update id="boardCountup">
 		update BOARD set
-		BOARD_COUNT = BOARD_COUNT+1 where BOARD_SEQ = #{boardSeq}
+		BOARD_COUNT =
+		BOARD_COUNT+1 where
+		BOARD_SEQ = #{boardSeq}
 	</update>
 
 
@@ -149,31 +149,50 @@ from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ where B.BOARD_SE
 			and #{memberLevel} = 2
 		</if>
 	</update>
-	
+
 	<!-- 닉네임, 제목으로 검색 -->
 	<select id="boardSearch" parameterType="HashMap"
 		resultType="com.group.exam.board.command.BoardlistCommand">
-		
-<if test='searchOption.equals("memberNickname")'>
+
+		<if test='searchOption.equals("memberNickname")'>
 		<![CDATA[
 select *
 from (select ROWNUM rn, B.BOARD_SEQ, 
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where M.MEMBER_NICKNAME = #{searchWord}) where rn between #{rowStart} and #{rowEnd}
+where M.MEMBER_NICKNAME = #{searchWord} order by rn desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
-</if>
+		</if>
 
-<if test='searchOption.equals("boardTitle")'>
+		<if test='searchOption.equals("boardTitle")'>
 		<![CDATA[select *
 from (select ROWNUM rn, B.BOARD_SEQ, 
 B.BOARD_TITLE, to_char(B.BOARD_REG_DAY, 'yyyy.mm.dd') BOARD_REG_DAY, B.BOARD_LIKE, B.BOARD_COUNT, 
 M.MEMBER_NICKNAME, M.MEMBER_SEQ 
 from MEMBER M right join BOARD B on M.MEMBER_SEQ = B.MEMBER_SEQ 
-where B.BOARD_TITLE LIKE '%'||#{searchWord}||'%') where rn between #{rowStart} and #{rowEnd}
+where B.BOARD_TITLE LIKE '%'||#{searchWord}||'%' order by rn desc) where rn between #{rowStart} and #{rowEnd}
 		]]>
-</if>
+		</if>
 	</select>
+
+
+	<!--서치 글 수 -->
+	<select id="boardSearchCount" parameterType="HashMap" resultType="Integer">
+
+		<if test='searchOption.equals("memberNickname")'>
+			select count(*) from
+			BOARD where MEMBER_SEQ = #{memberSeq}
+
+		</if>
+
+		<if test='searchOption.equals("boardTitle")'>
+			select count(*) from BOARD where BOARD_TITLE LIKE
+			'%'||#{searchWord}||'%'
+		</if>
+	</select>
+
+
+
 
 </mapper>

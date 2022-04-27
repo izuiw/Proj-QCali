@@ -119,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		map.put("api", api);
 		map.put("memberSeq", memberSeq);
-		
+		memberDAO.updateApiStatus(map);
 		
 	}
 
